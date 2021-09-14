@@ -1,0 +1,14 @@
+<component name="ArtifactManager">
+  <artifact type="war" name="P3_Backend:war">
+    <output-path>$PROJECT_DIR$/target</output-path>
+    <properties id="maven-jee-properties">
+      <options>
+        <module>P3_Backend</module>
+        <packaging>war</packaging>
+      </options>
+    </properties>
+    <root id="archive" name="RevAssure-0.1.war">
+      <element id="artifact" artifact-name="P3_Backend:war exploded" />
+    </root>
+  </artifact>
+</component>
