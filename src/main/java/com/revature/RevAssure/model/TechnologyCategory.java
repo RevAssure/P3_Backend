@@ -27,4 +27,8 @@ public class TechnologyCategory {
     @OneToMany(mappedBy = "technologyCategory")
     private List<Topic> topics;
 
+    @JsonIgnore
+    @OneToMany(mappedBy = "technologyCategory")
+    private List<Module> modules;
+
 }

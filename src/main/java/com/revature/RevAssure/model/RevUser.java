@@ -5,6 +5,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name="rev_user")
@@ -28,4 +29,12 @@ public class RevUser {
 
     @Column(name = "first_name", nullable=false)
     private String firstName;
+
+    @OneToMany(mappedBy = "trainer")
+    private List<Topic> topics;
+
+    @ManyToMany
+    @JoinTable(name="revuser_curriculum")
+    private List<Curriculum> curricula;
+
 }

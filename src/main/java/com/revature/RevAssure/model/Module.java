@@ -26,9 +26,9 @@ public class Module {
     private String description;
 
     @ManyToOne
-    @JoinColumn(name = "tech_area_id", referencedColumnName = "id")
-    private TechnologyArea techArea;
+    @JoinColumn(name = "tech_category_id", referencedColumnName = "id")
+    private TechnologyCategory technologyCategory;
 
-    @OneToMany(mappedBy = "module")
+    @ManyToMany(mappedBy = "modules")
     private List<Topic> topics;
 }
