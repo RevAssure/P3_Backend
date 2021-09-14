@@ -4,6 +4,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.List;
 
 
 @Entity
@@ -18,27 +19,34 @@ public class Topic {
     @Column(name = "id", nullable = false)
     private int id;
 
-    @Column(name="title")
+    @Column(name = "title")
     private String title;
 
-    @Column(name="description")
+    @Column(name = "description")
     private String description;
 
-    @Column(name="estimated_duration")
+    @Column(name = "estimated_duration")
     // duration in minutes
     private int estimatedDuration;
 
-    @Column(name="lecture_notes")
+    @Column(name = "lecture_notes")
     private String lectureNotes;
 
-    @Column(name="github_repo")
+    @Column(name = "github_repo")
     private String githubRepo;
 
     @ManyToOne
-    @JoinColumn(name="tech_category_id", referencedColumnName = "id")
-    private TechnologyCategory technologyCategory;
+    @JoinColumn(name = "trainer_id" , referencedColumnName = "id")
+    private RevUser trainer;
 
     @ManyToOne
-    @JoinColumn(name="module_id", referencedColumnName = "id")
-    private Module module;
+    @JoinColumn(name = "tech_category_id", referencedColumnName = "id")
+    private TechnologyCategory technologyCategory;
+
+    @ManyToMany
+    @JoinTable(name = "topic_module")
+    private List<Module> modules;
+
+
+
 }
