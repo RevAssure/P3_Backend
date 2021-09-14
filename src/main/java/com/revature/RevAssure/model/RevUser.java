@@ -25,4 +25,7 @@ public class RevUser {
 
     @Column(name = "password", nullable = false)
     private String password;
+
+    @Column(name = "first_name", nullable=false)
+    private String firstName;
 }
