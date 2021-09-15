@@ -49,7 +49,7 @@ public class CurriculumController {
     public List<Curriculum> getAllCurriculumByCurrentUserId()
     {
         RevUser revUser = extractUser();
-        return curriculumService.getAllByTrainerId();
+        return curriculumService.getAllCurriculaByTrainerId();
     }
 
     /**
