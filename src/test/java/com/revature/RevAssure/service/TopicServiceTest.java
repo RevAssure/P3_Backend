@@ -15,7 +15,7 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.anyInt;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 class TopicServiceTest {
 
@@ -72,6 +72,24 @@ class TopicServiceTest {
         when(topicRepository.getById(anyInt())).thenReturn(topic);
         assertEquals(topic, topicService.getById(1));
     }
+
+    /**
+     * Unit test for the update operation of Topic objects
+     */
+    @Test
+    void updateTopicTest(){
+        when(topicRepository.save(any(Topic.class))).thenReturn(topic);
+        assertEquals(topic, topicService.updateTopic(topic));
+    }
+    /**
+     * Unit test for the delete operation of Topic objects
+     */
+    @Test
+    void deleteTopicTest(){
+        doNothing().when(topicRepository).delete(topic);
+        assertEquals(topic, topicService.deleteTopic(topic));
+    }
+
 
 
 
