@@ -29,45 +29,53 @@ public class EventController {
     // Create
 
     // TODO: Consider DTOs for parameter value
+
+    /**
+     *
+     * @param event
+     * @return
+     */
     @PostMapping
     public Event createEvent(@RequestBody Event event){
-        RevUser revUser = extractUser();
-        // eventService.saveEvent(event);
-        return null;
+        JwtUtil.extractUser(revUserService);
+        return eventService.createEvent(event);
     }
 
     // Read
 
+    /**
+     *
+     * @param curriculum_id
+     * @return
+     */
     @GetMapping("/{curriculum_id}")
     public List<Event> getAllEventsByCurriculumId(@PathVariable int curriculum_id){
-        RevUser revUser = extractUser();
-        // eventService.getAllEventById(curriculum_id);
-        return null;
+        JwtUtil.extractUser(revUserService);
+        return eventService.getAllEventsByCurriculumId(curriculum_id);
     }
 
     // Update
 
+    /**
+     *
+     * @param event
+     * @return
+     */
     @PutMapping
     public Event updateEvent(@RequestBody Event event){
-        RevUser revUser = extractUser();
-        // eventService.saveEvent(event);
-        return null;
+        JwtUtil.extractUser(revUserService);
+        return eventService.updateEvent(event);
     }
 
     // Delete
 
+    /**
+     * 
+     * @param eventId
+     */
     @DeleteMapping("/{eventId}")
-    public Event deleteEvent(@PathVariable int eventId){
-        RevUser revUser = extractUser();
-        // eventService.deleteEvent(eventId);
-        return null;
+    public void deleteEvent(@PathVariable int eventId){
+        JwtUtil.extractUser(revUserService);
+        eventService.deleteEvent(eventId);
     }
-
-
-    private RevUser extractUser(){
-        String username = JwtUtil.extractUsername();
-        // return revUserService.getRevUserByUsername(username);
-        return null;
-    }
-
 }
