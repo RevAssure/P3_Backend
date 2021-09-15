@@ -41,7 +41,6 @@ public class EventController {
     @GetMapping("/{curriculum_id}")
     public List<Event> getAllEventsByCurriculumId(@PathVariable int curriculum_id){
         RevUser revUser = extractUser();
-
         // eventService.getAllEventById(curriculum_id);
         return null;
     }
@@ -57,8 +56,8 @@ public class EventController {
 
     // Delete
 
-    @DeleteMapping
-    public Event deleteEvent(@RequestBody int eventId){
+    @DeleteMapping("/{eventId}")
+    public Event deleteEvent(@PathVariable int eventId){
         RevUser revUser = extractUser();
         // eventService.deleteEvent(eventId);
         return null;

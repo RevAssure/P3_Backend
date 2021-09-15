@@ -3,6 +3,7 @@ package com.revature.RevAssure.controller;
 import com.revature.RevAssure.dto.AuthenticationRequest;
 import com.revature.RevAssure.model.RevUser;
 import com.revature.RevAssure.service.RevUserService;
+import com.revature.RevAssure.util.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -47,8 +48,11 @@ public class RevUserController {
     // Update -- not in MVP
 
     // Delete -- not in MVP
-
-
+    private RevUser extractUser(){
+        String username = JwtUtil.extractUsername();
+        // return revUserService.getRevUserByUsername(username);
+        return null;
+    }
 
 
 }
