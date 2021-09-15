@@ -33,10 +33,10 @@ public class CurriculumController {
      * @return curriculum object
      */
     @PostMapping
-    public Curriculum createCurriculum(@RequestBody Curriculum curriculum){
-         RevUser revUser = extractUser();
-        // return curriculumService.saveCurriculum(curriculum);
-        return null;
+    public Curriculum createCurriculum(@RequestBody Curriculum curriculum)
+    {
+        RevUser revUser = extractUser();
+        return curriculumService.saveCurriculum(curriculum);
     }
 
     // Read
@@ -46,10 +46,10 @@ public class CurriculumController {
      * @return List of Curriculum objects
      */
     @GetMapping
-    public List<Curriculum> getAllCurriculumByCurrentUserId(){
+    public List<Curriculum> getAllCurriculumByCurrentUserId()
+    {
         RevUser revUser = extractUser();
-        // return curriculumService.getAllByTrainerId();
-        return null;
+        return curriculumService.getAllByTrainerId();
     }
 
     /**
@@ -64,11 +64,11 @@ public class CurriculumController {
      * @return curriculum object
      */
     @PutMapping
-    public Curriculum updateCurriculum(@RequestBody Curriculum curriculum){
+    public Curriculum updateCurriculum(@RequestBody Curriculum curriculum)
+    {
         RevUser revUser = extractUser();
         // TODO: make sure it is trainer updating and not associate/general user
-        // return curriculumService.saveCurriculum(curriculum);
-        return null;
+        return curriculumService.saveCurriculum(curriculum);
     }
 
     // Delete -- not in MVP
