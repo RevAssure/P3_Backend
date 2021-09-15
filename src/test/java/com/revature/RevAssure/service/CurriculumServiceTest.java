@@ -14,6 +14,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.when;
 
 @SpringBootTest
@@ -60,13 +61,13 @@ class CurriculumServiceTest
     void saveCurriculumReturnsNewOrUpdatedCurriculum()
     {
         when(mockCurriculumRepository.save(mockCurriculum)).thenReturn(mockCurriculum);
-        curriculumServiceTest.saveCurriculum(mockCurriculum);
+        assertEquals(curriculumServiceTest.saveCurriculum(mockCurriculum), mockCurriculum);
     }
 
     @Test
     void getAllCurriculaByTrainerIdReturnsListOfCurriculaCreatedByTrainer()
     {
         when(mockCurriculumRepository.findAllByRevUser(mockTrainer)).thenReturn(mockCurriculumList);
-        curriculumServiceTest.getAllCurriculaByTrainerId();
+        assertEquals(curriculumServiceTest.getAllCurriculaByTrainerId(mockTrainer), mockCurriculumList);
     }
 }
