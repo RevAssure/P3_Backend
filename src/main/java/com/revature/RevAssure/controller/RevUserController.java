@@ -20,14 +20,35 @@ public class RevUserController {
         this.revUserService = revUserService;
     }
 
+    // Create
+    /**
+     * Create a RevUser with attributes matching the revUser input
+     * @param revUser input
+     * @return RevUser
+     */
     @PostMapping("/register")
     public @ResponseBody
     RevUser createUser(@RequestBody RevUser revUser) {
         return revUserService.saveNewRevUser(revUser);
     }
 
+    // Read
+    /**
+     * TODO: isTrainer needs to be added to response body
+     * @param authReq
+     * @return
+     * @throws Exception
+     */
     @PostMapping("/authenticate")
     public ResponseEntity<?> createAuthenticationToken(@RequestBody AuthenticationRequest authReq) throws Exception {
         return revUserService.authenticate(authReq);
     }
+
+    // Update -- not in MVP
+
+    // Delete -- not in MVP
+
+
+
+
 }

@@ -11,20 +11,20 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 
 /**
- * Service layer for TraderDetails
+ * Service layer for RevUserDetails
  */
 @Service
 public class RevUserDetailsService implements org.springframework.security.core.userdetails.UserDetailsService {
 
     /**
-     * Repository layer for Trader object
+     * Repository layer for RevUser object
      */
     @Autowired
     private final RevUserRepository revUserRepository;
 
     /**
-     * Constructor for TraderDetailsService
-     * @param revUserRepository TraderRepository object
+     * Constructor for RevUserDetailsService
+     * @param revUserRepository RevUserRepository object
      */
     @Autowired
     public RevUserDetailsService(RevUserRepository revUserRepository) {
@@ -33,8 +33,8 @@ public class RevUserDetailsService implements org.springframework.security.core.
 
     /**
      * Overridden UserDetails for Spring Security
-     * @param s username of Trader
-     * @return UserDetails object for Trader
+     * @param s username of RevUser
+     * @return UserDetails object for RevUser
      * @throws UsernameNotFoundException
      */
     @Override
