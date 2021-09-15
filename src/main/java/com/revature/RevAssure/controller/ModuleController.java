@@ -5,7 +5,6 @@ import com.revature.RevAssure.model.RevUser;
 import com.revature.RevAssure.service.ModuleService;
 import com.revature.RevAssure.service.RevUserService;
 import com.revature.RevAssure.util.JwtUtil;
-import com.sun.org.apache.xpath.internal.operations.Mod;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
