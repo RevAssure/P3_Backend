@@ -9,9 +9,13 @@ import java.util.List;
 public class CurriculumService
 {
 
-    public Curriculum saveCurriculum(Curriculum curriculum) {
+    public Curriculum saveCurriculum(Curriculum curriculum)
+    {
+        return null;
     }
 
-    public List<Curriculum> getAllByTrainerId() {
+    public List<Curriculum> getAllCurriculaByTrainerId()
+    {
+        return null;
     }
 }
