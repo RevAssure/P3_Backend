@@ -27,8 +27,13 @@ public class TopicService {
         return topicRepository.getById(topicId);
     }
 
+    /**
+     * Service to update an existing topic
+     */
     public Topic updateTopic(Topic topic){return topicRepository.save(topic);}
-
+    /**
+     * Service to delete an existing topic
+     */
     public Topic deleteTopic(Topic topic){
         topicRepository.delete(topic);
         return topic;
