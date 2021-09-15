@@ -46,14 +46,14 @@ public class CurriculumController {
      * @return List of Curriculum objects
      */
     @GetMapping
-    public List<Curriculum> getAllCurriculumByCurrentUserId()
+    public List<Curriculum> getAllCurriculaByCurrentUserId()
     {
         RevUser revUser = extractUser();
-        return curriculumService.getAllCurriculaByTrainerId();
+        return curriculumService.getAllCurriculaByTrainerId(revUser);
     }
 
     /**
-     * TODO: ask frontend if they want to narrow the view on getAllCirriculumByCurrentUserId()
+     * TODO: ask frontend if they want to narrow the view on getAllCurriculumByCurrentUserId()
      */
 
     // Update
