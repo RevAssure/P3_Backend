@@ -54,9 +54,11 @@ public class RevUserService {
         }
         final UserDetails userDetails = revUserDetailsService.loadUserByUsername(authReq.getUsername());
         final String jwt = jwtTokenUtil.generateToken(userDetails);
-        return ResponseEntity.ok(new AuthenticationResponse(jwt));
+        AuthenticationResponse authResp = new AuthenticationResponse(jwt);
+        return ResponseEntity.ok(authResp);
     }
 
-
-
+    public RevUser getRevUserByUsername(String username) {
+        return revUserRepository.findByUsername(username).orElseThrow(RuntimeException::new);
+    }
 }
