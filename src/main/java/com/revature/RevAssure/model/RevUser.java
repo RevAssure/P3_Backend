@@ -36,15 +36,6 @@ public class RevUser {
     @Column(name = "is_trainer", nullable = false)
     private boolean isTrainer;
 
-    public RevUser(int id, String username, String password, String firstName, String lastName, boolean isTrainer) {
-        this.id = id;
-        this.username = username;
-        this.password = password;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.isTrainer = isTrainer;
-    }
-
     @OneToMany(mappedBy = "trainer")
     private List<Topic> topics;
 
