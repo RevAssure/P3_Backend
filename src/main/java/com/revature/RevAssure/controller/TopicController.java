@@ -34,6 +34,7 @@ public class TopicController{
     // Create
     /**
      * Create operation for Topic objects
+     * revUser retrieves the username from the current JWT
      * @return Returns null
      */
     @PostMapping
@@ -46,6 +47,7 @@ public class TopicController{
     // Read
     /**
      * Read operation for all Topic objects
+     * revUser retrieves the username from the current JWT
      * @return Returns null
      */
     @GetMapping
@@ -57,6 +59,7 @@ public class TopicController{
 
     /**
      * Read operation for Topic objects by their ID
+     * revUser retrieves the username from the current JWT
      * @return Returns null
      */
     @GetMapping("/topic/{topicId}")
@@ -67,6 +70,7 @@ public class TopicController{
     }
     /**
      * Read operation for Topic objects by their module ID
+     * revUser retrieves the username from the current JWT
      * @return Returns null
      */
     @GetMapping("/module/{moduleId}")
@@ -77,6 +81,7 @@ public class TopicController{
     }
     /**
      * Read operation for Topic objects by the trainer that created them
+     * revUser retrieves the username from the current JWT
      * @return Returns null
      */
     @Deprecated // we might not use it or we might
@@ -90,6 +95,7 @@ public class TopicController{
     // Update
     /**
      * Update operation for Topic objects
+     * revUser retrieves the username from the current JWT
      * @return Returns null
      */
     // TODO: Make sure when a trainer is updating a topic that is not owned by them
@@ -104,6 +110,7 @@ public class TopicController{
     // Delete
     /**
      * Delete operation for Topic objects
+     * revUser retrieves the username from the current JWT
      * @return Returns null
      */
     @DeleteMapping("/{topicId}")
@@ -112,7 +119,10 @@ public class TopicController{
         // return topicService.deleteTopic(topicId);
         return null;
     }
-
+    /**
+     * Retrieves the username from the current JWT
+     * @return Returns null
+     */
     private RevUser extractUser(){
         String username = JwtUtil.extractUsername();
         // return revUserService.getRevUserByUsername(username);
