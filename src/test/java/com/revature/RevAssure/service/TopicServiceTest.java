@@ -3,6 +3,7 @@ package com.revature.RevAssure.service;
 import com.revature.RevAssure.model.RevUser;
 import com.revature.RevAssure.model.Topic;
 import com.revature.RevAssure.model.Module;
+import com.revature.RevAssure.repository.ModuleRepository;
 import com.revature.RevAssure.repository.TopicRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -11,6 +12,7 @@ import static org.mockito.ArgumentMatchers.any;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -20,6 +22,7 @@ import static org.mockito.Mockito.when;
 class TopicServiceTest {
 
     private TopicRepository topicRepository;
+    private ModuleRepository moduleRepository;
     private TopicService topicService;
 
     private Topic topic;
@@ -32,7 +35,8 @@ class TopicServiceTest {
     @BeforeEach
     void setUp() {
         topicRepository = Mockito.mock(TopicRepository.class);
-        topicService = new TopicService(topicRepository);
+        moduleRepository = Mockito.mock(ModuleRepository.class);
+        topicService = new TopicService(topicRepository, moduleRepository);
 
         trainer = Mockito.mock(RevUser.class);
         module = Mockito.mock(Module.class);
@@ -55,25 +59,59 @@ class TopicServiceTest {
 
     }
 
+    /**
+     * Testing the saveTopic method will properly save and return topic object.
+     */
     @Test
     void creatingRevUserWithSaveTopic(){
         when(topicRepository.save(any(Topic.class))).thenReturn(topic);
         assertEquals(topic, topicService.saveTopic(topic));
     }
 
+    /**
+     * Testing if the getAllTopics works properly
+     */
     @Test
     void getAllTopics(){
         when(topicRepository.findAll()).thenReturn(topicList);
         assertEquals(topicList, topicService.getAllTopics());
     }
 
+    /**
+     * Testing service will return topic by id
+     */
     @Test
     void getTheTopicById(){
-        when(topicRepository.getById(anyInt())).thenReturn(topic);
+        when(topicRepository.findById(anyInt())).thenReturn(Optional.of(topic));
         assertEquals(topic, topicService.getById(1));
     }
 
+    /**
+     * if topic id does not exists should return null
+     */
+    @Test
+    void getTopicByIdButTopicIdDoesNotExists(){
+        when(topicRepository.findById(anyInt())).thenReturn(Optional.empty());
+        assertEquals(null, topicService.getById(1));
+    }
 
+    /**
+     * get a topicList by moduleId
+     */
+    @Test
+    void getTopicsByModuleId(){
+        when(moduleRepository.findById(anyInt())).thenReturn(Optional.of(module));
+        when(topicRepository.findAllByModules(module)).thenReturn(topicList);
+        assertEquals(topicList, topicService.getTopicsByModuleId(1));
+    }
 
+    /**
+     * gets topicList with moduleId. If moduleId does not exists then returns empty ArrayList<Topic>
+     */
+    @Test
+    void getTopicsByModuleIdButModuleIdDoesnotExists(){
+        when(moduleRepository.findById(anyInt())).thenReturn(Optional.empty());
+        assertEquals(new ArrayList<Topic>(), topicService.getTopicsByModuleId(1));
+    }
 
 }
