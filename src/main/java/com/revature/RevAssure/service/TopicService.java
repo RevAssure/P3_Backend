@@ -35,7 +35,7 @@ public class TopicService {
      * Get a lists of all Topic objects in the database
      * @return List of Topic Objects
      */
-    public List<Topic> getAllTopics(){
+    public List<Topic> getAll(){
         return topicRepository.findAll();
     }
 
@@ -53,7 +53,7 @@ public class TopicService {
      * @param moduleId
      * @return
      */
-    public List<Topic> getTopicsByModuleId(int moduleId){
+    public List<Topic> getAllTopicsByModuleId(int moduleId){
         Module module = moduleRepository.findById(moduleId).orElse(null);
         if(module == null){
             // TODO: when we get logger. log that ModuleId does not exists

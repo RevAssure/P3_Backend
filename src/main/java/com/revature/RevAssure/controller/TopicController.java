@@ -27,8 +27,7 @@ public class TopicController{
     @PostMapping
     public Topic createTopic(@RequestBody Topic topic){
         RevUser revUser = extractUser();
-        // return topicService.saveTopic(topic);
-        return null;
+        return topicService.saveTopic(topic);
     }
 
     // Read
@@ -36,30 +35,30 @@ public class TopicController{
     @GetMapping
     public List<Topic> getAllTopics(){
         RevUser revUser = extractUser();
-        // return topicService.getAll();
-        return null;
+        return topicService.getAll();
+
     }
 
     @GetMapping("/topic/{topicId}")
     public Topic getTopicById(@PathVariable int topicId){
         RevUser revUser = extractUser();
-//        return topicService.getById(topicId);
-        return null;
+        return topicService.getById(topicId);
+
     }
 
     @GetMapping("/module/{moduleId}")
     public List<Topic> getTopicsByModuleId(@PathVariable int moduleId){
         RevUser revUser = extractUser();
-//        return topicService.getAllTopicsByModuleId(moduleId);
-        return null;
+        return topicService.getAllTopicsByModuleId(moduleId);
+
     }
 
     @Deprecated // we might not use it or we might
     @GetMapping("/trainer/{trainerId}")
     public List<Topic> getTopicsByTrainerId(@PathVariable int trainerId){
         RevUser revUser = extractUser();
-//        return topicService.getAllTopicsByModuleId(trainerId);
-        return null;
+        return topicService.getAllTopicsByModuleId(trainerId);
+
     }
 
     // Update
@@ -69,8 +68,8 @@ public class TopicController{
     @PutMapping
     public Topic updateTopic(@RequestBody Topic topic){
         RevUser revUser = extractUser();
-        // return topicService.saveTopic(topic);
-        return null;
+        return topicService.saveTopic(topic);
+
     }
 
     // Delete
@@ -78,14 +77,14 @@ public class TopicController{
     @DeleteMapping("/{topicId}")
     public Topic deleteTopic(@PathVariable int topicId){
         RevUser revUser = extractUser();
-        // return topicService.deleteTopic(topicId);
-        return null;
+        return topicService.deleteTopic(topicId);
+
     }
 
     private RevUser extractUser(){
         String username = JwtUtil.extractUsername();
-        // return revUserService.getRevUserByUsername(username);
-        return null;
+        return revUserService.getRevUserByUsername(username);
+
     }
 
 }

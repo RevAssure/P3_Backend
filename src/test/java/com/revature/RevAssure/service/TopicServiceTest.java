@@ -74,7 +74,7 @@ class TopicServiceTest {
     @Test
     void getAllTopics(){
         when(topicRepository.findAll()).thenReturn(topicList);
-        assertEquals(topicList, topicService.getAllTopics());
+        assertEquals(topicList, topicService.getAll());
     }
 
     /**
@@ -102,7 +102,7 @@ class TopicServiceTest {
     void getTopicsByModuleId(){
         when(moduleRepository.findById(anyInt())).thenReturn(Optional.of(module));
         when(topicRepository.findAllByModules(module)).thenReturn(topicList);
-        assertEquals(topicList, topicService.getTopicsByModuleId(1));
+        assertEquals(topicList, topicService.getAllTopicsByModuleId(1));
     }
 
     /**
@@ -111,7 +111,7 @@ class TopicServiceTest {
     @Test
     void getTopicsByModuleIdButModuleIdDoesnotExists(){
         when(moduleRepository.findById(anyInt())).thenReturn(Optional.empty());
-        assertEquals(new ArrayList<Topic>(), topicService.getTopicsByModuleId(1));
+        assertEquals(new ArrayList<Topic>(), topicService.getAllTopicsByModuleId(1));
     }
 
 }
