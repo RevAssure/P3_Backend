@@ -10,5 +10,10 @@ import java.util.List;
 @Repository
 public interface CurriculumRepository extends JpaRepository<Curriculum, Integer>
 {
+    /**
+     * queries the database for curricula belonging to the trainer
+     * @param trainer the owner of the curricula
+     * @return list of curricula belonging to trainer
+     */
     List<Curriculum> findAllByRevUsers(RevUser trainer);
 }

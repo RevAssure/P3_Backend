@@ -57,6 +57,9 @@ class CurriculumServiceTest
     {
     }
 
+    /**
+     * test saveCurriculum works as intended
+     */
     @Test
     void saveCurriculumReturnsNewOrUpdatedCurriculum()
     {
@@ -64,6 +67,9 @@ class CurriculumServiceTest
         assertEquals(curriculumServiceTest.saveCurriculum(mockCurriculum), mockCurriculum);
     }
 
+    /**
+     * test getAllCurriculaByTrainerId works as intended
+     */
     @Test
     void getAllCurriculaByTrainerIdReturnsListOfCurriculaCreatedByTrainer()
     {

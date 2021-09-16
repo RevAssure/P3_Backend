@@ -28,9 +28,9 @@ public class CurriculumController {
     // Create
 
     /**
-     * Create a new curriculum when given curriculum object
-     * @param curriculum curriculum object
-     * @return curriculum object
+     * stores a new curriculum in the database
+     * @param curriculum the curriculum to be stored
+     * @return the stored
      */
     @PostMapping
     public Curriculum createCurriculum(@RequestBody Curriculum curriculum)
@@ -42,8 +42,8 @@ public class CurriculumController {
     // Read
 
     /**
-     * returns list of Curriculum objects based on user id from the jwt
-     * @return List of Curriculum objects
+     * returns list of Curricula from database by current user id
+     * @return List of Curricula belonging to current user
      */
     @GetMapping
     public List<Curriculum> getAllCurriculaByCurrentUserId()
@@ -59,9 +59,9 @@ public class CurriculumController {
     // Update
 
     /**
-     * update a current curriculum when given curriculum object
-     * @param curriculum curriculum object
-     * @return curriculum object
+     * update a current curriculum on the database
+     * @param curriculum the curriculum to be updated
+     * @return the updated curriculum
      */
     @PutMapping
     public Curriculum updateCurriculum(@RequestBody Curriculum curriculum)

@@ -19,11 +19,21 @@ public class CurriculumService
         this.curriculumRepository = curriculumRepository;
     }
 
+    /**
+     * passes the curriculum to the repository to be saved
+     * @param curriculum the curriculum to be saved
+     * @return the saved curriculum
+     */
     public Curriculum saveCurriculum(Curriculum curriculum)
     {
         return curriculumRepository.save(curriculum);
     }
 
+    /**
+     * passes the trainer to the repository to find its corresponding curricula
+     * @param trainer the owner of the curricula
+     * @return all curricula that belong to the trainer
+     */
     public List<Curriculum> getAllCurriculaByTrainerId(RevUser trainer)
     {
         return curriculumRepository.findAllByRevUsers(trainer);
