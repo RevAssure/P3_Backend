@@ -13,6 +13,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.when;
@@ -75,5 +76,16 @@ class CurriculumServiceTest
     {
         when(mockCurriculumRepository.findAllByRevUsers(mockTrainer)).thenReturn(mockCurriculumList);
         assertEquals(curriculumServiceTest.getAllCurriculaByTrainerId(mockTrainer), mockCurriculumList);
+    }
+
+    /**
+     * test getAllCurriculaByTrainerId returns an empty list when trainer not found
+     */
+    @Test
+    void getAllCurriculaByTrainerIdReturnsEmptyList()
+    {
+        when(mockCurriculumRepository.findAllByRevUsers(mockTrainer)).thenReturn(new ArrayList<Curriculum>());
+//        assertEquals(curriculumServiceTest.getAllCurriculaByTrainerId(mockTrainer), new ArrayList<Curriculum>());
+        assert(curriculumServiceTest.getAllCurriculaByTrainerId(mockTrainer).isEmpty());
     }
 }
