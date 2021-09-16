@@ -19,19 +19,33 @@ public class TechnologyCategoryController {
     private TechnologyCategoryService technologyCategoryService;
     private RevUserService revUserService;
 
+    /**
+     * Constructor for TechnologyCategoryController
+     *
+     * @param technologyCategoryService is a technologyCategoryService object
+     * @param revUserService is a RevUserService object
+     */
     @Autowired
     public TechnologyCategoryController(TechnologyCategoryService technologyCategoryService, RevUserService revUserService){
         this.technologyCategoryService = technologyCategoryService;
         this.revUserService = revUserService;
     }
 
+    /**
+     * Read operation for all TechnologyCategories objects
+     * revUser retrieves the username from the current JWT
+     * @return A list of all the technology categories
+     */
     @GetMapping
     public List<TechnologyCategory> getTechnologyCategories(){
         RevUser revUser = extractUser();
-        // return technologyCategoryService.getAll();
-        return null;
+        return technologyCategoryService.getAll();
     }
 
+    /**
+     * Retrieves the username from the current JWT
+     * @return Returns null
+     */
     private RevUser extractUser(){
         String username = JwtUtil.extractUsername();
         // return revUserService.getRevUserByUsername(username);
