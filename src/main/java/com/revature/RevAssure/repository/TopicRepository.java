@@ -9,6 +9,7 @@ import java.util.List;
 
 @Repository
 public interface TopicRepository extends JpaRepository<Topic, Integer>{
+
     /**
      * Return a list of all topics within given module object
      * @param module Given Module Object

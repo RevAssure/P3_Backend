@@ -62,4 +62,16 @@ public class TopicService {
         return topicRepository.findAllByModules(module);
     }
 
+    /**
+     * Service to update an existing topic
+     */
+    public Topic updateTopic(Topic topic){return topicRepository.save(topic);}
+
+    /**
+     * Service to delete an existing topic
+     */
+    public void deleteTopic(int topicId){
+        topicRepository.deleteById(topicId);
+    }
+
 }
