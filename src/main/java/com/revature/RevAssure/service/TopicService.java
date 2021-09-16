@@ -51,7 +51,7 @@ public class TopicService {
     /**
      * gets all topic according to moduleId. If moduleId does no exists return empty array
      * @param moduleId
-     * @return
+     * @return A list of Topics with the same module ID
      */
     public List<Topic> getAllTopicsByModuleId(int moduleId){
         Module module = moduleRepository.findById(moduleId).orElse(null);
@@ -64,11 +64,13 @@ public class TopicService {
 
     /**
      * Service to update an existing topic
+     * @param topic the topic to be updated
      */
     public Topic updateTopic(Topic topic){return topicRepository.save(topic);}
 
     /**
      * Service to delete an existing topic
+     * @param topicId the ID number of a topic
      */
     public void deleteTopic(int topicId){
         topicRepository.deleteById(topicId);

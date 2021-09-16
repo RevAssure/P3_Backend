@@ -35,7 +35,7 @@ public class TopicController{
     /**
      * Create operation for Topic objects
      * revUser retrieves the username from the current JWT
-     * @return Returns null
+     * @return the topic that is saved
      */
     @PostMapping
     public Topic createTopic(@RequestBody Topic topic){
@@ -47,7 +47,7 @@ public class TopicController{
     /**
      * Read operation for all Topic objects
      * revUser retrieves the username from the current JWT
-     * @return Returns null
+     * @return A list of all the topics
      */
     @GetMapping
     public List<Topic> getAllTopics(){
@@ -59,7 +59,7 @@ public class TopicController{
     /**
      * Read operation for Topic objects by their ID
      * revUser retrieves the username from the current JWT
-     * @return Returns null
+     * @return The topic with the corresponding ID
      */
     @GetMapping("/topic/{topicId}")
     public Topic getTopicById(@PathVariable int topicId){
@@ -70,7 +70,7 @@ public class TopicController{
     /**
      * Read operation for Topic objects by their module ID
      * revUser retrieves the username from the current JWT
-     * @return Returns null
+     * @return A list of topics with the same module ID
      */
     @GetMapping("/module/{moduleId}")
     public List<Topic> getTopicsByModuleId(@PathVariable int moduleId){
@@ -81,7 +81,7 @@ public class TopicController{
     /**
      * Read operation for Topic objects by the trainer that created them
      * revUser retrieves the username from the current JWT
-     * @return Returns null
+     * @return A list of topics with the same Trainer ID
      */
     @Deprecated // we might not use it or we might
     @GetMapping("/trainer/{trainerId}")
@@ -95,7 +95,7 @@ public class TopicController{
     /**
      * Update operation for Topic objects
      * revUser retrieves the username from the current JWT
-     * @return Returns null
+     * @return The updated topic
      */
     // TODO: Make sure when a trainer is updating a topic that is not owned by them
     //  they are creating a new topic instead of modifying a previous one
@@ -110,7 +110,6 @@ public class TopicController{
     /**
      * Delete operation for Topic objects
      * revUser retrieves the username from the current JWT
-     * @return Returns null
      */
 
     @DeleteMapping("/{topicId}")
