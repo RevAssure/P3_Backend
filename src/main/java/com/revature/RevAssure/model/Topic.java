@@ -46,11 +46,8 @@ public class Topic {
     private TechnologyCategory technologyCategory;
 
     @ManyToMany
-
     @JoinTable(name = "topic_module")
-    @JsonIgnoreProperties("topics")
+    @JsonIgnoreProperties({"topics", "trainer"})
     private List<Module> modules;
-
-
 
 }

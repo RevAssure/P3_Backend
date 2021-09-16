@@ -48,4 +48,8 @@ public class RevUser {
     @JoinTable(name="revuser_curriculum")
     private List<Curriculum> curricula;
 
+    @OneToMany(mappedBy = "trainer")
+    @JsonIgnoreProperties({"trainer", "topics"})
+    private List<Module> modules;
+
 }

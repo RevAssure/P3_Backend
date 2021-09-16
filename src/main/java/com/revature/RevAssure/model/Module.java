@@ -28,6 +28,10 @@ public class Module {
     private String description;
 
     @ManyToOne
+    @JoinColumn(name = "trainer_id" , referencedColumnName = "id")
+    private RevUser trainer;
+
+    @ManyToOne
     @JoinColumn(name = "tech_category_id", referencedColumnName = "id")
     private TechnologyCategory technologyCategory;
 
