@@ -14,8 +14,6 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.when;
 
 class EventServiceTest {
@@ -52,7 +50,7 @@ class EventServiceTest {
 
     @Test
     void createNewEventSuccessfullyTest() {
-        when(eventRepository.save(any(Event.class))).thenReturn(event);
+        when(eventRepository.save(event)).thenReturn(event);
 
         Event ev = eventService.createEvent(event);
 
@@ -61,8 +59,8 @@ class EventServiceTest {
 
     @Test
     void getAllEventsByCurriculumSuccessfullyTest() {
-        when(eventRepository.findByCurriculum(any(Curriculum.class))).thenReturn(Optional.of(events));
-        when(curriculumRepository.getById(anyInt())).thenReturn(curriculum);
+        when(eventRepository.findByCurriculum(curriculum)).thenReturn(Optional.of(events));
+        when(curriculumRepository.getById(1)).thenReturn(curriculum);
 
         List<Event> evs = eventService.getAllEventsByCurriculumId(1);
 
@@ -71,8 +69,8 @@ class EventServiceTest {
 
     @Test
     void getAllEventsByCurriculumButNoEventsTest() {
-        when(eventRepository.findByCurriculum(any(Curriculum.class))).thenReturn(Optional.empty());
-        when(curriculumRepository.getById(anyInt())).thenReturn(curriculum);
+        when(eventRepository.findByCurriculum(curriculum)).thenReturn(Optional.empty());
+        when(curriculumRepository.getById(1)).thenReturn(curriculum);
 
         List<Event> evs = eventService.getAllEventsByCurriculumId(1);
 
@@ -81,7 +79,7 @@ class EventServiceTest {
 
     @Test
     void updateEventSuccessfullyTest() {
-        when(eventRepository.save(any(Event.class))).thenReturn(event);
+        when(eventRepository.save(event)).thenReturn(event);
 
         Event ev = eventService.updateEvent(event);
 
@@ -90,7 +88,7 @@ class EventServiceTest {
 
     @Test
     void deleteEventSuccessfullyTest() {
-        when(eventRepository.getById(anyInt())).thenReturn(event);
+        when(eventRepository.getById(1)).thenReturn(event);
 
         eventService.deleteEvent(1);
     }

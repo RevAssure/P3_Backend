@@ -31,9 +31,9 @@ public class EventController {
     // TODO: Consider DTOs for parameter value
 
     /**
-     *
-     * @param event
-     * @return
+     * Endpoint available for creating an event
+     * @param event : The event that is to be inserted and persisted into the database
+     * @return : The event that was inserted and persisted into the database
      */
     @PostMapping
     public Event createEvent(@RequestBody Event event){
@@ -44,9 +44,9 @@ public class EventController {
     // Read
 
     /**
-     *
-     * @param curriculum_id
-     * @return
+     * Endpoint available for getting all events with the same curriculum
+     * @param curriculum_id : The curriculum id that is corresponding to all desired events
+     * @return : The list of events that is to be sent back to the front end
      */
     @GetMapping("/{curriculum_id}")
     public List<Event> getAllEventsByCurriculumId(@PathVariable int curriculum_id){
@@ -57,9 +57,9 @@ public class EventController {
     // Update
 
     /**
-     *
-     * @param event
-     * @return
+     * Endpoint available for updating an existing event
+     * @param event : The event that is to be updated and persisted into the database
+     * @return : The event that is to be inserted and persisted into the database
      */
     @PutMapping
     public Event updateEvent(@RequestBody Event event){
@@ -70,8 +70,8 @@ public class EventController {
     // Delete
 
     /**
-     * 
-     * @param eventId
+     * Endpoint available for deleting an existing event
+     * @param eventId : Event id of event that is to be deleted
      */
     @DeleteMapping("/{eventId}")
     public void deleteEvent(@PathVariable int eventId){

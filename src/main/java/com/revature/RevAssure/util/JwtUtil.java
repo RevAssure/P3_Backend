@@ -79,7 +79,8 @@ public class JwtUtil {
 
     public static RevUser extractUser(RevUserService revUserService){
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        return revUserService.getRevUserByUsername(authentication.getName());
+        //return revUserService.getRevUserByUsername(authentication.getName());
+        return null;
     }
 
     public static String extractUsername(){

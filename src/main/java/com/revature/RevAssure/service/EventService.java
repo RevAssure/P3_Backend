@@ -40,7 +40,7 @@ public class EventService {
             return eventRepository.findByCurriculum(curriculumRepository.getById(id))
                     .orElseThrow(RuntimeException::new);
         } catch(RuntimeException e){
-            return new ArrayList<>();
+            return new ArrayList<Event>();
         }
 
     }
