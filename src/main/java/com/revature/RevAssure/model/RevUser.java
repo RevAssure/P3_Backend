@@ -1,6 +1,6 @@
 package com.revature.RevAssure.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -40,9 +40,11 @@ public class RevUser {
     private boolean isTrainer;
 
     @OneToMany(mappedBy = "trainer")
+    @JsonIgnoreProperties("trainer")
     private List<Topic> topics;
 
     @ManyToMany
+    @JsonIgnoreProperties("revUsers")
     @JoinTable(name="revuser_curriculum")
     private List<Curriculum> curricula;
 

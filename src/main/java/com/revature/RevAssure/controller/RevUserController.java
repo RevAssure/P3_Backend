@@ -5,9 +5,7 @@ import com.revature.RevAssure.model.RevUser;
 import com.revature.RevAssure.service.RevUserService;
 import com.revature.RevAssure.util.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 @CrossOrigin
