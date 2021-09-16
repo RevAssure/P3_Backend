@@ -67,7 +67,7 @@ class CurriculumServiceTest
     @Test
     void getAllCurriculaByTrainerIdReturnsListOfCurriculaCreatedByTrainer()
     {
-        when(mockCurriculumRepository.findAllByRevUser(mockTrainer)).thenReturn(mockCurriculumList);
+        when(mockCurriculumRepository.findAllByRevUsers(mockTrainer)).thenReturn(mockCurriculumList);
         assertEquals(curriculumServiceTest.getAllCurriculaByTrainerId(mockTrainer), mockCurriculumList);
     }
 }

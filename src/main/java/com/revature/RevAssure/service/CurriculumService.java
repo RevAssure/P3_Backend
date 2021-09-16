@@ -26,6 +26,6 @@ public class CurriculumService
 
     public List<Curriculum> getAllCurriculaByTrainerId(RevUser trainer)
     {
-        return curriculumRepository.findAllByRevUser(trainer);
+        return curriculumRepository.findAllByRevUsers(trainer);
     }
 }
