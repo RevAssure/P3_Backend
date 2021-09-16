@@ -46,7 +46,7 @@ public class TechnologyCategoryServiceTest {
      * Test if findAll works properly
      */
     @Test
-    void getAllTechnologyCategory(){
+    void getAllTechnologyCategories(){
         when(TechnologyCategoryRepository.findAll()).thenReturn(technologyCategoryList);
         assertEquals(technologyCategoryList, technologyCategoryService.getAll());
     }
