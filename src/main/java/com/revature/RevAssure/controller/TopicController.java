@@ -77,14 +77,15 @@ public class TopicController{
     @DeleteMapping("/{topicId}")
     public Topic deleteTopic(@PathVariable int topicId){
         RevUser revUser = extractUser();
-        return topicService.deleteTopic(topicId);
+       // return topicService.deleteTopic(topicId);
+        return null;
 
     }
 
     private RevUser extractUser(){
         String username = JwtUtil.extractUsername();
-        return revUserService.getRevUserByUsername(username);
-
+       // return revUserService.getRevUserByUsername(username);
+        return null;
     }
 
 }
