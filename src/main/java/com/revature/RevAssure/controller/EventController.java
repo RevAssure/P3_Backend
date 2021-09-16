@@ -29,45 +29,53 @@ public class EventController {
     // Create
 
     // TODO: Consider DTOs for parameter value
+
+    /**
+     * Endpoint available for creating an event
+     * @param event : The event that is to be inserted and persisted into the database
+     * @return : The event that was inserted and persisted into the database
+     */
     @PostMapping
     public Event createEvent(@RequestBody Event event){
-        RevUser revUser = extractUser();
-        // eventService.saveEvent(event);
-        return null;
+        JwtUtil.extractUser(revUserService);
+        return eventService.createEvent(event);
     }
 
     // Read
 
+    /**
+     * Endpoint available for getting all events with the same curriculum
+     * @param curriculum_id : The curriculum id that is corresponding to all desired events
+     * @return : The list of events that is to be sent back to the front end
+     */
     @GetMapping("/{curriculum_id}")
     public List<Event> getAllEventsByCurriculumId(@PathVariable int curriculum_id){
-        RevUser revUser = extractUser();
-        // eventService.getAllEventById(curriculum_id);
-        return null;
+        JwtUtil.extractUser(revUserService);
+        return eventService.getAllEventsByCurriculumId(curriculum_id);
     }
 
     // Update
 
+    /**
+     * Endpoint available for updating an existing event
+     * @param event : The event that is to be updated and persisted into the database
+     * @return : The event that is to be inserted and persisted into the database
+     */
     @PutMapping
     public Event updateEvent(@RequestBody Event event){
-        RevUser revUser = extractUser();
-        // eventService.saveEvent(event);
-        return null;
+        JwtUtil.extractUser(revUserService);
+        return eventService.updateEvent(event);
     }
 
     // Delete
 
+    /**
+     * Endpoint available for deleting an existing event
+     * @param eventId : Event id of event that is to be deleted
+     */
     @DeleteMapping("/{eventId}")
-    public Event deleteEvent(@PathVariable int eventId){
-        RevUser revUser = extractUser();
-        // eventService.deleteEvent(eventId);
-        return null;
+    public void deleteEvent(@PathVariable int eventId){
+        JwtUtil.extractUser(revUserService);
+        eventService.deleteEvent(eventId);
     }
-
-
-    private RevUser extractUser(){
-        String username = JwtUtil.extractUsername();
-        // return revUserService.getRevUserByUsername(username);
-        return null;
-    }
-
 }

@@ -26,7 +26,7 @@ public class TechnologyCategoryController {
     }
 
     @GetMapping
-    public List<TechnologyCategory> getTecchnologyCategories(){
+    public List<TechnologyCategory> getTechnologyCategories(){
         RevUser revUser = extractUser();
         // return technologyCategoryService.getAll();
         return null;

@@ -45,4 +45,6 @@ public class RevUserDetailsService implements org.springframework.security.core.
         return new User(username, password, new ArrayList<>()); // ArrayList because we aren't dealing with Authorities
     }
 
+
+
 }
