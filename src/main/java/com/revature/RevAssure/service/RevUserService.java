@@ -50,7 +50,7 @@ public class RevUserService {
         }
         catch (BadCredentialsException e) {
             e.printStackTrace();
-            throw new Exception("Invalid Credentials", e);
+            throw new BadCredentialsException("Invalid Credentials", e);
         }
         final UserDetails userDetails = revUserDetailsService.loadUserByUsername(authReq.getUsername());
         final String jwt = jwtTokenUtil.generateToken(userDetails);

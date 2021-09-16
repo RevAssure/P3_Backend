@@ -26,6 +26,7 @@ public class Curriculum {
     private String name;
 
     @OneToMany(mappedBy = "curriculum")
+    @JsonIgnoreProperties("curriculum")
     private List<Event> events;
 
     @ManyToMany(mappedBy = "curricula")
