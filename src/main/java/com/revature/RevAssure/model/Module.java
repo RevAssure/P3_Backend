@@ -1,5 +1,6 @@
 package com.revature.RevAssure.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -18,6 +19,7 @@ public class Module {
 
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private int id;
 
@@ -26,6 +28,10 @@ public class Module {
 
     @Column(name="description")
     private String description;
+
+    @ManyToOne
+    @JoinColumn(name = "trainer_id" , referencedColumnName = "id")
+    private RevUser trainer;
 
     @ManyToOne
     @JoinColumn(name = "tech_category_id", referencedColumnName = "id")

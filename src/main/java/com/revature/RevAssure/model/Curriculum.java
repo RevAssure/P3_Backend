@@ -1,5 +1,7 @@
 package com.revature.RevAssure.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -16,6 +18,7 @@ import java.util.List;
 public class Curriculum {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private int id;
 
@@ -23,6 +26,7 @@ public class Curriculum {
     private String name;
 
     @OneToMany(mappedBy = "curriculum")
+    @JsonIgnoreProperties("curriculum")
     private List<Event> events;
 
     @ManyToMany(mappedBy = "curricula")

@@ -1,4 +1,5 @@
 package com.revature.RevAssure.model;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -16,6 +17,7 @@ import java.util.List;
 public class Topic {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private int id;
 
@@ -45,8 +47,7 @@ public class Topic {
 
     @ManyToMany
     @JoinTable(name = "topic_module")
+    @JsonIgnoreProperties({"topics", "trainer"})
     private List<Module> modules;
-
-
 
 }

@@ -1,5 +1,7 @@
 package com.revature.RevAssure.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -24,6 +26,7 @@ public class RevUser {
     @Column(name = "username", unique = true, nullable = false)
     private String username;
 
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @Column(name = "password", nullable = false)
     private String password;
 
@@ -37,10 +40,16 @@ public class RevUser {
     private boolean isTrainer;
 
     @OneToMany(mappedBy = "trainer")
+    @JsonIgnoreProperties("trainer")
     private List<Topic> topics;
 
     @ManyToMany
+    @JsonIgnoreProperties("revUsers")
     @JoinTable(name="revuser_curriculum")
     private List<Curriculum> curricula;
+
+    @OneToMany(mappedBy = "trainer")
+    @JsonIgnoreProperties({"trainer", "topics"})
+    private List<Module> modules;
 
 }
