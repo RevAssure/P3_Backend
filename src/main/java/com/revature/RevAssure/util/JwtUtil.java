@@ -1,6 +1,7 @@
 package com.revature.RevAssure.util;
 
 import com.revature.RevAssure.model.RevUser;
+import com.revature.RevAssure.service.RevUserService;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -76,9 +77,15 @@ public class JwtUtil {
         return "secret";
     }
 
+    public static RevUser extractUser(RevUserService revUserService){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        //return revUserService.getRevUserByUsername(authentication.getName());
+        return null;
+    }
+
     public static String extractUsername(){
-         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-         return authentication.getName();
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        return authentication.getName();
     }
 
 }
