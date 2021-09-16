@@ -60,6 +60,9 @@ class ModuleServiceTest {
     void findAllModulesTest(){
         when(repo.findAll()).thenReturn(modules);
         assertEquals(2,service.findAllModules().size());
+        assertEquals(modules, service.findAllModules());
+        assertEquals(module, service.findAllModules().get(0));
+        assertEquals(module2,service.findAllModules().get(1));
     }
 
     @Test
@@ -72,6 +75,7 @@ class ModuleServiceTest {
     @Test
     void deleteExistingModuleTest(){
         doNothing().when(repo).delete(module);
-        assertEquals(module,service.deleteModule(module));
+        service.deleteModule(module);
+        verify(repo, times(1)).delete(module);
     }
 }
