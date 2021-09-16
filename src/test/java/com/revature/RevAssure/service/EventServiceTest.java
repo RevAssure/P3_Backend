@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @SpringBootTest
 class EventServiceTest {
@@ -93,5 +93,7 @@ class EventServiceTest {
         when(eventRepository.getById(1)).thenReturn(event);
 
         eventService.deleteEvent(1);
+
+        verify(eventRepository, times(1)).delete(event);
     }
 }
