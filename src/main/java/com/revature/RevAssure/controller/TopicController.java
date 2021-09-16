@@ -1,5 +1,6 @@
 package com.revature.RevAssure.controller;
 
+import com.revature.RevAssure.dto.TopicDTO;
 import com.revature.RevAssure.model.RevUser;
 import com.revature.RevAssure.model.Topic;
 import com.revature.RevAssure.service.RevUserService;
@@ -38,8 +39,9 @@ public class TopicController{
      * @return the topic that is saved
      */
     @PostMapping
-    public Topic createTopic(@RequestBody Topic topic){
+    public Topic createTopic(@RequestBody TopicDTO topicdto){
         RevUser revUser = extractUser();
+        Topic topic = topicdto.convertToEntity(revUser);
         return topicService.saveTopic(topic);
     }
 
@@ -100,8 +102,9 @@ public class TopicController{
     // TODO: Make sure when a trainer is updating a topic that is not owned by them
     //  they are creating a new topic instead of modifying a previous one
     @PutMapping
-    public Topic updateTopic(@RequestBody Topic topic){
+    public Topic updateTopic(@RequestBody TopicDTO topicdto){
         RevUser revUser = extractUser();
+        Topic topic = topicdto.convertToEntity(revUser);
         return topicService.saveTopic(topic);
 
     }
@@ -125,8 +128,7 @@ public class TopicController{
      */
     private RevUser extractUser(){
         String username = JwtUtil.extractUsername();
-       // return revUserService.getRevUserByUsername(username);
-        return null;
+        return revUserService.getRevUserByUsername(username);
     }
 
 }

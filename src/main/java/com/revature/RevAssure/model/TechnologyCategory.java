@@ -17,6 +17,7 @@ import java.util.List;
 @NoArgsConstructor
 public class TechnologyCategory {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private int id;
 

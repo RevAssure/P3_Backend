@@ -1,7 +1,10 @@
 package com.revature.RevAssure.service;
 
+import com.revature.RevAssure.dto.TopicDTO;
 import com.revature.RevAssure.model.Module;
+import com.revature.RevAssure.model.RevUser;
 import com.revature.RevAssure.model.Topic;
+import com.revature.RevAssure.repository.TechnologyCategoryRepository;
 import com.revature.RevAssure.repository.TopicRepository;
 import com.revature.RevAssure.repository.ModuleRepository;
 
@@ -75,5 +78,4 @@ public class TopicService {
     public void deleteTopic(int topicId){
         topicRepository.deleteById(topicId);
     }
-
 }
