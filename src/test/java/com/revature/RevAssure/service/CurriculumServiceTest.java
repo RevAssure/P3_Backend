@@ -85,7 +85,6 @@ class CurriculumServiceTest
     void getAllCurriculaByTrainerIdReturnsEmptyList()
     {
         when(mockCurriculumRepository.findAllByRevUsers(mockTrainer)).thenReturn(new ArrayList<Curriculum>());
-//        assertEquals(curriculumServiceTest.getAllCurriculaByTrainerId(mockTrainer), new ArrayList<Curriculum>());
         assert(curriculumServiceTest.getAllCurriculaByTrainerId(mockTrainer).isEmpty());
     }
 }
