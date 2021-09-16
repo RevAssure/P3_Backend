@@ -22,7 +22,7 @@ public class TechnologyCategoryService {
 
     /**
      * Get a lists of all TechnologyCategory objects in the database
-     * @return List of Topic Objects
+     * @return List of TechnologyCategory Objects
      */
     public List<TechnologyCategory> getAll(){
         return techCatRepo.findAll();
