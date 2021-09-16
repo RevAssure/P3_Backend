@@ -10,5 +10,7 @@ import java.util.List;
 @Repository
 public interface CurriculumRepository extends JpaRepository<Curriculum, Integer>
 {
-    public List<Curriculum> findAllByRevUser(RevUser trainer);
+    List<Curriculum> findAllByRevUser(RevUser trainer);
+
+    List<Curriculum> findAllByRevUserId(int trainerId);
 }
