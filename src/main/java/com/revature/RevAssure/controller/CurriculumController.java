@@ -78,8 +78,7 @@ public class CurriculumController {
 
     private RevUser extractUser(){
         String username = JwtUtil.extractUsername();
-        // return revUserService.getRevUserByUsername(username);
-        return null;
+        return revUserService.getRevUserByUsername(username);
     }
 
 }

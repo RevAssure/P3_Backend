@@ -7,12 +7,10 @@ import com.revature.RevAssure.model.Topic;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
 import java.util.List;
 
-@Repository
 @Getter
 @Setter
 @NoArgsConstructor
