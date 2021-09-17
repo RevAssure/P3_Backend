@@ -75,7 +75,8 @@ class ModuleServiceTest {
     @Test
     void deleteExistingModuleTest(){
         doNothing().when(repo).delete(module);
-        service.deleteModule(module);
+        when(repo.getById(1)).thenReturn(module);
+        service.deleteModule(1);
         verify(repo, times(1)).delete(module);
     }
 }

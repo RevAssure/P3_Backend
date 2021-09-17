@@ -48,8 +48,8 @@ public class Topic {
     @ManyToMany
     @JoinTable(
             name="topic_module",
-            joinColumns=@JoinColumn(name="topics_id", referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(name = "modules_id", referencedColumnName = "id")
+            joinColumns=@JoinColumn(name="topic_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "module_id", referencedColumnName = "id")
     )
     @JsonIgnoreProperties({"topics", "trainer"})
     private List<Module> modules;

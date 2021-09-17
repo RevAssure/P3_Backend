@@ -59,7 +59,6 @@ public class ModuleService {
      * @param moduleId moduleId to be deleted
      */
     public void deleteModule(int moduleId) {
-        Module module = repository.getById(moduleId);
-        repository.delete(module);
+        repository.delete(repository.getById(moduleId));
     }
 }
