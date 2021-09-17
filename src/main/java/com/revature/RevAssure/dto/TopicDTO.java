@@ -7,12 +7,10 @@ import com.revature.RevAssure.model.Topic;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
 import java.util.List;
 
-@Repository
 @Getter
 @Setter
 @NoArgsConstructor
@@ -50,10 +48,12 @@ public class TopicDTO {
         technologyCategory.setId(this.technologyCategory);
         topic.setTechnologyCategory(technologyCategory);
         List<Module> mods = new ArrayList<>();
-        for(Integer module:modules){
-            Module module1 = new Module();
-            module1.setId(module);
-            mods.add(module1);
+        if(modules != null) {
+            for (Integer module : modules) {
+                Module module1 = new Module();
+                module1.setId(module);
+                mods.add(module1);
+            }
         }
         topic.setModules(mods);
         return topic;
