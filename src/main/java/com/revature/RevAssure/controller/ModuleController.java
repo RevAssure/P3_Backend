@@ -29,6 +29,7 @@ public class ModuleController {
     @PostMapping
     public Module createModule(@RequestBody Module module){
         RevUser revUser = extractUser();
+        module.setTrainer(revUser);
         return moduleService.saveNewModule(module);
     }
     // Read

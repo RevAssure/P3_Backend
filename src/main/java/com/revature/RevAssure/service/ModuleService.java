@@ -56,8 +56,7 @@ public class ModuleService {
 
     /**
      * Delete functionality of a module in the database
-     * @param module module to be deleted
-     * @return the module after it has been deleted from the database
+     * @param moduleId moduleId to be deleted
      */
     public void deleteModule(int moduleId) {
         repository.delete(repository.getById(moduleId));

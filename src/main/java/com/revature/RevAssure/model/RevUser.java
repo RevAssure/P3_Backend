@@ -44,6 +44,7 @@ public class RevUser {
     private List<Topic> topics;
 
     @ManyToMany(mappedBy = "revUsers")
+    @JsonIgnoreProperties("revUsers")
     private List<Curriculum> curricula;
 
     @OneToMany(mappedBy = "trainer")
