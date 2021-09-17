@@ -53,5 +53,4 @@ public class Topic {
     )
     @JsonIgnoreProperties({"topics", "trainer"})
     private List<Module> modules;
-
 }
