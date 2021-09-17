@@ -49,5 +49,4 @@ public class Topic {
     @JoinTable(name = "topic_module")
     @JsonIgnoreProperties({"topics", "trainer"})
     private List<Module> modules;
-
 }
