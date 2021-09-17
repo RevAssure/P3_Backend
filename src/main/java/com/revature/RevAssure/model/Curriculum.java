@@ -29,6 +29,11 @@ public class Curriculum {
     @JsonIgnoreProperties("curriculum")
     private List<Event> events;
 
-    @ManyToMany(mappedBy = "curricula")
+    @ManyToMany
+    @JoinTable(
+            name="revuser_curriculum",
+            joinColumns=@JoinColumn(name="rev_users_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "curricula_id", referencedColumnName = "id")
+    )
     private List<RevUser> revUsers;
 }

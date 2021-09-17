@@ -29,8 +29,8 @@ public class ModuleController {
     @PostMapping
     public Module createModule(@RequestBody Module module){
         RevUser revUser = extractUser();
-        // return moduleService.saveModule(module);
-        return null;
+        module.setTrainer(revUser);
+        return moduleService.saveNewModule(module);
     }
     // Read
 
@@ -38,8 +38,7 @@ public class ModuleController {
     @GetMapping
     public List<Module> getAllModules(){
         RevUser revUser = extractUser(); // might be an instance we don't need to extract user
-        // return moduleService.getAllModules();
-        return null;
+        return moduleService.findAllModules();
     }
 
     // Update
@@ -47,22 +46,19 @@ public class ModuleController {
     @PutMapping
     public Module updateModules(@RequestBody Module module){
         RevUser revUser = extractUser();
-        // return moduleService.saveModule(module);
-        return null;
+        return moduleService.saveExistingModule(module);
     }
 
 
     // Delete
     @DeleteMapping("/{moduleId}")
-    public Module deleteModules(@PathVariable int moduleId){
+    public void deleteModules(@PathVariable int moduleId){
         RevUser revUser = extractUser();
-        // return moduleService.deleteModule(moduleId);
-        return null;
+        moduleService.deleteModule(moduleId);
     }
 
     private RevUser extractUser(){
         String username = JwtUtil.extractUsername();
-        // return revUserService.getRevUserByUsername(username);
-        return null;
+        return revUserService.getRevUserByUsername(username);
     }
 }
