@@ -43,9 +43,7 @@ public class RevUser {
     @JsonIgnoreProperties("trainer")
     private List<Topic> topics;
 
-    @ManyToMany
-    @JsonIgnoreProperties("revUsers")
-    @JoinTable(name="revuser_curriculum")
+    @ManyToMany(mappedBy = "revUsers")
     private List<Curriculum> curricula;
 
     @OneToMany(mappedBy = "trainer")

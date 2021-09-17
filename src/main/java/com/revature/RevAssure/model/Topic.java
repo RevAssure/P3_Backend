@@ -46,7 +46,11 @@ public class Topic {
     private TechnologyCategory technologyCategory;
 
     @ManyToMany
-    @JoinTable(name = "topic_module")
+    @JoinTable(
+            name="topic_module",
+            joinColumns=@JoinColumn(name="topic_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "module_id", referencedColumnName = "id")
+    )
     @JsonIgnoreProperties({"topics", "trainer"})
     private List<Module> modules;
 

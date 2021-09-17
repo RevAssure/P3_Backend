@@ -50,10 +50,12 @@ public class TopicDTO {
         technologyCategory.setId(this.technologyCategory);
         topic.setTechnologyCategory(technologyCategory);
         List<Module> mods = new ArrayList<>();
-        for(Integer module:modules){
-            Module module1 = new Module();
-            module1.setId(module);
-            mods.add(module1);
+        if(modules != null) {
+            for (Integer module : modules) {
+                Module module1 = new Module();
+                module1.setId(module);
+                mods.add(module1);
+            }
         }
         topic.setModules(mods);
         return topic;
