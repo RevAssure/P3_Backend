@@ -1,5 +1,6 @@
 package com.revature.RevAssure.controller;
 
+import com.revature.RevAssure.dto.ModuleDTO;
 import com.revature.RevAssure.model.Module;
 import com.revature.RevAssure.model.RevUser;
 import com.revature.RevAssure.service.ModuleService;
@@ -27,9 +28,9 @@ public class ModuleController {
     // Create
 
     @PostMapping
-    public Module createModule(@RequestBody Module module){
-        RevUser revUser = extractUser();
-        module.setTrainer(revUser);
+    public Module createModule(@RequestBody ModuleDTO moduledto){
+//        RevUser revUser = extractUser();
+        Module module = moduledto.convertToEntity(extractUser());
         return moduleService.saveNewModule(module);
     }
     // Read
@@ -44,9 +45,9 @@ public class ModuleController {
     // Update
 
     @PutMapping
-    public Module updateModules(@RequestBody Module module){
-        RevUser revUser = extractUser();
-        return moduleService.saveExistingModule(module);
+    public Module updateModules(@RequestBody ModuleDTO moduledto){
+//        RevUser revUser = extractUser();
+        return moduleService.saveExistingModule(moduledto.convertToEntity(extractUser()));
     }
 
 
