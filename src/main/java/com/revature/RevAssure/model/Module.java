@@ -16,8 +16,6 @@ import java.util.List;
 @NoArgsConstructor
 public class Module {
 
-
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)

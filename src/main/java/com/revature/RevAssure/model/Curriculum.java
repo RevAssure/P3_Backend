@@ -25,6 +25,10 @@ public class Curriculum {
     @Column(name = "name")
     private String name;
 
+    @ManyToOne
+    @JoinColumn(name = "trainer_id" , referencedColumnName = "id")
+    private RevUser trainer;
+
     @OneToMany(mappedBy = "curriculum")
     @JsonIgnoreProperties("curriculum")
     private List<Event> events;

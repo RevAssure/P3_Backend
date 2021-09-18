@@ -51,4 +51,7 @@ public class RevUser {
     @JsonIgnoreProperties({"trainer", "topics"})
     private List<Module> modules;
 
+    @OneToMany(mappedBy = "trainer")
+    private List<Curriculum> ownedCurricula;
+
 }
