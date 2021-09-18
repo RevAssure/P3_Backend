@@ -1,5 +1,6 @@
 package com.revature.RevAssure.controller;
 
+import com.revature.RevAssure.dto.CurriculumDTO;
 import com.revature.RevAssure.model.Curriculum;
 import com.revature.RevAssure.model.RevUser;
 import com.revature.RevAssure.service.CurriculumService;
@@ -31,13 +32,14 @@ public class CurriculumController {
 
     /**
      * stores a new curriculum in the database
-     * @param curriculum the curriculum to be stored
+     * @param curriculumdto the curriculum to be stored
      * @return the stored
      */
     @PostMapping
-    public Curriculum createCurriculum(@RequestBody Curriculum curriculum)
+    public Curriculum createCurriculum(@RequestBody CurriculumDTO curriculumdto)
     {
         RevUser revUser = extractUser();
+        Curriculum curriculum = curriculumdto.convertToEntity(revUser);
         return curriculumService.saveCurriculum(curriculum);
     }
 
@@ -62,14 +64,15 @@ public class CurriculumController {
 
     /**
      * update a current curriculum on the database
-     * @param curriculum the curriculum to be updated
+     * @param curriculumdto the curriculum to be updated
      * @return the updated curriculum
      */
     @PutMapping
-    public Curriculum updateCurriculum(@RequestBody Curriculum curriculum)
+    public Curriculum updateCurriculum(@RequestBody CurriculumDTO curriculumdto)
     {
         RevUser revUser = extractUser();
         // TODO: make sure it is trainer updating and not associate/general user
+        Curriculum curriculum = curriculumdto.convertToEntity(revUser);
         return curriculumService.saveCurriculum(curriculum);
     }
 
