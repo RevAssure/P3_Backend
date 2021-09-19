@@ -1,15 +1,15 @@
 package com.revature.RevAssure.service;
 
-import com.revature.RevAssure.dto.TopicDTO;
 import com.revature.RevAssure.model.Module;
 import com.revature.RevAssure.model.RevUser;
 import com.revature.RevAssure.model.Topic;
-import com.revature.RevAssure.repository.TechnologyCategoryRepository;
 import com.revature.RevAssure.repository.TopicRepository;
 import com.revature.RevAssure.repository.ModuleRepository;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import com.revature.RevAssure.util.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -40,6 +40,10 @@ public class TopicService {
      */
     public List<Topic> getAll(){
         return topicRepository.findAll();
+    }
+
+    public List<Topic> getByTrainer(RevUser trainer) {
+        return topicRepository.findByTrainer(trainer);
     }
 
     /**

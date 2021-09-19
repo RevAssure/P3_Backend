@@ -38,7 +38,7 @@ public class CurriculumController {
     @PostMapping
     public Curriculum createCurriculum(@RequestBody CurriculumDTO curriculumdto)
     {
-        RevUser revUser = extractUser();
+        RevUser revUser = JwtUtil.extractUser(revUserService);
         Curriculum curriculum = curriculumdto.convertToEntity(revUser);
         return curriculumService.saveCurriculum(curriculum);
     }
@@ -52,13 +52,24 @@ public class CurriculumController {
     @GetMapping
     public List<Curriculum> getAllCurriculaByCurrentUserId()
     {
-        RevUser revUser = extractUser();
-        return curriculumService.getAllCurriculaByTrainerId(revUser);
+        RevUser revUser = JwtUtil.extractUser(revUserService);
+        return curriculumService.getAllCurriculaByTrainer(revUser);
     }
 
     /**
      * TODO: ask frontend if they want to narrow the view on getAllCurriculumByCurrentUserId()
      */
+
+    /**
+     * returns list of Curricula from database by current user id
+     * @return List of Curricula current user is assigned to
+     */
+    @GetMapping("/assigned")
+    public List<Curriculum> getAssignedCurriculaByCurrentUserId()
+    {
+        RevUser revUser = JwtUtil.extractUser(revUserService);
+        return curriculumService.getAllCurriculaByUser(revUser);
+    }
 
     // Update
 
@@ -70,18 +81,11 @@ public class CurriculumController {
     @PutMapping
     public Curriculum updateCurriculum(@RequestBody CurriculumDTO curriculumdto)
     {
-        RevUser revUser = extractUser();
+        RevUser revUser = JwtUtil.extractUser(revUserService);
         // TODO: make sure it is trainer updating and not associate/general user
         Curriculum curriculum = curriculumdto.convertToEntity(revUser);
         return curriculumService.saveCurriculum(curriculum);
     }
 
     // Delete -- not in MVP
-
-
-    private RevUser extractUser(){
-        String username = JwtUtil.extractUsername();
-        return revUserService.getRevUserByUsername(username);
-    }
-
 }

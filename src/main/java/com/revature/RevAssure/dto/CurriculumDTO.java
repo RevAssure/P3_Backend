@@ -40,7 +40,7 @@ public class CurriculumDTO {
 
         List<RevUser> associates = new ArrayList<>();
         if (this.associates != null) {
-            for (Integer associateId: this.events) {
+            for (Integer associateId: this.associates) {
                 RevUser associate = new RevUser();
                 associate.setId(associateId);
                 associates.add(associate);

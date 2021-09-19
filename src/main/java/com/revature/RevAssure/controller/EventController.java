@@ -2,10 +2,7 @@ package com.revature.RevAssure.controller;
 
 import com.revature.RevAssure.dto.EventDTO;
 import com.revature.RevAssure.model.Event;
-import com.revature.RevAssure.model.RevUser;
 import com.revature.RevAssure.service.EventService;
-import com.revature.RevAssure.service.RevUserService;
-import com.revature.RevAssure.util.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
@@ -18,14 +15,9 @@ public class EventController {
     @Autowired
     private final EventService eventService;
 
-//    @Autowired
-//    private final RevUserService revUserService;
-
-    public EventController(EventService eventService, RevUserService revUserService){
+    public EventController(EventService eventService){
         this.eventService = eventService;
-//        this.revUserService = revUserService;
     }
-
 
     // Create
 
@@ -38,7 +30,6 @@ public class EventController {
      */
     @PostMapping
     public Event createEvent(@RequestBody EventDTO eventdto){
-//        JwtUtil.extractUser(revUserService);
         return eventService.createEvent(eventdto.convertToEntity());
     }
 
@@ -51,9 +42,10 @@ public class EventController {
      */
     @GetMapping("/{curriculum_id}")
     public List<Event> getAllEventsByCurriculumId(@PathVariable int curriculum_id){
-//        JwtUtil.extractUser(revUserService);
         return eventService.getAllEventsByCurriculumId(curriculum_id);
     }
+
+    // TODO: get all events tied to user
 
     // Update
 
@@ -63,8 +55,7 @@ public class EventController {
      * @return : The event that is to be inserted and persisted into the database
      */
     @PutMapping
-    public Event updateEvent(@RequestBody EventDTO eventdto){
-//        JwtUtil.extractUser(revUserService);
+    public Event updateEvent(@RequestBody EventDTO eventdto){;
         return eventService.updateEvent(eventdto.convertToEntity());
     }
 
@@ -76,7 +67,6 @@ public class EventController {
      */
     @DeleteMapping("/{eventId}")
     public void deleteEvent(@PathVariable int eventId){
-//        JwtUtil.extractUser(revUserService);
         eventService.deleteEvent(eventId);
     }
 }

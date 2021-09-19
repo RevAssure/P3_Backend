@@ -15,5 +15,6 @@ public interface CurriculumRepository extends JpaRepository<Curriculum, Integer>
      * @param trainer the owner of the curricula
      * @return list of curricula belonging to trainer
      */
-    List<Curriculum> findAllByRevUsers(RevUser trainer);
+    List<Curriculum> findByTrainer(RevUser trainer);
+    List<Curriculum> findByRevUsers(RevUser revUser);
 }

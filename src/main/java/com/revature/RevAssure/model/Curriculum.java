@@ -27,6 +27,7 @@ public class Curriculum {
 
     @ManyToOne
     @JoinColumn(name = "trainer_id" , referencedColumnName = "id")
+    @JsonIgnoreProperties("ownedCurricula")
     private RevUser trainer;
 
     @OneToMany(mappedBy = "curriculum")
@@ -39,5 +40,6 @@ public class Curriculum {
             joinColumns=@JoinColumn(name="revuser_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "curriculum_id", referencedColumnName = "id")
     )
+    @JsonIgnoreProperties("curricula")
     private List<RevUser> revUsers;
 }
