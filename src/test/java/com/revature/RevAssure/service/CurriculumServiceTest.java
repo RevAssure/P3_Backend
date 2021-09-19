@@ -74,17 +74,17 @@ class CurriculumServiceTest
     @Test
     void getAllCurriculaByTrainerIdReturnsListOfCurriculaCreatedByTrainer()
     {
-        when(mockCurriculumRepository.findAllByRevUsers(mockTrainer)).thenReturn(mockCurriculumList);
-        assertEquals(curriculumServiceTest.getAllCurriculaByTrainerId(mockTrainer), mockCurriculumList);
+        when(mockCurriculumRepository.findByTrainer(mockTrainer)).thenReturn(mockCurriculumList);
+        assertEquals(curriculumServiceTest.getAllCurriculaByTrainer(mockTrainer), mockCurriculumList);
     }
 
     /**
      * test getAllCurriculaByTrainerId returns an empty list when trainer not found
      */
     @Test
-    void getAllCurriculaByTrainerIdReturnsEmptyList()
+    void getAllCurriculaByTrainerReturnsEmptyList()
     {
-        when(mockCurriculumRepository.findAllByRevUsers(mockTrainer)).thenReturn(new ArrayList<Curriculum>());
-        assert(curriculumServiceTest.getAllCurriculaByTrainerId(mockTrainer).isEmpty());
+        when(mockCurriculumRepository.findByTrainer(mockTrainer)).thenReturn(new ArrayList<Curriculum>());
+        assert(curriculumServiceTest.getAllCurriculaByTrainer(mockTrainer).isEmpty());
     }
 }
