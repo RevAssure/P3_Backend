@@ -3,11 +3,10 @@ pipeline{
   tools {} // need to figure this out
   stages {
     stage('Test'){
-      sh 'mvn --version'
+      steps{
+        sh 'mvn --version'
+      }
     }
-//     stage('Build){
-          
-//           }
     
   }
 }
