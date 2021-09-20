@@ -32,19 +32,4 @@ public class Event {
     @JsonIgnoreProperties("trainer")
     @JoinColumn(name="topic_id", nullable = false)
     private Topic topic;
-
-    //TODO: write method to parse request and convert to Event oject.
-    /* request looks like this:
-    {
-    "curriculum" : {
-        "id":1
-    },
-    "startDatetime": 1633158200,
-    "topic": {
-        "id": 4
-    }
-}
-
-     */
-
 }

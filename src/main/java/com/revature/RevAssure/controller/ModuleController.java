@@ -1,5 +1,6 @@
 package com.revature.RevAssure.controller;
 
+import com.revature.RevAssure.dto.ModuleDTO;
 import com.revature.RevAssure.model.Module;
 import com.revature.RevAssure.model.RevUser;
 import com.revature.RevAssure.service.ModuleService;
@@ -25,40 +26,31 @@ public class ModuleController {
     }
 
     // Create
-
     @PostMapping
-    public Module createModule(@RequestBody Module module){
-        RevUser revUser = extractUser();
-        module.setTrainer(revUser);
+    public Module createModule(@RequestBody ModuleDTO moduledto){
+        RevUser revUser = JwtUtil.extractUser(revUserService);
+        Module module = moduledto.convertToEntity(revUser);
         return moduleService.saveNewModule(module);
     }
-    // Read
 
+    // Read
     // TODO: consider associates might want to get modules only associated with themselves
     @GetMapping
     public List<Module> getAllModules(){
-        RevUser revUser = extractUser(); // might be an instance we don't need to extract user
         return moduleService.findAllModules();
     }
 
     // Update
-
     @PutMapping
-    public Module updateModules(@RequestBody Module module){
-        RevUser revUser = extractUser();
-        return moduleService.saveExistingModule(module);
+    public Module updateModules(@RequestBody ModuleDTO moduledto){
+        RevUser revUser = JwtUtil.extractUser(revUserService);
+        return moduleService.saveExistingModule(moduledto.convertToEntity(revUser));
     }
-
 
     // Delete
     @DeleteMapping("/{moduleId}")
     public void deleteModules(@PathVariable int moduleId){
-        RevUser revUser = extractUser();
+        RevUser revUser = JwtUtil.extractUser(revUserService);
         moduleService.deleteModule(moduleId);
-    }
-
-    private RevUser extractUser(){
-        String username = JwtUtil.extractUsername();
-        return revUserService.getRevUserByUsername(username);
     }
 }

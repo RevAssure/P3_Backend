@@ -1,5 +1,6 @@
 package com.revature.RevAssure.controller;
 
+import com.revature.RevAssure.dto.CurriculumDTO;
 import com.revature.RevAssure.model.Curriculum;
 import com.revature.RevAssure.model.RevUser;
 import com.revature.RevAssure.service.CurriculumService;
@@ -31,13 +32,14 @@ public class CurriculumController {
 
     /**
      * stores a new curriculum in the database
-     * @param curriculum the curriculum to be stored
+     * @param curriculumdto the curriculum to be stored
      * @return the stored
      */
     @PostMapping
-    public Curriculum createCurriculum(@RequestBody Curriculum curriculum)
+    public Curriculum createCurriculum(@RequestBody CurriculumDTO curriculumdto)
     {
-        RevUser revUser = extractUser();
+        RevUser revUser = JwtUtil.extractUser(revUserService);
+        Curriculum curriculum = curriculumdto.convertToEntity(revUser);
         return curriculumService.saveCurriculum(curriculum);
     }
 
@@ -50,35 +52,40 @@ public class CurriculumController {
     @GetMapping
     public List<Curriculum> getAllCurriculaByCurrentUserId()
     {
-        RevUser revUser = extractUser();
-        return curriculumService.getAllCurriculaByTrainerId(revUser);
+        RevUser revUser = JwtUtil.extractUser(revUserService);
+        return curriculumService.getAllCurriculaByTrainer(revUser);
     }
 
     /**
      * TODO: ask frontend if they want to narrow the view on getAllCurriculumByCurrentUserId()
      */
 
+    /**
+     * returns list of Curricula from database by current user id
+     * @return List of Curricula current user is assigned to
+     */
+    @GetMapping("/assigned")
+    public List<Curriculum> getAssignedCurriculaByCurrentUserId()
+    {
+        RevUser revUser = JwtUtil.extractUser(revUserService);
+        return curriculumService.getAllCurriculaByUser(revUser);
+    }
+
     // Update
 
     /**
      * update a current curriculum on the database
-     * @param curriculum the curriculum to be updated
+     * @param curriculumdto the curriculum to be updated
      * @return the updated curriculum
      */
     @PutMapping
-    public Curriculum updateCurriculum(@RequestBody Curriculum curriculum)
+    public Curriculum updateCurriculum(@RequestBody CurriculumDTO curriculumdto)
     {
-        RevUser revUser = extractUser();
+        RevUser revUser = JwtUtil.extractUser(revUserService);
         // TODO: make sure it is trainer updating and not associate/general user
+        Curriculum curriculum = curriculumdto.convertToEntity(revUser);
         return curriculumService.saveCurriculum(curriculum);
     }
 
     // Delete -- not in MVP
-
-
-    private RevUser extractUser(){
-        String username = JwtUtil.extractUsername();
-        return revUserService.getRevUserByUsername(username);
-    }
-
 }

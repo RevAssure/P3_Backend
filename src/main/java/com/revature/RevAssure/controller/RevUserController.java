@@ -49,17 +49,11 @@ public class RevUserController {
      */
     @GetMapping
     public RevUser getUser() {
-        return extractUser();
+        return JwtUtil.extractUser(revUserService);
     }
 
     // Update -- not in MVP
 
     // Delete -- not in MVP
-
-    private RevUser extractUser(){
-        String username = JwtUtil.extractUsername();
-         return revUserService.getRevUserByUsername(username);
-    }
-
 
 }

@@ -17,28 +17,19 @@ import java.util.List;
 public class TopicDTO {
 
     private int id;
-
     private String title;
-
     private String description;
-
-    // duration in minutes
     private int estimatedDuration;
-
     private String lectureNotes;
-
     private String githubRepo;
 
-    private int trainer;
-
     private int technologyCategory;
-
     private List<Integer> modules;
 
     public Topic convertToEntity(RevUser revUser){
         Topic topic = new Topic();
         topic.setId(this.id);
-        topic.setTitle(this.description);
+        topic.setTitle(this.title);
         topic.setDescription(this.description);
         topic.setEstimatedDuration(this.estimatedDuration);
         topic.setGithubRepo(this.githubRepo);
@@ -59,4 +50,5 @@ public class TopicDTO {
         return topic;
     }
 }
+
 
