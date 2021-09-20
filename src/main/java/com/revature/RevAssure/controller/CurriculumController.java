@@ -7,6 +7,8 @@ import com.revature.RevAssure.service.RevUserService;
 import com.revature.RevAssure.util.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.ArrayList;
 import java.util.List;
 
 @CrossOrigin
@@ -76,8 +78,7 @@ public class CurriculumController {
 
     private RevUser extractUser(){
         String username = JwtUtil.extractUsername();
-        // return revUserService.getRevUserByUsername(username);
-        return null;
+        return revUserService.getRevUserByUsername(username);
     }
 
 }
