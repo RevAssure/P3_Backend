@@ -1,10 +1,7 @@
 package com.revature.RevAssure.controller;
 
-import com.revature.RevAssure.model.RevUser;
 import com.revature.RevAssure.model.TechnologyCategory;
-import com.revature.RevAssure.service.RevUserService;
 import com.revature.RevAssure.service.TechnologyCategoryService;
-import com.revature.RevAssure.util.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,18 +14,15 @@ import java.util.List;
 @RequestMapping("/technology_category")
 public class TechnologyCategoryController {
     private TechnologyCategoryService technologyCategoryService;
-    private RevUserService revUserService;
 
     /**
      * Constructor for TechnologyCategoryController
      *
      * @param technologyCategoryService is a technologyCategoryService object
-     * @param revUserService is a RevUserService object
      */
     @Autowired
-    public TechnologyCategoryController(TechnologyCategoryService technologyCategoryService, RevUserService revUserService){
+    public TechnologyCategoryController(TechnologyCategoryService technologyCategoryService){
         this.technologyCategoryService = technologyCategoryService;
-        this.revUserService = revUserService;
     }
 
     /**
@@ -37,19 +31,7 @@ public class TechnologyCategoryController {
      * @return A list of all the technology categories
      */
     @GetMapping
-    public List<TechnologyCategory> getTechnologyCategories(){
-        RevUser revUser = extractUser();
+    public List<TechnologyCategory> getTechnologyCategories() {
         return technologyCategoryService.getAll();
     }
-
-    /**
-     * Retrieves the username from the current JWT
-     * @return Returns null
-     */
-    private RevUser extractUser(){
-        String username = JwtUtil.extractUsername();
-        // return revUserService.getRevUserByUsername(username);
-        return null;
-    }
-
 }

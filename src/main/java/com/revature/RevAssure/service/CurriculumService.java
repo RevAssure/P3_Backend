@@ -34,8 +34,12 @@ public class CurriculumService
      * @param trainer the owner of the curricula
      * @return all curricula that belong to the trainer
      */
-    public List<Curriculum> getAllCurriculaByTrainerId(RevUser trainer)
+    public List<Curriculum> getAllCurriculaByTrainer(RevUser trainer)
     {
-        return curriculumRepository.findAllByRevUsers(trainer);
+        return curriculumRepository.findByTrainer(trainer);
+    }
+
+    public List<Curriculum> getAllCurriculaByUser(RevUser revUser) {
+        return curriculumRepository.findByRevUsers(revUser);
     }
 }

@@ -88,6 +88,15 @@ class TopicServiceTest {
     }
 
     /**
+     * Testing service will return topic by trainer
+     */
+    @Test
+    void getByTrainerTest() {
+        when(topicRepository.findByTrainer(trainer)).thenReturn(topicList);
+        assertEquals(topicList, topicService.getByTrainer(trainer));
+    }
+
+    /**
      * if topic id does not exists should return null
      */
     @Test

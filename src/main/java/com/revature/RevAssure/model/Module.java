@@ -1,6 +1,5 @@
 package com.revature.RevAssure.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -15,8 +14,6 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 public class Module {
-
-
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -39,20 +36,4 @@ public class Module {
 
     @ManyToMany(mappedBy = "modules")
     private List<Topic> topics;
-
-    // TODO: need dto for trainer and tech category object
-    // for the trainer object, use extractUser, not findById
-    /*
-    {
-        "id": 1,
-        "name": "spring",
-        "trainer": {
-            "id": 1
-        },
-        "technologyCategory": {
-            "id": 1
-        },
-        "description": "the new description"
-    }
-     */
 }
