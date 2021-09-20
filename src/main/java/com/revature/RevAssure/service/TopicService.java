@@ -9,7 +9,6 @@ import com.revature.RevAssure.repository.ModuleRepository;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.revature.RevAssure.util.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -42,6 +41,11 @@ public class TopicService {
         return topicRepository.findAll();
     }
 
+    /**
+     *
+     * @param trainer
+     * @return List of Topic Objects
+     */
     public List<Topic> getByTrainer(RevUser trainer) {
         return topicRepository.findByTrainer(trainer);
     }
