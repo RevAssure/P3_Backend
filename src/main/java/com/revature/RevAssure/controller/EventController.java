@@ -2,7 +2,10 @@ package com.revature.RevAssure.controller;
 
 import com.revature.RevAssure.dto.EventDTO;
 import com.revature.RevAssure.model.Event;
+import com.revature.RevAssure.model.RevUser;
 import com.revature.RevAssure.service.EventService;
+import com.revature.RevAssure.service.RevUserService;
+import com.revature.RevAssure.util.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
@@ -15,8 +18,12 @@ public class EventController {
     @Autowired
     private final EventService eventService;
 
-    public EventController(EventService eventService){
+    @Autowired
+    private final RevUserService revUserService;
+
+    public EventController(EventService eventService, RevUserService revUserService){
         this.eventService = eventService;
+        this.revUserService = revUserService;
     }
 
     // Create
@@ -26,11 +33,17 @@ public class EventController {
     /**
      * Endpoint available for creating an event
      * @param eventdto : The event that is to be inserted and persisted into the database
-     * @return : The event that was inserted and persisted into the database
+     * @return : The event that was inserted and persisted into the database or null if user is not a trainer
      */
     @PostMapping
     public Event createEvent(@RequestBody EventDTO eventdto){
-        return eventService.createEvent(eventdto.convertToEntity());
+        RevUser revUser = JwtUtil.extractUser(revUserService);
+        if(revUser.isTrainer()){
+            return eventService.createEvent(eventdto.convertToEntity());
+        }
+        else{
+            return null;
+        }
     }
 
     // Read
@@ -56,7 +69,13 @@ public class EventController {
      */
     @PutMapping
     public Event updateEvent(@RequestBody EventDTO eventdto){;
-        return eventService.updateEvent(eventdto.convertToEntity());
+        RevUser revUser = JwtUtil.extractUser(revUserService);
+        if(revUser.isTrainer()){
+            return eventService.updateEvent(eventdto.convertToEntity());
+        }
+        else{
+            return null;
+        }
     }
 
     // Delete
@@ -67,6 +86,7 @@ public class EventController {
      */
     @DeleteMapping("/{eventId}")
     public void deleteEvent(@PathVariable int eventId){
-        eventService.deleteEvent(eventId);
+        RevUser revUser = JwtUtil.extractUser(revUserService);
+        if(revUser.isTrainer()){eventService.deleteEvent(eventId);}
     }
 }

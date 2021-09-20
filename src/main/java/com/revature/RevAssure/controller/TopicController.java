@@ -36,13 +36,16 @@ public class TopicController{
     /**
      * Create operation for Topic objects
      * revUser retrieves the username from the current JWT
-     * @return the topic that is saved
+     * @return the topic that is saved or null if user is not a trainer
      */
     @PostMapping
     public Topic createTopic(@RequestBody TopicDTO topicdto){
         RevUser revUser = JwtUtil.extractUser(revUserService);
-        Topic topic = topicdto.convertToEntity(revUser);
-        return topicService.saveTopic(topic);
+        if(revUser.isTrainer()){
+            Topic topic = topicdto.convertToEntity(revUser);
+            return topicService.saveTopic(topic);
+        }
+        else{return null;}
     }
 
     // Read
@@ -50,12 +53,15 @@ public class TopicController{
     /**
      * Read operation for Topic objects created by requesting trainer
      * revUser retrieves the user from the current JWT
-     * @return A list of topics with the same Trainer ID
+     * @return A list of topics with the same Trainer ID or null if user is not a trainer
      */
     @GetMapping
     public List<Topic> getTopicsByTrainerId(){
         RevUser revUser = JwtUtil.extractUser(revUserService);
-        return topicService.getByTrainer(revUser);
+        if(revUser.isTrainer()){
+            return topicService.getByTrainer(revUser);
+        }
+        else{return null;}
     }
 
     /**
@@ -75,7 +81,7 @@ public class TopicController{
      */
     @GetMapping("/{topicId}")
     public Topic getTopicById(@PathVariable int topicId){
-        RevUser revUser = JwtUtil.extractUser(revUserService);
+        RevUser revUser = JwtUtil.extractUser(revUserService); //not sure if necessary
         return topicService.getById(topicId);
 
     }
@@ -93,15 +99,18 @@ public class TopicController{
     /**
      * Update operation for Topic objects
      * revUser retrieves the username from the current JWT
-     * @return The updated topic
+     * @return The updated topic or null if user is not a trainer
      */
     // TODO: Make sure when a trainer is updating a topic that is not owned by them
     //  they are creating a new topic instead of modifying a previous one
     @PutMapping
     public Topic updateTopic(@RequestBody TopicDTO topicdto){
         RevUser revUser = JwtUtil.extractUser(revUserService);
-        Topic topic = topicdto.convertToEntity(revUser);
-        return topicService.saveTopic(topic);
+        if(revUser.isTrainer()){
+            Topic topic = topicdto.convertToEntity(revUser);
+            return topicService.saveTopic(topic);
+        }
+        else{return null;}
     }
 
     // Delete
@@ -112,7 +121,8 @@ public class TopicController{
 
     @DeleteMapping("/{topicId}")
     public void deleteTopic(@PathVariable int topicId){
-        topicService.deleteTopic(topicId);
+        RevUser revUser = JwtUtil.extractUser(revUserService);
+        if(revUser.isTrainer()){topicService.deleteTopic(topicId);}
     }
 
 }

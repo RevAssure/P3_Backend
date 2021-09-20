@@ -33,14 +33,19 @@ public class CurriculumController {
     /**
      * stores a new curriculum in the database
      * @param curriculumdto the curriculum to be stored
-     * @return the stored
+     * @return the stored curriculum or null if the user is not a trainer
      */
     @PostMapping
     public Curriculum createCurriculum(@RequestBody CurriculumDTO curriculumdto)
     {
         RevUser revUser = JwtUtil.extractUser(revUserService);
-        Curriculum curriculum = curriculumdto.convertToEntity(revUser);
-        return curriculumService.saveCurriculum(curriculum);
+        if(revUser.isTrainer()) {
+            Curriculum curriculum = curriculumdto.convertToEntity(revUser);
+            return curriculumService.saveCurriculum(curriculum);
+        }
+        else{
+            return null;
+        }
     }
 
     // Read
@@ -68,7 +73,7 @@ public class CurriculumController {
     public List<Curriculum> getAssignedCurriculaByCurrentUserId()
     {
         RevUser revUser = JwtUtil.extractUser(revUserService);
-        return curriculumService.getAllCurriculaByUser(revUser);
+            return curriculumService.getAllCurriculaByUser(revUser);
     }
 
     // Update
@@ -76,15 +81,19 @@ public class CurriculumController {
     /**
      * update a current curriculum on the database
      * @param curriculumdto the curriculum to be updated
-     * @return the updated curriculum
+     * @return the updated curriculum or null if user is not a trainer
      */
     @PutMapping
     public Curriculum updateCurriculum(@RequestBody CurriculumDTO curriculumdto)
     {
         RevUser revUser = JwtUtil.extractUser(revUserService);
-        // TODO: make sure it is trainer updating and not associate/general user
-        Curriculum curriculum = curriculumdto.convertToEntity(revUser);
-        return curriculumService.saveCurriculum(curriculum);
+        if(revUser.isTrainer()) {
+            Curriculum curriculum = curriculumdto.convertToEntity(revUser);
+            return curriculumService.saveCurriculum(curriculum);
+        }
+        else{
+            return null;
+        }
     }
 
     // Delete -- not in MVP
