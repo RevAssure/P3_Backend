@@ -1,14 +1,11 @@
 pipeline{
   agent {
-        dockerfile {
-            filename 'Dockerfile'
-            label 'docker-node'
-        }
+        dockerfile true
     }
   stages {
     stage('Test'){
       steps{
-        sh 'mvn --version'
+        sh 'node --version'
       }
     }
     
