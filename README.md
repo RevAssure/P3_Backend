@@ -1,4 +1,4 @@
-# Read me
+# **Read me**
 ###Description:
 RevAssure is a web applications for designed for easy organization, 
 and access, to training topics of Revature employees. Users of this 
@@ -10,16 +10,17 @@ will also be able to view the topics and curriculum created by themselves or
 other users.
 
 ###Tech Stack:
--Java 8\
--Spring Boot / Spring MVC / Spring Security / Spring Data\
 -Angular 12\
--AWS Elastic Beanstalk / S3 / RDS / CodePipeline / CodeBuild\
--Junit\
--Mockito\
 -Apache Maven\
+-AWS Elastic Beanstalk / S3 / RDS / CodePipeline / CodeBuild\
 -GitHub\
+-Jacoco\
+-Java 8\
+-Junit\
+-Log4J\
+-Mockito\
 -PostGreSQL deployed on AWS RDS\
--Jacoco
+-Spring Boot / Spring MVC / Spring Security / Spring Data\
 
 ###User Stories:
 -As a user I can create an account to have a Revature account\
@@ -34,3 +35,18 @@ other users.
 -As a trainer I can edit my topics\
 -As a trainer I can view topics created by other trainers\
  
+###Contributors:
+-Jacob Brummett\
+-Ryan Busby\
+-Amit Charran\
+-Victor Liu\
+-Lani Moon\
+-Jared Mullins\
+-Levi Neuenschwander\
+-Minh Thuy Nguyen\
+-Alex Nowak\
+-Douglas Ramirez\
+-Donald Rowell\
+-Matt Vasil\
+-Alwyn Zhang\
+-Christopher Zhang\
