@@ -14,7 +14,7 @@ pipeline{
     }
     stage('Run in EC2 instance'){
       steps{
-        sh 'docker run -e DB_URL -e DB_USERNAME -e DB_PASSWORD p3_backend -p 8082:8082'
+        sh 'docker run -e DB_URL -e DB_USERNAME -e DB_PASSWORD -p 8082:8082 p3_backend'
         }      
       }
     }
