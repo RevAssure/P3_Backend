@@ -1,6 +1,5 @@
 package com.revature.RevAssure.service;
 
-import com.revature.RevAssure.repository.CurriculumRepository;
 import com.revature.RevAssure.model.Event;
 import com.revature.RevAssure.repository.EventRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,12 +12,10 @@ import java.util.List;
 public class EventService {
 
     private EventRepository eventRepository;
-    private CurriculumRepository curriculumRepository;
 
     @Autowired
-    public EventService(EventRepository eventRepository, CurriculumRepository curriculumRepository){
+    public EventService(EventRepository eventRepository){
         this.eventRepository = eventRepository;
-        this.curriculumRepository = curriculumRepository;
     }
 
     /**
@@ -37,8 +34,7 @@ public class EventService {
      */
     public List<Event> getAllEventsByCurriculumId(int id) {
         try {
-            return eventRepository.findByCurriculum(curriculumRepository.getById(id))
-                    .orElseThrow(RuntimeException::new);
+            return eventRepository.findByCurriculumId(id).orElseThrow(RuntimeException::new);
         } catch(RuntimeException e){
             return new ArrayList<Event>();
         }
