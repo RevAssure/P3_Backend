@@ -5,7 +5,7 @@ pipeline{
     IMAGE_TAG="RevAssure-backend"
     CONTAINER_NAME="RevAssure-backend-app"
   }
-//   stages {
+  stages {
 //     stage('checkout'){
 //       steps{
 //         git branch: 'devops' url:'https://github.com/RevAssure/P3_Backend.git'
@@ -38,6 +38,7 @@ pipeline{
         }      
       }
     }
+}
     
 
 
