@@ -20,7 +20,7 @@ other users.
 -Log4J\
 -Mockito\
 -PostGreSQL deployed on AWS RDS\
--Spring Boot / Spring MVC / Spring Security / Spring Data\
+-Spring Boot / Spring MVC / Spring Security / Spring Data
 
 ###User Stories:
 -As a user I can create an account to have a Revature account\
@@ -33,7 +33,7 @@ other users.
 -As a trainer I can view curriculums created by other trainers\
 -As a trainer I can create a new topic\
 -As a trainer I can edit my topics\
--As a trainer I can view topics created by other trainers\
+-As a trainer I can view topics created by other trainers
  
 ###Contributors:
 -Jacob Brummett\
@@ -49,7 +49,7 @@ other users.
 -Donald Rowell\
 -Matt Vasil\
 -Alwyn Zhang\
--Christopher Zhang\
+-Christopher Zhang
 
 ###License 
 https://mit-license.org/
