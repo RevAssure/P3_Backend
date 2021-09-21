@@ -6,7 +6,7 @@ pipeline{
     stage('Testing){
       steps{
         sh 'chmod a+x ./P3_Backend/mvnw'
-        sh './P3_Backend/mvnw clean package -DskipTests=true'
+        sh './P3_Backend/mvnw test'
       }
     }
     stage('Build'){
