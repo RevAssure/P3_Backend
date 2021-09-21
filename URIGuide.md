@@ -1,7 +1,7 @@
 # RevAssure REST API Guide
 
 ---
-##Table of Contents
+## Table of Contents
 1. [/revuser](#/revuser)
    1. [/revuser/register](#/revuser/register)
    2. [/revuser/authenticate]()
@@ -84,7 +84,7 @@
 
 ### ```/revuser/register```
 
-- ###```POST``` - **Send the login credentials here to see if they are registered. Receive a JWT for all subsequent requests. Receive a 403 if the login credentials are not valid.**
+- ### ```POST``` - **Send the login credentials here to see if they are registered. Receive a JWT for all subsequent requests. Receive a 403 if the login credentials are not valid.**
 > **Request Body:**
 >
 >```json
@@ -104,9 +104,9 @@
 ___The rest of this guide will show ####.####.#### whenever the JWT is expected, which is in the header of ALL requests EXCEPT to `/revuser/register` & `/revuser/authenticate`___
 
 ## ```/revuser``` 
-___(continued)___
+__(continued)__
 
-- ###```GET``` - **Acquire the user object.**
+- ### ```GET``` - **Acquire the user object.**
 
 >**Request Header:**
 >```json
@@ -347,7 +347,7 @@ ___(continued)___
 >]
 ---
 
-##```/technology_category```
+## ```/technology_category```
 - ### ```POST``` - **Create a new technology category.**
 >**Request Header:**
 >```json
@@ -639,6 +639,8 @@ ___(continued)___
 >**Response Code**
 >
 > **200 - no matter what**
+---
+
 
 ## ```/topic```
 
@@ -885,6 +887,7 @@ ___(continued)___
 > {...}, <- an entire topic object (see above)
 > {...}  <- another entire topic object (see above)
 >]
+>```
 
 - ### ```GET topic/all``` - **Read every topic by all trainers.**
 >**Request Header:**
@@ -897,6 +900,7 @@ ___(continued)___
 > {...}, <- an entire topic object (see above)
 > {...}  <- another entire topic object (see above)
 >]
+>```
 
 - ### ```GET topic/{id}``` - **Read one topic.**
 > **`id` of the topic to read goes in the Request URI path.**
@@ -1032,10 +1036,12 @@ ___(continued)___
 > {...}, <- an entire topic object (see above)
 > {...}  <- another entire topic object (see above)
 >]
-
+>```
+>
+---
 ## ```/event```
 
-- ###```POST``` - **Create a calendar event for a given topic within a given curriculum.**
+- ### ```POST``` - **Create a calendar event for a given topic within a given curriculum.**
 >**Request Header:**
 >```json
 >{"Authorization": "Bearer ####.####.####"}
