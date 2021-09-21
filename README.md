@@ -11,7 +11,7 @@ other users.
 
 ### Tech Stack:
 - Angular 12
-- Apache Maven\
+- Apache Maven
 - AWS Elastic Beanstalk / S3 / RDS / CodePipeline / CodeBuild
 - GitHub
 - Jacoco
