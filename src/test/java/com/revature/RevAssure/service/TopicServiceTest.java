@@ -24,8 +24,6 @@ import static org.mockito.Mockito.*;
 class TopicServiceTest {
     @MockBean
     private TopicRepository topicRepository;
-    @MockBean
-    private ModuleRepository moduleRepository;
 
     @Autowired
     private TopicService topicService;
@@ -83,7 +81,7 @@ class TopicServiceTest {
      */
     @Test
     void getTheTopicById(){
-        when(topicRepository.findById(1)).thenReturn(Optional.of(topic));
+        when(topicRepository.getById(1)).thenReturn(topic);
         assertEquals(topic, topicService.getById(1));
     }
 
@@ -92,8 +90,17 @@ class TopicServiceTest {
      */
     @Test
     void getByTrainerTest() {
-        when(topicRepository.findByTrainer(trainer)).thenReturn(topicList);
+        when(topicRepository.findByTrainer(trainer)).thenReturn(Optional.of(topicList));
         assertEquals(topicList, topicService.getByTrainer(trainer));
+    }
+
+    /**
+     * Testing service will return topic by trainer
+     */
+    @Test
+    void getByTrainerButTrainerHasNoTopicsTest() {
+        when(topicRepository.findByTrainer(trainer)).thenReturn(Optional.empty());
+        assertEquals(new ArrayList<>(), topicService.getByTrainer(trainer));
     }
 
     /**
@@ -128,8 +135,7 @@ class TopicServiceTest {
      */
     @Test
     void getTopicsByModuleId(){
-        when(moduleRepository.findById(1)).thenReturn(Optional.of(module));
-        when(topicRepository.findAllByModules(module)).thenReturn(topicList);
+        when(topicRepository.findByModuleId(1)).thenReturn(Optional.of(topicList));
         assertEquals(topicList, topicService.getAllTopicsByModuleId(1));
     }
 
@@ -138,7 +144,7 @@ class TopicServiceTest {
      */
     @Test
     void getTopicsByModuleIdButModuleIdDoesnotExists(){
-        when(moduleRepository.findById(1)).thenReturn(Optional.empty());
+        when(topicRepository.findById(1)).thenReturn(Optional.empty());
         assertEquals(new ArrayList<Topic>(), topicService.getAllTopicsByModuleId(1));
     }
 

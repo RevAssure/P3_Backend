@@ -1,10 +1,8 @@
 package com.revature.RevAssure.service;
 
-import com.revature.RevAssure.model.Module;
 import com.revature.RevAssure.model.RevUser;
 import com.revature.RevAssure.model.Topic;
 import com.revature.RevAssure.repository.TopicRepository;
-import com.revature.RevAssure.repository.ModuleRepository;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,12 +13,10 @@ import org.springframework.stereotype.Service;
 @Service
 public class TopicService {
     private final TopicRepository topicRepository;
-    private final ModuleRepository moduleRepository;
 
     @Autowired
-    public TopicService(TopicRepository topicRepository, ModuleRepository moduleRepository){
+    public TopicService(TopicRepository topicRepository){
         this.topicRepository = topicRepository;
-        this.moduleRepository = moduleRepository;
     }
 
     /**
@@ -47,7 +43,12 @@ public class TopicService {
      * @return List of Topic Objects
      */
     public List<Topic> getByTrainer(RevUser trainer) {
-        return topicRepository.findByTrainer(trainer);
+        try {
+            return topicRepository.findByTrainer(trainer).orElseThrow(RuntimeException::new);
+        } catch(RuntimeException e){
+            // log
+            return new ArrayList<>();
+        }
     }
 
     /**
@@ -56,21 +57,22 @@ public class TopicService {
      * @return Topic object or null
      */
     public Topic getById(int topicId){
-        return topicRepository.findById(topicId).orElse(null);
+        return topicRepository.getById(topicId);
     }
 
     /**
      * gets all topic according to moduleId. If moduleId does no exists return empty array
-     * @param moduleId
+     * @param moduleId Module id that is shared by all returned topics
      * @return A list of Topics with the same module ID
      */
     public List<Topic> getAllTopicsByModuleId(int moduleId){
-        Module module = moduleRepository.findById(moduleId).orElse(null);
-        if(module == null){
-            // TODO: when we get logger. log that ModuleId does not exists
-            return new ArrayList<Topic>(); // I'm not sure if findAllByModules will give an empty array when given null
+        try {
+            return topicRepository.findByModuleId(moduleId).orElseThrow(RuntimeException::new);
         }
-        return topicRepository.findAllByModules(module);
+        catch(RuntimeException e){
+            // TODO: when we get logger. log that there are no topics with corresponding Module id
+            return new ArrayList<Topic>();
+        }
     }
 
     /**
