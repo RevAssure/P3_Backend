@@ -1,4 +1,4 @@
-# **Read me**
+# **RevAssure**
 ### Description:
 RevAssure is a web applications for designed for easy organization, 
 and access, to training topics of Revature employees. Users of this 
