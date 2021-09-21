@@ -1,12 +1,12 @@
 pipeline{
   agent any
   stages {
-//     stage('Testing'){
-//       steps{
-//         sh 'chmod a+x ./P3_Backend/mvnw'
-//         sh './P3_Backend/mvnw test'
-//       }
-//     }
+    stage('Testing'){
+      steps{
+        sh 'chmod a+x ./P3_Backend/mvnw'
+        sh './P3_Backend/mvnw test'
+      }
+    }
     stage('Build'){
       steps{
         sh 'DOCKER_BUILDKIT=0 docker build -t p3_backend .'
