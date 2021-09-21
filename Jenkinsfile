@@ -2,8 +2,8 @@ pipeline{
   agent any
   environment{
     PORT="8082"
-    IMAGE_TAG="RevAssure-backend"
-    CONTAINER_NAME="RevAssure-backend-app"
+    IMAGE_TAG="rev-assure-backend"
+    CONTAINER_NAME="rev-assure-backend-app"
   }
   stages {
 //     stage('checkout'){
