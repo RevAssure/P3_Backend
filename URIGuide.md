@@ -1,6 +1,5 @@
 # RevAssure REST API Guide
 
----
 ## Table of Contents
 ### 1. [/revuser](#revuser)
 ### 2. [/curriculum](#curriculum)
@@ -8,7 +7,6 @@
 ### 4. [/module](#module)
 ### 5. [/topic](#topic)
 ### 6. [/event](#event)
-
 
 ---
 
@@ -651,12 +649,15 @@ __(continued)__
 >    "lectureNotes": "There are probably volumes written about this",
 >    "githubRepo": "http://.com",
 >    "trainer": 1,
->    "technologyCategory": 1
+>    "technologyCategory": 1,
+>    "modules": []
 >}
 >```
 >>`trainer` **the id of the trainer making the topic.**
 >>
 >>`technologyCategory` **the id of the technology category (which should already exist) associated with the topic.**
+>>
+>> `modules` **array of module ids that this topic can be associated with, can be an empty array, or not included in the request.**
 
 >**Response Body**
 >```json
