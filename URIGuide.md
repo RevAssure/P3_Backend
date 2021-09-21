@@ -2,20 +2,12 @@
 
 ---
 ## Table of Contents
-1. [/revuser](#revuser)
-   1. [/revuser/register](#revuser/register)
-   2. [/revuser/authenticate]()
-
-2. [/curriculum](#curriculum)
-   1. [/curriculum/assigned](#curriculum/assigned)
-
-3. [/technology_category](#technology_category)
-
-4. [/module](#module)
-
-5. [/topic](#topic)
-
-6. [/event](#event)
+### 1. [/revuser](#revuser)
+### 2. [/curriculum](#curriculum)
+### 3. [/technology_category](#technology_category)
+### 4. [/module](#module)
+### 5. [/topic](#topic)
+### 6. [/event](#event)
 
 
 ---
@@ -541,7 +533,7 @@ __(continued)__
 >]
 >```
 
-- ### ```PUT``` - **Update a field of an existing module.**
+- ### ```PUT``` - **Update an existing module.**
 
 >**Request Header:**
 >```json
@@ -882,12 +874,13 @@ __(continued)__
 >```
 >
 > **Response Body:**
->```json
+>```
 >[
-> {...}, <- an entire topic object (see above)
-> {...}  <- another entire topic object (see above)
+> {... an entire topic object (as seen above)},
+> {... another topic object}
 >]
 >```
+>
 
 - ### ```GET topic/all``` - **Read every topic by all trainers.**
 >**Request Header:**
@@ -895,12 +888,13 @@ __(continued)__
 >{"Authorization": "Bearer ####.####.####"}
 >```
 > **Response Body:**
->```json
+>```
 >[
-> {...}, <- an entire topic object (see above)
-> {...}  <- another entire topic object (see above)
+> {... an entire topic object (as seen above)},
+> {... another topic object}
 >]
 >```
+
 
 - ### ```GET topic/{id}``` - **Read one topic.**
 > **`id` of the topic to read goes in the Request URI path.**
@@ -1031,10 +1025,10 @@ __(continued)__
 >{"Authorization": "Bearer ####.####.####"}
 >```
 > **Response Body:**
->```json
+>```
 >[
-> {...}, <- an entire topic object (see above)
-> {...}  <- another entire topic object (see above)
+> {... an entire topic object (as seen above)},
+> {... another topic object}
 >]
 >```
 >
