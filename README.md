@@ -39,6 +39,7 @@ other users.
 - Jacob Brummett
 - Ryan Busby
 - Amit Charran
+- Jintao Lin
 - Victor Liu
 - Lani Moon
 - Jared Mullins
