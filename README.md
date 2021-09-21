@@ -50,3 +50,6 @@ other users.
 -Matt Vasil\
 -Alwyn Zhang\
 -Christopher Zhang\
+
+###License 
+https://mit-license.org/
