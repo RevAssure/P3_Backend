@@ -8,6 +8,6 @@ import java.util.List;
 import java.util.Optional;
 
 public interface EventRepository extends JpaRepository<Event, Integer> {
-    Optional<List<Event>> findByCurriculum(Curriculum curriculum); // This method finds the event by the given curriculum
+    List<Event> findByCurriculum(Curriculum curriculum); // This method finds the event by the given curriculum
 
 }

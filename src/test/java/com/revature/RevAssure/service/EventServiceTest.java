@@ -61,7 +61,7 @@ class EventServiceTest {
 
     @Test
     void getAllEventsByCurriculumSuccessfullyTest() {
-        when(eventRepository.findByCurriculum(curriculum)).thenReturn(Optional.of(events));
+        when(eventRepository.findByCurriculum(curriculum)).thenReturn(events);
         when(curriculumRepository.getById(1)).thenReturn(curriculum);
 
         List<Event> evs = eventService.getAllEventsByCurriculumId(1);
@@ -71,7 +71,7 @@ class EventServiceTest {
 
     @Test
     void getAllEventsByCurriculumButNoEventsTest() {
-        when(eventRepository.findByCurriculum(curriculum)).thenReturn(Optional.empty());
+        when(eventRepository.findByCurriculum(curriculum)).thenReturn(new ArrayList<>());
         when(curriculumRepository.getById(1)).thenReturn(curriculum);
 
         List<Event> evs = eventService.getAllEventsByCurriculumId(1);
