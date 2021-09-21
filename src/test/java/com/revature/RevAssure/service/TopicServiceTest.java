@@ -135,7 +135,7 @@ class TopicServiceTest {
      */
     @Test
     void getTopicsByModuleId(){
-        when(topicRepository.findByModuleId(1)).thenReturn(Optional.of(topicList));
+        when(topicRepository.findByModulesId(1)).thenReturn(Optional.of(topicList));
         assertEquals(topicList, topicService.getAllTopicsByModuleId(1));
     }
 

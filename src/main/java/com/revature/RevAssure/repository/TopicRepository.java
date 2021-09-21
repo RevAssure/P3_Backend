@@ -17,6 +17,6 @@ public interface TopicRepository extends JpaRepository<Topic, Integer>{
      * @param moduleId Given ModuleId int
      * @return list of Topic objects
      */
-    Optional<List<Topic>> findByModuleId(int moduleId);
+    Optional<List<Topic>> findByModulesId(int moduleId);
     Optional<List<Topic>> findByTrainer(RevUser trainer);
 }
