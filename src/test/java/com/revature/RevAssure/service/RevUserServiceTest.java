@@ -8,9 +8,9 @@ import com.revature.RevAssure.util.JwtUtil;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -21,37 +21,36 @@ import org.springframework.security.core.userdetails.UserDetails;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
-@SpringBootTest
+@ExtendWith(MockitoExtension.class)
 class RevUserServiceTest {
 
-    @Autowired
     private RevUserService revUserService;
 
-    @MockBean
+    @Mock
     private RevUserRepository revUserRepository;
 
-    @MockBean
+    @Mock
     private UserDetails userDetails;
 
-    @MockBean
+    @Mock
     private RevUserDetailsService revUserDetailsService;
 
-    @MockBean
+    @Mock
     private AuthenticationManager authenticationManager;
 
-    @MockBean
+    @Mock
     private AuthenticationRequest authenticationRequest;
 
-    @MockBean
+    @Mock
     private AuthenticationResponse authenticationResponse;
 
-    @MockBean
+    @Mock
     private JwtUtil jwtUtil;
 
-    @MockBean
+    @Mock
     private ResponseEntity responseEntity;
 
-    @MockBean
+    @Mock
     private Authentication authentication;
 
     static BadCredentialsException e;
@@ -60,7 +59,9 @@ class RevUserServiceTest {
 
 
     @BeforeEach
-    public void init() {
+    public void setUp() {
+        revUserService = new RevUserService(revUserRepository);
+
         revUser.setId(1);
         revUser.setUsername("test");
         revUser.setPassword("password");
@@ -98,5 +99,4 @@ class RevUserServiceTest {
         when(authenticationManager.authenticate(UPToken)).thenThrow(BadCredentialsException.class);
         assertThrows(BadCredentialsException.class, () -> {revUserService.authenticate(authenticationRequest);});
     }
-
 }

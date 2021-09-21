@@ -6,9 +6,9 @@ import com.revature.RevAssure.repository.CurriculumRepository;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,13 +16,12 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.when;
 
-@SpringBootTest
+@ExtendWith(MockitoExtension.class)
 class CurriculumServiceTest
 {
-    @Autowired
     private CurriculumService curriculumServiceTest;
 
-    @MockBean
+    @Mock
     private CurriculumRepository mockCurriculumRepository;
 
     private Curriculum mockCurriculum;
@@ -31,9 +30,13 @@ class CurriculumServiceTest
 
     private RevUser mockTrainer;
 
+    private RevUser mockAssociate;
+
     @BeforeEach
     void setUp()
     {
+        curriculumServiceTest = new CurriculumService(mockCurriculumRepository);
+
         mockCurriculum = new Curriculum();
         mockCurriculum.setId(1);
         mockCurriculum.setName("test");
@@ -42,8 +45,12 @@ class CurriculumServiceTest
         mockTrainer = new RevUser();
         mockTrainer.setId(1);
         mockTrainer.setTrainer(true);
+        mockAssociate = new RevUser();
+        mockAssociate.setId(2);
+        mockAssociate.setTrainer(false);
         List<RevUser> revUserList = new ArrayList<>();
         revUserList.add(mockTrainer);
+        revUserList.add(mockAssociate);
         mockCurriculum.setRevUsers(revUserList);
 
         mockCurriculumList = new ArrayList<>();
@@ -83,5 +90,25 @@ class CurriculumServiceTest
     {
         when(mockCurriculumRepository.findByTrainer(mockTrainer)).thenReturn(new ArrayList<Curriculum>());
         assert(curriculumServiceTest.getAllCurriculaByTrainer(mockTrainer).isEmpty());
+    }
+
+    /**
+     * test getAllCurriculaByUser works as intended
+     */
+    @Test
+    void getAllCurriculaByUserReturnsListOfCurriculaAssignedToAssociate()
+    {
+        when(mockCurriculumRepository.findByRevUsers(mockAssociate)).thenReturn(mockCurriculumList);
+        assertEquals(curriculumServiceTest.getAllCurriculaByUser(mockAssociate), mockCurriculumList);
+    }
+
+    /**
+     * test getAllCurriculaByUser returns an empty list when associate not found
+     */
+    @Test
+    void getAllCurriculaByUserReturnsEmptyList()
+    {
+        when(mockCurriculumRepository.findByRevUsers(mockAssociate)).thenReturn(new ArrayList<Curriculum>());
+        assert(curriculumServiceTest.getAllCurriculaByUser(mockAssociate).isEmpty());
     }
 }

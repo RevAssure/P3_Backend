@@ -7,23 +7,21 @@ import com.revature.RevAssure.repository.TechnologyCategoryRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.ArrayList;
 import java.util.List;
 
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
 
-@SpringBootTest
+@ExtendWith(MockitoExtension.class)
 public class TechnologyCategoryServiceTest {
-    @MockBean
-    private TechnologyCategoryRepository TechnologyCategoryRepository;
+    @Mock
+    private TechnologyCategoryRepository technologyCategoryRepository;
 
-    @Autowired
     private TechnologyCategoryService technologyCategoryService;
 
     private TechnologyCategory techCat;
@@ -32,6 +30,7 @@ public class TechnologyCategoryServiceTest {
 
     @BeforeEach
     void setUp() {
+        technologyCategoryService = new TechnologyCategoryService(technologyCategoryRepository);
 
         techCat = new TechnologyCategory();
         techCat.setId(1);
@@ -47,7 +46,7 @@ public class TechnologyCategoryServiceTest {
      */
     @Test
     void getAllTechnologyCategories(){
-        when(TechnologyCategoryRepository.findAll()).thenReturn(technologyCategoryList);
+        when(technologyCategoryRepository.findAll()).thenReturn(technologyCategoryList);
         assertEquals(technologyCategoryList, technologyCategoryService.getAll());
     }
 
@@ -56,7 +55,7 @@ public class TechnologyCategoryServiceTest {
      */
     @Test
     void createTest() {
-        when(TechnologyCategoryRepository.save(techCat)).thenReturn(techCat);
+        when(technologyCategoryRepository.save(techCat)).thenReturn(techCat);
         assertEquals(techCat, technologyCategoryService.create(techCat));
     }
 
