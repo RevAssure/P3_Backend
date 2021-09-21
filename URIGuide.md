@@ -2,20 +2,20 @@
 
 ---
 ## Table of Contents
-1. [/revuser](#/revuser)
-   1. [/revuser/register](#/revuser/register)
+1. [/revuser](#revuser)
+   1. [/revuser/register](#revuser/register)
    2. [/revuser/authenticate]()
 
-2. [/curriculum](#/curriculum)
-   1. [/curriculum/assigned](#/curriculum/assigned)
+2. [/curriculum](#curriculum)
+   1. [/curriculum/assigned](#curriculum/assigned)
 
-3. [/technology_category](#/technology_category)
+3. [/technology_category](#technology_category)
 
-4. [/module](#/module)
+4. [/module](#module)
 
-5. [/topic](#/topic)
+5. [/topic](#topic)
 
-6. [/event](#/event)
+6. [/event](#event)
 
 
 ---
