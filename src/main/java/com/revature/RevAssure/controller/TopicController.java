@@ -1,5 +1,7 @@
 package com.revature.RevAssure.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.revature.RevAssure.dto.TopicDTO;
 import com.revature.RevAssure.model.RevUser;
 import com.revature.RevAssure.model.Topic;
@@ -7,6 +9,8 @@ import com.revature.RevAssure.service.RevUserService;
 import com.revature.RevAssure.service.TopicService;
 import com.revature.RevAssure.util.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
@@ -36,16 +40,19 @@ public class TopicController{
     /**
      * Create operation for Topic objects
      * revUser retrieves the username from the current JWT
-     * @return the topic that is saved or null if user is not a trainer
+     * @return the topic that is saved or sets bad status if user is not a trainer
      */
     @PostMapping
-    public Topic createTopic(@RequestBody TopicDTO topicdto){
+    public ResponseEntity<String> createTopic(@RequestBody TopicDTO topicdto) throws JsonProcessingException {
         RevUser revUser = JwtUtil.extractUser(revUserService);
         if(revUser.isTrainer()){
-            Topic topic = topicdto.convertToEntity(revUser);
-            return topicService.saveTopic(topic);
+            Topic topic = topicService.saveTopic(topicdto.convertToEntity(revUser));
+            String str = new ObjectMapper()
+                    .writerWithDefaultPrettyPrinter()
+                    .writeValueAsString(topic);
+            return ResponseEntity.ok().body(str);
         }
-        else{return null;}
+        else{return ResponseEntity.status(HttpStatus.FORBIDDEN).build();}
     }
 
     // Read
@@ -99,18 +106,21 @@ public class TopicController{
     /**
      * Update operation for Topic objects
      * revUser retrieves the username from the current JWT
-     * @return The updated topic or null if user is not a trainer
+     * @return The updated topic or sets bad status if user is not a trainer
      */
     // TODO: Make sure when a trainer is updating a topic that is not owned by them
     //  they are creating a new topic instead of modifying a previous one
     @PutMapping
-    public Topic updateTopic(@RequestBody TopicDTO topicdto){
+    public ResponseEntity<String> updateTopic(@RequestBody TopicDTO topicdto) throws JsonProcessingException {
         RevUser revUser = JwtUtil.extractUser(revUserService);
         if(revUser.isTrainer()){
-            Topic topic = topicdto.convertToEntity(revUser);
-            return topicService.saveTopic(topic);
+            Topic topic = topicService.saveTopic(topicdto.convertToEntity(revUser));
+            String str = new ObjectMapper()
+                    .writerWithDefaultPrettyPrinter()
+                    .writeValueAsString(topic);
+            return ResponseEntity.ok().body(str);
         }
-        else{return null;}
+        else{return ResponseEntity.status(HttpStatus.FORBIDDEN).build();}
     }
 
     // Delete

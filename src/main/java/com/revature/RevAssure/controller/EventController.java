@@ -1,5 +1,7 @@
 package com.revature.RevAssure.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.revature.RevAssure.dto.EventDTO;
 import com.revature.RevAssure.model.Event;
 import com.revature.RevAssure.model.RevUser;
@@ -7,7 +9,11 @@ import com.revature.RevAssure.service.EventService;
 import com.revature.RevAssure.service.RevUserService;
 import com.revature.RevAssure.util.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import javax.xml.ws.Response;
 import java.util.List;
 
 @CrossOrigin
@@ -33,16 +39,20 @@ public class EventController {
     /**
      * Endpoint available for creating an event
      * @param eventdto : The event that is to be inserted and persisted into the database
-     * @return : The event that was inserted and persisted into the database or null if user is not a trainer
+     * @return : The event that was inserted and persisted into the database or sets bad status if user is not a trainer
      */
     @PostMapping
-    public Event createEvent(@RequestBody EventDTO eventdto){
+    public ResponseEntity<String> createEvent(@RequestBody EventDTO eventdto) throws JsonProcessingException {
         RevUser revUser = JwtUtil.extractUser(revUserService);
         if(revUser.isTrainer()){
-            return eventService.createEvent(eventdto.convertToEntity());
+            Event event = eventService.createEvent(eventdto.convertToEntity());
+            String str = new ObjectMapper()
+                    .writerWithDefaultPrettyPrinter()
+                    .writeValueAsString(event);
+            return ResponseEntity.ok().body(str);
         }
         else{
-            return null;
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         }
     }
 
@@ -65,16 +75,20 @@ public class EventController {
     /**
      * Endpoint available for updating an existing event
      * @param eventdto : The event that is to be updated and persisted into the database
-     * @return : The event that is to be inserted and persisted into the database
+     * @return : The event that is to be inserted and persisted into the database or sets bad status if user is not a trainer
      */
     @PutMapping
-    public Event updateEvent(@RequestBody EventDTO eventdto){;
+    public ResponseEntity<String> updateEvent(@RequestBody EventDTO eventdto) throws JsonProcessingException {;
         RevUser revUser = JwtUtil.extractUser(revUserService);
         if(revUser.isTrainer()){
-            return eventService.updateEvent(eventdto.convertToEntity());
+            Event event = eventService.updateEvent(eventdto.convertToEntity());
+            String str = new ObjectMapper()
+                    .writerWithDefaultPrettyPrinter()
+                    .writeValueAsString(event);
+            return ResponseEntity.ok().body(str);
         }
         else{
-            return null;
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         }
     }
 

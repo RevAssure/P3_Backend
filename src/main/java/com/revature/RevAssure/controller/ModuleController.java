@@ -1,5 +1,7 @@
 package com.revature.RevAssure.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.revature.RevAssure.dto.ModuleDTO;
 import com.revature.RevAssure.model.Module;
 import com.revature.RevAssure.model.RevUser;
@@ -7,6 +9,8 @@ import com.revature.RevAssure.service.ModuleService;
 import com.revature.RevAssure.service.RevUserService;
 import com.revature.RevAssure.util.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
@@ -33,18 +37,21 @@ public class ModuleController {
     /**
      * Create functionality for modules
      * @param moduledto DTO object for module to be persisted
-     * @return module after being persisted to the database
+     * @return module after being persisted to the database or sets bad status if user is not a trainer
      */
     // Create
     @PostMapping
-    public Module createModule(@RequestBody ModuleDTO moduledto){
+    public ResponseEntity<String> createModule(@RequestBody ModuleDTO moduledto) throws JsonProcessingException {
         RevUser revUser = JwtUtil.extractUser(revUserService);
         if(revUser.isTrainer()){
-            Module module = moduledto.convertToEntity(revUser);
-            return moduleService.saveNewModule(module);
+            Module module = moduleService.saveNewModule(moduledto.convertToEntity(revUser));
+            String str = new ObjectMapper()
+                    .writerWithDefaultPrettyPrinter()
+                    .writeValueAsString(module);
+            return ResponseEntity.ok().body(str);
         }
         else{
-            return null;
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         }
     }
 
@@ -62,17 +69,21 @@ public class ModuleController {
     /**
      * Update functionality for modules
      * @param moduledto DTO object of module to be updated
-     * @return updated and persisted module or null if the user is not a trainer
+     * @return updated and persisted module or sets bad status if the user is not a trainer
      */
     // Update
     @PutMapping
-    public Module updateModules(@RequestBody ModuleDTO moduledto){
+    public ResponseEntity<String> updateModules(@RequestBody ModuleDTO moduledto) throws JsonProcessingException {
         RevUser revUser = JwtUtil.extractUser(revUserService);
         if(revUser.isTrainer()){
-            return moduleService.saveExistingModule(moduledto.convertToEntity(revUser));
+            Module module = moduleService.saveExistingModule(moduledto.convertToEntity(revUser));
+            String str = new ObjectMapper()
+                    .writerWithDefaultPrettyPrinter()
+                    .writeValueAsString(module);
+            return ResponseEntity.ok().body(str);
         }
         else{
-            return null;
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         }
     }
 

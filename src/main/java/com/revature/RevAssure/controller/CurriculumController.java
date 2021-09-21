@@ -1,5 +1,7 @@
 package com.revature.RevAssure.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.revature.RevAssure.dto.CurriculumDTO;
 import com.revature.RevAssure.model.Curriculum;
 import com.revature.RevAssure.model.RevUser;
@@ -7,6 +9,8 @@ import com.revature.RevAssure.service.CurriculumService;
 import com.revature.RevAssure.service.RevUserService;
 import com.revature.RevAssure.util.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -33,18 +37,20 @@ public class CurriculumController {
     /**
      * stores a new curriculum in the database
      * @param curriculumdto the curriculum to be stored
-     * @return the stored curriculum or null if the user is not a trainer
+     * @return the stored curriculum or sets bad status if the user is not a trainer
      */
     @PostMapping
-    public Curriculum createCurriculum(@RequestBody CurriculumDTO curriculumdto)
-    {
+    public ResponseEntity<String> createCurriculum(@RequestBody CurriculumDTO curriculumdto) throws JsonProcessingException {
         RevUser revUser = JwtUtil.extractUser(revUserService);
         if(revUser.isTrainer()) {
-            Curriculum curriculum = curriculumdto.convertToEntity(revUser);
-            return curriculumService.saveCurriculum(curriculum);
+            Curriculum cur = curriculumService.saveCurriculum(curriculumdto.convertToEntity(revUser));
+            String str = new ObjectMapper()
+                    .writerWithDefaultPrettyPrinter()
+                    .writeValueAsString(cur);
+            return ResponseEntity.ok().body(str);
         }
         else{
-            return null;
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         }
     }
 
@@ -81,18 +87,20 @@ public class CurriculumController {
     /**
      * update a current curriculum on the database
      * @param curriculumdto the curriculum to be updated
-     * @return the updated curriculum or null if user is not a trainer
+     * @return the updated curriculum or sets bad status if user is not a trainer
      */
     @PutMapping
-    public Curriculum updateCurriculum(@RequestBody CurriculumDTO curriculumdto)
-    {
+    public ResponseEntity<String> updateCurriculum(@RequestBody CurriculumDTO curriculumdto) throws JsonProcessingException {
         RevUser revUser = JwtUtil.extractUser(revUserService);
         if(revUser.isTrainer()) {
-            Curriculum curriculum = curriculumdto.convertToEntity(revUser);
-            return curriculumService.saveCurriculum(curriculum);
+            Curriculum cur = curriculumService.saveCurriculum(curriculumdto.convertToEntity(revUser));
+            String str = new ObjectMapper()
+                    .writerWithDefaultPrettyPrinter()
+                    .writeValueAsString(cur);
+            return ResponseEntity.ok().body(str);
         }
         else{
-            return null;
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         }
     }
 
