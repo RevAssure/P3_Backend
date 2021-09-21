@@ -20,7 +20,7 @@ public class Event {
     private int id;
 
     @ManyToOne
-    @JsonIgnoreProperties({"revUsers", "curriculum", "events"})
+    @JsonIgnoreProperties({"revUsers", "events", "hibernateLazyInitializer"})
     @JoinColumn(name="curriculum_id", nullable = false, referencedColumnName = "id")
     private Curriculum curriculum;
 
