@@ -1,8 +1,15 @@
 package com.revature.RevAssure.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.revature.RevAssure.model.RevUser;
 import com.revature.RevAssure.model.TechnologyCategory;
+import com.revature.RevAssure.service.RevUserService;
 import com.revature.RevAssure.service.TechnologyCategoryService;
+import com.revature.RevAssure.util.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -12,6 +19,7 @@ import java.util.List;
 @RequestMapping("/technology_category")
 public class TechnologyCategoryController {
     private TechnologyCategoryService technologyCategoryService;
+    private RevUserService revUserService;
 
     /**
      * Constructor for TechnologyCategoryController
@@ -19,8 +27,9 @@ public class TechnologyCategoryController {
      * @param technologyCategoryService is a technologyCategoryService object
      */
     @Autowired
-    public TechnologyCategoryController(TechnologyCategoryService technologyCategoryService){
+    public TechnologyCategoryController(TechnologyCategoryService technologyCategoryService, RevUserService revUserService){
         this.technologyCategoryService = technologyCategoryService;
+        this.revUserService = revUserService;
     }
 
     /**
@@ -39,7 +48,16 @@ public class TechnologyCategoryController {
      * @return TechnologyCategory which was persisted
      */
     @PostMapping
-    public TechnologyCategory createTechnologyCategory(@RequestBody TechnologyCategory technologyCategory) {
-        return technologyCategoryService.create(technologyCategory);
+    public ResponseEntity<String> createTechnologyCategory(@RequestBody TechnologyCategory technologyCategory) throws JsonProcessingException {
+        RevUser revUser = JwtUtil.extractUser(revUserService);
+        if (revUser.isTrainer()) {
+            TechnologyCategory technologyCategory1 = technologyCategoryService.create(technologyCategory);
+            String str = new ObjectMapper()
+                    .writerWithDefaultPrettyPrinter()
+                    .writeValueAsString(technologyCategory1);
+            return ResponseEntity.ok().body(str);
+        } else {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        }
     }
 }
