@@ -23,7 +23,7 @@ other users.
 - Spring Boot / Spring MVC / Spring Security / Spring Data
 
 ### User Stories:
--As a user I can create an account to have a Revature account
+- As a user I can create an account to have a Revature account
 - As a user I can register as an associate or a trainer
 - As a user I can sign in to my account to access my curriculum
 - As a user I can access my calendar to view my schedule
