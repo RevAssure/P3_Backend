@@ -67,7 +67,7 @@ public class TopicService {
      */
     public List<Topic> getAllTopicsByModuleId(int moduleId){
         try {
-            return topicRepository.findByModuleId(moduleId).orElseThrow(RuntimeException::new);
+            return topicRepository.findByModulesId(moduleId).orElseThrow(RuntimeException::new);
         }
         catch(RuntimeException e){
             // TODO: when we get logger. log that there are no topics with corresponding Module id
