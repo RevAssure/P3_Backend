@@ -1,6 +1,5 @@
 package com.revature.RevAssure.service;
 
-import com.revature.RevAssure.repository.CurriculumRepository;
 import com.revature.RevAssure.model.Event;
 import com.revature.RevAssure.repository.EventRepository;
 import org.postgresql.core.ConnectionFactory;
@@ -17,12 +16,10 @@ public class EventService {
 
     private static final Logger log = LoggerFactory.getLogger(ConnectionFactory.class);
     private EventRepository eventRepository;
-    private CurriculumRepository curriculumRepository;
 
     @Autowired
-    public EventService(EventRepository eventRepository, CurriculumRepository curriculumRepository){
+    public EventService(EventRepository eventRepository){
         this.eventRepository = eventRepository;
-        this.curriculumRepository = curriculumRepository;
     }
 
     /**
@@ -43,8 +40,7 @@ public class EventService {
     public List<Event> getAllEventsByCurriculumId(int id) {
         log.info("Get all events in specific curriculum");
         try {
-            return eventRepository.findByCurriculum(curriculumRepository.getById(id))
-                    .orElseThrow(RuntimeException::new);
+            return eventRepository.findByCurriculumId(id).orElseThrow(RuntimeException::new);
         } catch(RuntimeException e){
             log.debug("Runtime Exception");
             return new ArrayList<Event>();
