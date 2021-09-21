@@ -1,8 +1,12 @@
 package com.revature.RevAssure.util;
 
+import com.revature.RevAssure.model.RevUser;
+import com.revature.RevAssure.service.RevUserService;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
@@ -13,6 +17,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
 import java.util.function.Function;
+
+
 
 /*
 source:
@@ -70,4 +76,16 @@ public class JwtUtil {
     private String getHashSignature() {
         return "secret";
     }
+
+    public static RevUser extractUser(RevUserService revUserService){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        return revUserService.getRevUserByUsername(authentication.getName());
+    }
+
+    public static String extractUsername(){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        return authentication.getName();
+    }
+
 }
+
