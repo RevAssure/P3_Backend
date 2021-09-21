@@ -28,4 +28,12 @@ public class TechnologyCategoryService {
         return techCatRepo.findAll();
     }
 
+    /**
+     * Persist a technology category
+     * @param technologyCategory the object to persist
+     * @return TechnologyCategory that was persisted
+     */
+    public TechnologyCategory create(TechnologyCategory technologyCategory) {
+        return techCatRepo.save(technologyCategory);
+    }
 }

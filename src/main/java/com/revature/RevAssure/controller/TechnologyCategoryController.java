@@ -3,10 +3,8 @@ package com.revature.RevAssure.controller;
 import com.revature.RevAssure.model.TechnologyCategory;
 import com.revature.RevAssure.service.TechnologyCategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
 import java.util.List;
 
 @CrossOrigin
@@ -33,5 +31,15 @@ public class TechnologyCategoryController {
     @GetMapping
     public List<TechnologyCategory> getTechnologyCategories() {
         return technologyCategoryService.getAll();
+    }
+
+    /**
+     * Create operation to persist a technology category into the database
+     * @param technologyCategory
+     * @return TechnologyCategory which was persisted
+     */
+    @PostMapping
+    public TechnologyCategory createTechnologyCategory(@RequestBody TechnologyCategory technologyCategory) {
+        return technologyCategoryService.create(technologyCategory);
     }
 }
