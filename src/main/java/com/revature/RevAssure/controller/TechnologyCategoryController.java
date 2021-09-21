@@ -1,12 +1,13 @@
 package com.revature.RevAssure.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.revature.RevAssure.model.TechnologyCategory;
 import com.revature.RevAssure.service.TechnologyCategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
 import java.util.List;
 
 @CrossOrigin
@@ -33,5 +34,15 @@ public class TechnologyCategoryController {
     @GetMapping
     public List<TechnologyCategory> getTechnologyCategories() {
         return technologyCategoryService.getAll();
+    }
+
+    /**
+     * Create operation to persist a technology category into the database
+     * @param technologyCategory
+     * @return TechnologyCategory which was persisted
+     */
+    @PostMapping
+    public ResponseEntity<String> createTechnologyCategory(@RequestBody TechnologyCategory technologyCategory) throws JsonProcessingException {
+        return ResponseEntity.ok().body(new ObjectMapper().writerWithDefaultPrettyPrinter().writeValueAsString(technologyCategoryService.create(technologyCategory)));
     }
 }

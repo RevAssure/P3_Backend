@@ -51,4 +51,13 @@ public class TechnologyCategoryServiceTest {
         assertEquals(technologyCategoryList, technologyCategoryService.getAll());
     }
 
+    /**
+     * Test if create works
+     */
+    @Test
+    void createTest() {
+        when(TechnologyCategoryRepository.save(techCat)).thenReturn(techCat);
+        assertEquals(techCat, technologyCategoryService.create(techCat));
+    }
+
 }
