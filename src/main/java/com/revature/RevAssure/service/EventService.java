@@ -33,12 +33,7 @@ public class EventService {
      * @return Either a list of all the events for that curriculum, or an empty ArrayList if there were no events for that curriculum.
      */
     public List<Event> getAllEventsByCurriculumId(int id) {
-        try {
-            return eventRepository.findByCurriculumId(id).orElseThrow(RuntimeException::new);
-        } catch(RuntimeException e){
-            return new ArrayList<Event>();
-        }
-
+        return eventRepository.findByCurriculumId(id);
     }
 
     /**

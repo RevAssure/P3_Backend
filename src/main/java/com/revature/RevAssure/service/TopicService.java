@@ -43,12 +43,7 @@ public class TopicService {
      * @return List of Topic Objects
      */
     public List<Topic> getByTrainer(RevUser trainer) {
-        try {
-            return topicRepository.findByTrainer(trainer).orElseThrow(RuntimeException::new);
-        } catch(RuntimeException e){
-            // log
-            return new ArrayList<>();
-        }
+            return topicRepository.findByTrainer(trainer);
     }
 
     /**
@@ -66,13 +61,7 @@ public class TopicService {
      * @return A list of Topics with the same module ID
      */
     public List<Topic> getAllTopicsByModuleId(int moduleId){
-        try {
-            return topicRepository.findByModulesId(moduleId).orElseThrow(RuntimeException::new);
-        }
-        catch(RuntimeException e){
-            // TODO: when we get logger. log that there are no topics with corresponding Module id
-            return new ArrayList<Topic>();
-        }
+        return topicRepository.findByModulesId(moduleId);
     }
 
     /**

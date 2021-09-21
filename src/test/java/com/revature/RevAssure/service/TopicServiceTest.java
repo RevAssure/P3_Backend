@@ -90,7 +90,7 @@ class TopicServiceTest {
      */
     @Test
     void getByTrainerTest() {
-        when(topicRepository.findByTrainer(trainer)).thenReturn(Optional.of(topicList));
+        when(topicRepository.findByTrainer(trainer)).thenReturn(topicList);
         assertEquals(topicList, topicService.getByTrainer(trainer));
     }
 
@@ -99,7 +99,7 @@ class TopicServiceTest {
      */
     @Test
     void getByTrainerButTrainerHasNoTopicsTest() {
-        when(topicRepository.findByTrainer(trainer)).thenReturn(Optional.empty());
+        when(topicRepository.findByTrainer(trainer)).thenReturn(new ArrayList<>());
         assertEquals(new ArrayList<>(), topicService.getByTrainer(trainer));
     }
 
@@ -135,7 +135,7 @@ class TopicServiceTest {
      */
     @Test
     void getTopicsByModuleId(){
-        when(topicRepository.findByModulesId(1)).thenReturn(Optional.of(topicList));
+        when(topicRepository.findByModulesId(1)).thenReturn(topicList);
         assertEquals(topicList, topicService.getAllTopicsByModuleId(1));
     }
 
