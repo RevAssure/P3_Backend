@@ -17,7 +17,7 @@ pipeline{
 //         sh './P3_Backend/mvnw test'
 //       }
 //     }
-    stage('Remove Image if exists){
+    stage('Remove Image if exists'){
         steps {
             sh 'docker rmi -f ${IMAGE_TAG} || true'
         }
