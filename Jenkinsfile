@@ -5,18 +5,18 @@ pipeline{
     IMAGE_TAG="RevAssure-backend"
     CONTAINER_NAME="RevAssure-backend-app"
   }
-  stages {
-    stage('checkout'){
-      steps{
-        git branch: 'devops' url:'https://github.com/RevAssure/P3_Backend.git'
-      }
-    }
-    stage('Testing'){
-      steps{
-        sh 'chmod a+x ./P3_Backend/mvnw'
-        sh './P3_Backend/mvnw test'
-      }
-    }
+//   stages {
+//     stage('checkout'){
+//       steps{
+//         git branch: 'devops' url:'https://github.com/RevAssure/P3_Backend.git'
+//       }
+//     }
+//     stage('Testing'){
+//       steps{
+//         sh 'chmod a+x ./P3_Backend/mvnw'
+//         sh './P3_Backend/mvnw test'
+//       }
+//     }
     stage('Remove Image if exists){
         steps {
             sh 'docker rmi -f ${IMAGE_TAG} || true'
