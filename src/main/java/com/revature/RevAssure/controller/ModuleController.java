@@ -1,6 +1,5 @@
 package com.revature.RevAssure.controller;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.revature.RevAssure.dto.ModuleDTO;
 import com.revature.RevAssure.model.Module;
@@ -45,18 +44,22 @@ public class ModuleController {
      */
     // Create
     @PostMapping
-    public ResponseEntity<String> createModule(@RequestBody ModuleDTO moduledto) throws JsonProcessingException {
+    public ResponseEntity<String> createModule(@RequestBody ModuleDTO moduledto) {
         RevUser revUser = JwtUtil.extractUser(revUserService);
-        if(revUser.isTrainer()){
-            log.info("Trainer is creating a new module");
-            return ResponseEntity.ok().body(
-                    new ObjectMapper().writerWithDefaultPrettyPrinter().writeValueAsString(
-                            moduleService.saveNewModule(
-                                    moduledto.convertToEntity(revUser))));
-        }
-        else{
-            log.warn("Associate is attempting to create new module");
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        try {
+            if (revUser.isTrainer()) {
+                log.info("Trainer is creating a new module");
+                return ResponseEntity.ok().body(
+                        new ObjectMapper().writerWithDefaultPrettyPrinter().writeValueAsString(
+                                moduleService.saveNewModule(
+                                        moduledto.convertToEntity(revUser))));
+            } else {
+                log.warn("Associate is attempting to create new module");
+                return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+            }
+        } catch (Exception e){
+            log.error("Module failed to be mapped as a JSON string",e);
+            return ResponseEntity.internalServerError().build();
         }
     }
 
@@ -81,18 +84,22 @@ public class ModuleController {
      */
     // Update
     @PutMapping
-    public ResponseEntity<String> updateModules(@RequestBody ModuleDTO moduledto) throws JsonProcessingException {
+    public ResponseEntity<String> updateModules(@RequestBody ModuleDTO moduledto) {
         RevUser revUser = JwtUtil.extractUser(revUserService);
-        if(revUser.isTrainer()){
-            log.info("Trainer is updating their module");
-            return ResponseEntity.ok().body(
-                    new ObjectMapper().writerWithDefaultPrettyPrinter().writeValueAsString(
-                            moduleService.saveExistingModule(
-                                    moduledto.convertToEntity(revUser))));
-        }
-        else{
-            log.warn("Associate is attempting to update a module");
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        try {
+            if (revUser.isTrainer()) {
+                log.info("Trainer is updating their module");
+                return ResponseEntity.ok().body(
+                        new ObjectMapper().writerWithDefaultPrettyPrinter().writeValueAsString(
+                                moduleService.saveExistingModule(
+                                        moduledto.convertToEntity(revUser))));
+            } else {
+                log.warn("Associate is attempting to update a module");
+                return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+            }
+        } catch (Exception e){
+            log.error("Module failed to be mapped as a JSON string",e);
+            return ResponseEntity.internalServerError().build();
         }
     }
 

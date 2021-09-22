@@ -1,6 +1,5 @@
 package com.revature.RevAssure.controller;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.revature.RevAssure.dto.EventDTO;
 import com.revature.RevAssure.model.Event;
@@ -43,18 +42,22 @@ public class EventController {
      * @return : The event that was inserted and persisted into the database or sets bad status if user is not a trainer
      */
     @PostMapping
-    public ResponseEntity<String> createEvent(@RequestBody EventDTO eventdto) throws JsonProcessingException {
+    public ResponseEntity<String> createEvent(@RequestBody EventDTO eventdto) {
         RevUser revUser = JwtUtil.extractUser(revUserService);
-        if(revUser.isTrainer()){
-            log.info("Trainer is creating a new event");
-            return ResponseEntity.ok().body(
-                    new ObjectMapper().writerWithDefaultPrettyPrinter().writeValueAsString(
-                            eventService.createEvent(
-                                    eventdto.convertToEntity())));
-        }
-        else{
-            log.warn("Associate is attempting to create an event");
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        try {
+            if (revUser.isTrainer()) {
+                log.info("Trainer is creating a new event");
+                return ResponseEntity.ok().body(
+                        new ObjectMapper().writerWithDefaultPrettyPrinter().writeValueAsString(
+                                eventService.createEvent(
+                                        eventdto.convertToEntity())));
+            } else {
+                log.warn("Associate is attempting to create an event");
+                return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+            }
+        } catch (Exception e) {
+            log.error("Event failed to be mapped as a JSON string",e);
+            return ResponseEntity.internalServerError().build();
         }
     }
 
@@ -81,18 +84,22 @@ public class EventController {
      * @return : The event that is to be updated and persisted into the database or sets bad status if user is not a trainer
      */
     @PutMapping
-    public ResponseEntity<String> updateEvent(@RequestBody EventDTO eventdto) throws JsonProcessingException {;
+    public ResponseEntity<String> updateEvent(@RequestBody EventDTO eventdto) {;
         RevUser revUser = JwtUtil.extractUser(revUserService);
-        if(revUser.isTrainer()){
-            log.info("Trainer is updating one of their events");
-            return ResponseEntity.ok().body(
-                    new ObjectMapper().writerWithDefaultPrettyPrinter().writeValueAsString(
-                            eventService.updateEvent(
-                                    eventdto.convertToEntity())));
-        }
-        else{
-            log.warn("Associate is attempting to update an event");
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        try {
+            if (revUser.isTrainer()) {
+                log.info("Trainer is updating one of their events");
+                return ResponseEntity.ok().body(
+                        new ObjectMapper().writerWithDefaultPrettyPrinter().writeValueAsString(
+                                eventService.updateEvent(
+                                        eventdto.convertToEntity())));
+            } else {
+                log.warn("Associate is attempting to update an event");
+                return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+            }
+        } catch (Exception e) {
+            log.error("Event failed to be mapped as a JSON string",e);
+            return ResponseEntity.internalServerError().build();
         }
     }
 

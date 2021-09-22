@@ -54,17 +54,21 @@ public class TechnologyCategoryController {
      * @return TechnologyCategory which was persisted
      */
     @PostMapping
-    public ResponseEntity<String> createTechnologyCategory(@RequestBody TechnologyCategory technologyCategory) throws JsonProcessingException {
+    public ResponseEntity<String> createTechnologyCategory(@RequestBody TechnologyCategory technologyCategory) {
         RevUser revUser = JwtUtil.extractUser(revUserService);
-        if(revUser.isTrainer()) {
-            log.info("Trainer is creating a new technology category");
-            return ResponseEntity.ok().body(
-                    new ObjectMapper().writerWithDefaultPrettyPrinter().writeValueAsString(
-                            technologyCategoryService.create(technologyCategory)));
-        }
-        else{
-            log.warn("Associate is attempting to add a new technology category");
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        try {
+            if (revUser.isTrainer()) {
+                log.info("Trainer is creating a new technology category");
+                return ResponseEntity.ok().body(
+                        new ObjectMapper().writerWithDefaultPrettyPrinter().writeValueAsString(
+                                technologyCategoryService.create(technologyCategory)));
+            } else {
+                log.warn("Associate is attempting to add a new technology category");
+                return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+            }
+        } catch (Exception e) {
+            log.error("Topic failed to be mapped as a JSON string",e);
+            return ResponseEntity.internalServerError().build();
         }
     }
 }

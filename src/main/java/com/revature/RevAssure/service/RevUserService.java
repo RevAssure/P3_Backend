@@ -12,7 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -60,7 +59,6 @@ public class RevUserService {
      * Method to authenticate if a user has entered valid log in credentials
      * @param authReq The request body which contains user's credentials to authenticate
      * @return ResponseEntity with 200 status and a JWT in the body, or a 403 with no body
-     * @throws Exception
      */
     public ResponseEntity<?> authenticate(AuthenticationRequest authReq) {
         log.info("verify user");
@@ -73,7 +71,7 @@ public class RevUserService {
             return ResponseEntity.ok(authResp);
         }
         catch (Exception e) {
-            log.warn("Credentials not recognized during authentication",e);
+            log.error("Credentials not recognized during authentication",e);
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
     }
@@ -85,7 +83,11 @@ public class RevUserService {
      */
     public RevUser getRevUserByUsername(String username) {
         log.info("get user information by username");
-        log.warn("Might throw Runtime Exception");
-        return revUserRepository.findByUsername(username).orElseThrow(RuntimeException::new);
+        try {
+            return revUserRepository.findByUsername(username).orElseThrow(RuntimeException::new);
+        } catch (RuntimeException e){
+            log.error("No user found for given username",e);
+            return null;
+        }
     }
 }

@@ -1,6 +1,5 @@
 package com.revature.RevAssure.controller;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.revature.RevAssure.dto.CurriculumDTO;
 import com.revature.RevAssure.model.Curriculum;
@@ -43,18 +42,22 @@ public class CurriculumController {
      * @return the stored curriculum or sets bad status if the user is not a trainer
      */
     @PostMapping
-    public ResponseEntity<String> createCurriculum(@RequestBody CurriculumDTO curriculumdto) throws JsonProcessingException {
+    public ResponseEntity<String> createCurriculum(@RequestBody CurriculumDTO curriculumdto) {
         RevUser revUser = JwtUtil.extractUser(revUserService);
-        if(revUser.isTrainer()) {
-            log.info("Trainer is making new curriculum.");
-            return ResponseEntity.ok().body(
-                    new ObjectMapper().writerWithDefaultPrettyPrinter().writeValueAsString(
-                            curriculumService.saveCurriculum(
-                                    curriculumdto.convertToEntity(revUser))));
-        }
-        else{
-            log.warn("Associate attempted to create curriculum.");
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        try {
+            if (revUser.isTrainer()) {
+                log.info("Trainer is making new curriculum.");
+                return ResponseEntity.ok().body(
+                        new ObjectMapper().writerWithDefaultPrettyPrinter().writeValueAsString(
+                                curriculumService.saveCurriculum(
+                                        curriculumdto.convertToEntity(revUser))));
+            } else {
+                log.warn("Associate attempted to create curriculum.");
+                return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+            }
+        } catch (Exception e) {
+            log.error("Curriculum failed to be mapped as a JSON string",e);
+            return ResponseEntity.internalServerError().build();
         }
     }
 
@@ -96,18 +99,22 @@ public class CurriculumController {
      * @return the updated curriculum or sets bad status if user is not a trainer
      */
     @PutMapping
-    public ResponseEntity<String> updateCurriculum(@RequestBody CurriculumDTO curriculumdto) throws JsonProcessingException {
+    public ResponseEntity<String> updateCurriculum(@RequestBody CurriculumDTO curriculumdto) {
         RevUser revUser = JwtUtil.extractUser(revUserService);
-        if(revUser.isTrainer()) {
-            log.info("Trainer is updating their curriculum.");
-            return ResponseEntity.ok().body(
-                    new ObjectMapper().writerWithDefaultPrettyPrinter().writeValueAsString(
-                            curriculumService.saveCurriculum(
-                                    curriculumdto.convertToEntity(revUser))));
-        }
-        else{
-            log.warn("Associate attempting to update curriculum.");
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        try {
+            if (revUser.isTrainer()) {
+                log.info("Trainer is updating their curriculum.");
+                return ResponseEntity.ok().body(
+                        new ObjectMapper().writerWithDefaultPrettyPrinter().writeValueAsString(
+                                curriculumService.saveCurriculum(
+                                        curriculumdto.convertToEntity(revUser))));
+            } else {
+                log.warn("Associate attempting to update curriculum.");
+                return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+            }
+        } catch (Exception e) {
+            log.error("Curriculum failed to be mapped as a JSON string",e);
+            return ResponseEntity.internalServerError().build();
         }
     }
 
