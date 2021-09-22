@@ -29,7 +29,7 @@ pipeline{
     }
     stage('Remove previous container if exists'){
       steps{
-        sh 'docker stop ${CONTAINER_NAME} || true'
+        sh 'docker stop ${CONTAINER_NAME} || true && docker rm ${CONTAINER_NAME} || true' 
       }
     }
     stage('Create Conatiner'){
