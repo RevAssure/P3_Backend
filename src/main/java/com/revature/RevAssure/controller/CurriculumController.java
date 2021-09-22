@@ -8,6 +8,9 @@ import com.revature.RevAssure.model.RevUser;
 import com.revature.RevAssure.service.CurriculumService;
 import com.revature.RevAssure.service.RevUserService;
 import com.revature.RevAssure.util.JwtUtil;
+import org.postgresql.core.ConnectionFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,6 +23,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/curriculum")
 public class CurriculumController {
+    private static final Logger log = LoggerFactory.getLogger(ConnectionFactory.class);
 
     @Autowired
     private final CurriculumService curriculumService;
