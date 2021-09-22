@@ -40,13 +40,7 @@ public class EventService {
      */
     public List<Event> getAllEventsByCurriculumId(int id) {
         log.info("Get all events in specific curriculum");
-        try {
-            return eventRepository.findByCurriculumId(id).orElseThrow(RuntimeException::new);
-        } catch(RuntimeException e){
-            log.debug("Runtime Exception");
-            return new ArrayList<Event>();
-        }
-
+        return eventRepository.findByCurriculumId(id);
     }
 
     /**

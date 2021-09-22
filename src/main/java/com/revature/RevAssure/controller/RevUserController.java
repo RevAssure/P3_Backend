@@ -40,7 +40,7 @@ public class RevUserController {
     @PostMapping("/authenticate")
     public ResponseEntity<?> createAuthenticationToken(@RequestBody AuthenticationRequest authReq) throws Exception {
         ResponseEntity<?> responseEntity = revUserService.authenticate(authReq);
-        return revUserService.authenticate(authReq);
+        return responseEntity;
     }
 
     /**

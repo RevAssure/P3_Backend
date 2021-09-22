@@ -50,12 +50,7 @@ public class TopicService {
      */
     public List<Topic> getByTrainer(RevUser trainer) {
         log.info("getting list of topics by trainer");
-        try {
-            return topicRepository.findByTrainer(trainer).orElseThrow(RuntimeException::new);
-        } catch(RuntimeException e){
-            log.debug("Runtime exception");
-            return new ArrayList<>();
-        }
+        return topicRepository.findByTrainer(trainer);
     }
 
     /**
@@ -75,13 +70,7 @@ public class TopicService {
      */
     public List<Topic> getAllTopicsByModuleId(int moduleId){
         log.info("trying to get topics by module id");
-        try {
-            return topicRepository.findByModulesId(moduleId).orElseThrow(RuntimeException::new);
-        }
-        catch(RuntimeException e){
-            log.debug("no topics with corresponding module id, runtime exception");
-            return new ArrayList<Topic>();
-        }
+        return topicRepository.findByModulesId(moduleId);
     }
 
     /**
