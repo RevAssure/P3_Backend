@@ -103,15 +103,15 @@ class TopicServiceTest {
         assertEquals(new ArrayList<>(), topicService.getByTrainer(trainer));
     }
 
-    // TODO: 9/21/2021 think about necessity of this test 
-    /**
-     * if topic id does not exists should return null
-     */
-    @Test
-    void getTopicByIdButTopicIdDoesNotExists(){
-        when(topicRepository.getById(1)).thenReturn(null);
-        assertEquals(null, topicService.getById(1));
-    }
+//    /**
+//     * if topic id does not exists should return null
+//     */
+//    @Deprecated
+//    @Test
+//    void getTopicByIdButTopicIdDoesNotExists(){
+//        when(topicRepository.getById(1)).thenReturn(null);
+//        assertEquals(null, topicService.getById(1));
+//    }
 
     /**
      * Unit test for the update operation of Topic objects
@@ -149,4 +149,12 @@ class TopicServiceTest {
         assertEquals(new ArrayList<Topic>(), topicService.getAllTopicsByModuleId(1));
     }
 
+    /**
+     * test getById is working correctly
+     */
+    @Test
+    void getById() {
+        when(topicRepository.getById(1)).thenReturn(topic);
+        assertEquals(topic, topicService.getById(1));
+    }
 }
