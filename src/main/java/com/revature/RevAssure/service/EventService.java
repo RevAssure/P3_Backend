@@ -8,7 +8,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -28,7 +27,6 @@ public class EventService {
      * @return The event object that was persisted into the database.
      */
     public Event createEvent(Event event) {
-
         log.info("creating event");
         return eventRepository.save(event);
     }

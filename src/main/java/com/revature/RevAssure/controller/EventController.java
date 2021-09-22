@@ -8,6 +8,9 @@ import com.revature.RevAssure.model.RevUser;
 import com.revature.RevAssure.service.EventService;
 import com.revature.RevAssure.service.RevUserService;
 import com.revature.RevAssure.util.JwtUtil;
+import org.postgresql.core.ConnectionFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,6 +22,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/event")
 public class EventController {
+    private static final Logger log = LoggerFactory.getLogger(ConnectionFactory.class);
 
     @Autowired
     private final EventService eventService;
@@ -33,8 +37,6 @@ public class EventController {
 
     // Create
 
-    // TODO: Consider DTOs for parameter value
-
     /**
      * Endpoint available for creating an event
      * @param eventdto : The event that is to be inserted and persisted into the database
@@ -44,13 +46,14 @@ public class EventController {
     public ResponseEntity<String> createEvent(@RequestBody EventDTO eventdto) throws JsonProcessingException {
         RevUser revUser = JwtUtil.extractUser(revUserService);
         if(revUser.isTrainer()){
-            Event event = eventService.createEvent(eventdto.convertToEntity());
-            String str = new ObjectMapper()
-                    .writerWithDefaultPrettyPrinter()
-                    .writeValueAsString(event);
-            return ResponseEntity.ok().body(str);
+            log.info("Trainer is creating a new event");
+            return ResponseEntity.ok().body(
+                    new ObjectMapper().writerWithDefaultPrettyPrinter()
+                            .writeValueAsString(eventService.createEvent(
+                                    eventdto.convertToEntity())));
         }
         else{
+            log.warn("Associate is attempting to create an event");
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         }
     }
@@ -64,6 +67,7 @@ public class EventController {
      */
     @GetMapping("/{curriculum_id}")
     public List<Event> getAllEventsByCurriculumId(@PathVariable int curriculum_id){
+        log.info("All events that share the given curriculum id is being retrieved.");
         return eventService.getAllEventsByCurriculumId(curriculum_id);
     }
 
@@ -74,19 +78,20 @@ public class EventController {
     /**
      * Endpoint available for updating an existing event
      * @param eventdto : The event that is to be updated and persisted into the database
-     * @return : The event that is to be inserted and persisted into the database or sets bad status if user is not a trainer
+     * @return : The event that is to be updated and persisted into the database or sets bad status if user is not a trainer
      */
     @PutMapping
     public ResponseEntity<String> updateEvent(@RequestBody EventDTO eventdto) throws JsonProcessingException {;
         RevUser revUser = JwtUtil.extractUser(revUserService);
         if(revUser.isTrainer()){
-            Event event = eventService.updateEvent(eventdto.convertToEntity());
-            String str = new ObjectMapper()
-                    .writerWithDefaultPrettyPrinter()
-                    .writeValueAsString(event);
-            return ResponseEntity.ok().body(str);
+            log.info("Trainer is updating one of their events");
+            return ResponseEntity.ok().body(
+                    new ObjectMapper().writerWithDefaultPrettyPrinter()
+                            .writeValueAsString(eventService.updateEvent(
+                                    eventdto.convertToEntity())));
         }
         else{
+            log.warn("Associate is attempting to update an event");
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         }
     }
@@ -96,10 +101,19 @@ public class EventController {
     /**
      * Endpoint available for deleting an existing event
      * @param eventId : Event id of event that is to be deleted
+     * @return ResponseEntity that will return status code
      */
     @DeleteMapping("/{eventId}")
-    public void deleteEvent(@PathVariable int eventId){
+    public ResponseEntity<String> deleteEvent(@PathVariable int eventId){
         RevUser revUser = JwtUtil.extractUser(revUserService);
-        if(revUser.isTrainer()){eventService.deleteEvent(eventId);}
+        if(revUser.isTrainer()){
+            log.info("Trainer is deleting one of their events");
+            eventService.deleteEvent(eventId);
+            return ResponseEntity.ok().build();
+        }
+        else{
+            log.warn("Associate is attempting to delete an event");
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        }
     }
 }
