@@ -20,24 +20,28 @@ import org.springframework.stereotype.Service;
 @Service
 public class RevUserService {
     private static final Logger log = LoggerFactory.getLogger(ConnectionFactory.class);
-    @Autowired
+
     private final RevUserRepository revUserRepository;
 
-    @Autowired
+
     PasswordEncoder passwordEncoder;
 
-    @Autowired
+
     private AuthenticationManager authenticationManager;
 
-    @Autowired
+
     private RevUserDetailsService revUserDetailsService;
 
-    @Autowired
+
     private JwtUtil jwtTokenUtil;
 
     @Autowired
-    public RevUserService(RevUserRepository revUserRepository) {
+    public RevUserService(RevUserRepository revUserRepository, PasswordEncoder passwordEncoder, AuthenticationManager authenticationManager, RevUserDetailsService revUserDetailsService, JwtUtil jwtUtil) {
         this.revUserRepository = revUserRepository;
+        this.authenticationManager = authenticationManager;
+        this.revUserDetailsService = revUserDetailsService;
+        this.jwtTokenUtil = jwtUtil;
+        this.passwordEncoder = passwordEncoder;
     }
 
     /**
