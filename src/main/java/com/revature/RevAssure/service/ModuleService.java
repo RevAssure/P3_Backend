@@ -2,6 +2,9 @@ package com.revature.RevAssure.service;
 
 import com.revature.RevAssure.model.Module;
 import com.revature.RevAssure.repository.ModuleRepository;
+import org.postgresql.core.ConnectionFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -12,6 +15,7 @@ import java.util.List;
 @Service
 public class ModuleService {
 
+    private static final Logger log = LoggerFactory.getLogger(ConnectionFactory.class);
     /**
      * Repository Layer for Modules
      */
@@ -32,6 +36,7 @@ public class ModuleService {
      * @return The module after being persisted
      */
     public Module saveNewModule(Module module) {
+        log.info("save module");
         return repository.save(module);
     }
 
@@ -42,6 +47,7 @@ public class ModuleService {
      */
     public List<Module> findAllModules() {
         //MORE HERE?
+        log.info("find all modules");
         return repository.findAll();
     }
 
@@ -51,6 +57,7 @@ public class ModuleService {
      * @return the updated version of the module after persisting
      */
     public Module saveExistingModule(Module newModule) {
+        log.info("save new module");
         return repository.save(newModule);
     }
 
@@ -59,6 +66,7 @@ public class ModuleService {
      * @param moduleId moduleId to be deleted
      */
     public void deleteModule(int moduleId) {
+        log.info("deleting module");
         repository.delete(repository.getById(moduleId));
     }
 }

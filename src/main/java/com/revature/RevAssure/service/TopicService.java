@@ -7,12 +7,16 @@ import com.revature.RevAssure.repository.TopicRepository;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.postgresql.core.ConnectionFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
 public class TopicService {
     private final TopicRepository topicRepository;
+    private static final Logger log = LoggerFactory.getLogger(ConnectionFactory.class);
 
     @Autowired
     public TopicService(TopicRepository topicRepository){
@@ -26,6 +30,7 @@ public class TopicService {
      * @return Topic object
      */
     public Topic saveTopic(Topic topic){
+        log.info("saving new topic");
         return topicRepository.save(topic);
     }
 
@@ -34,6 +39,7 @@ public class TopicService {
      * @return List of Topic Objects
      */
     public List<Topic> getAll(){
+        log.info("getting all list of topics");
         return topicRepository.findAll();
     }
 
@@ -43,7 +49,8 @@ public class TopicService {
      * @return List of Topic Objects
      */
     public List<Topic> getByTrainer(RevUser trainer) {
-            return topicRepository.findByTrainer(trainer);
+        log.info("getting list of topics by trainer");
+        return topicRepository.findByTrainer(trainer);
     }
 
     /**
@@ -52,6 +59,7 @@ public class TopicService {
      * @return Topic object or null
      */
     public Topic getById(int topicId){
+        log.info("grab topic by id");
         return topicRepository.getById(topicId);
     }
 
@@ -61,6 +69,7 @@ public class TopicService {
      * @return A list of Topics with the same module ID
      */
     public List<Topic> getAllTopicsByModuleId(int moduleId){
+        log.info("trying to get topics by module id");
         return topicRepository.findByModulesId(moduleId);
     }
 
@@ -68,13 +77,16 @@ public class TopicService {
      * Service to update an existing topic
      * @param topic the topic to be updated
      */
-    public Topic updateTopic(Topic topic){return topicRepository.save(topic);}
+    public Topic updateTopic(Topic topic){
+        log.info("updating topic");
+        return topicRepository.save(topic);}
 
     /**
      * Service to delete an existing topic
      * @param topicId the ID number of a topic
      */
     public void deleteTopic(int topicId){
+        log.info("deleting topic");
         topicRepository.deleteById(topicId);
     }
 }
