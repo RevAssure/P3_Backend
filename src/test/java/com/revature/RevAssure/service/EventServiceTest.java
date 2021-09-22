@@ -6,22 +6,20 @@ import com.revature.RevAssure.model.Topic;
 import com.revature.RevAssure.repository.EventRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
-@SpringBootTest
+@ExtendWith(MockitoExtension.class)
 class EventServiceTest {
-    @MockBean
+    @Mock
     private EventRepository eventRepository;
-    @Autowired
     private EventService eventService;
 
     private Event event;
@@ -32,6 +30,8 @@ class EventServiceTest {
 
     @BeforeEach
     void setUp() {
+        eventService = new EventService(eventRepository);
+
         curriculum = new Curriculum();
         curriculum.setId(1);
         topic = new Topic();
@@ -58,7 +58,7 @@ class EventServiceTest {
 
     @Test
     void getAllEventsByCurriculumSuccessfullyTest() {
-        when(eventRepository.findByCurriculumId(1)).thenReturn(Optional.of(events));
+        when(eventRepository.findByCurriculumId(1)).thenReturn(events);
 
         List<Event> evs = eventService.getAllEventsByCurriculumId(1);
 
@@ -67,7 +67,7 @@ class EventServiceTest {
 
     @Test
     void getAllEventsByCurriculumButNoEventsTest() {
-        when(eventRepository.findByCurriculumId(1)).thenReturn(Optional.empty());
+        when(eventRepository.findByCurriculumId(1)).thenReturn(new ArrayList<>());
 
         List<Event> evs = eventService.getAllEventsByCurriculumId(1);
 

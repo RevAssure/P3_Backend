@@ -5,6 +5,9 @@ import com.revature.RevAssure.dto.AuthenticationResponse;
 import com.revature.RevAssure.model.RevUser;
 import com.revature.RevAssure.repository.RevUserRepository;
 import com.revature.RevAssure.util.JwtUtil;
+import org.postgresql.core.ConnectionFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -16,7 +19,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class RevUserService {
-
+    private static final Logger log = LoggerFactory.getLogger(ConnectionFactory.class);
     @Autowired
     private final RevUserRepository revUserRepository;
 
@@ -43,6 +46,7 @@ public class RevUserService {
      * @return RevUser
      */
     public RevUser saveNewRevUser(RevUser revUser) {
+        log.info("saving User");
         revUser.setPassword(passwordEncoder.encode(revUser.getPassword()));
         return revUserRepository.save(revUser);
     }
@@ -54,6 +58,7 @@ public class RevUserService {
      * @throws Exception
      */
     public ResponseEntity<?> authenticate(AuthenticationRequest authReq) throws Exception {
+        log.info("verify user");
         try {
             authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(authReq.getUsername(), authReq.getPassword())
@@ -61,6 +66,7 @@ public class RevUserService {
         }
         catch (BadCredentialsException e) {
             e.printStackTrace();
+            log.debug("BadCredentials Exception");
             throw new BadCredentialsException("Invalid Credentials", e);
         }
         final UserDetails userDetails = revUserDetailsService.loadUserByUsername(authReq.getUsername());
@@ -75,6 +81,8 @@ public class RevUserService {
      * @return RevUser
      */
     public RevUser getRevUserByUsername(String username) {
+        log.info("get user information by username");
+        log.warn("Might throw Runtime Exception");
         return revUserRepository.findByUsername(username).orElseThrow(RuntimeException::new);
     }
 }

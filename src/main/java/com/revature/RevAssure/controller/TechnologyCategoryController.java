@@ -28,8 +28,8 @@ public class TechnologyCategoryController {
      */
     @Autowired
     public TechnologyCategoryController(TechnologyCategoryService technologyCategoryService, RevUserService revUserService){
-        this.revUserService = revUserService;
         this.technologyCategoryService = technologyCategoryService;
+        this.revUserService = revUserService;
     }
 
     /**
