@@ -47,13 +47,14 @@ public class CurriculumController {
     public ResponseEntity<String> createCurriculum(@RequestBody CurriculumDTO curriculumdto) throws JsonProcessingException {
         RevUser revUser = JwtUtil.extractUser(revUserService);
         if(revUser.isTrainer()) {
-            Curriculum cur = curriculumService.saveCurriculum(curriculumdto.convertToEntity(revUser));
-            String str = new ObjectMapper()
-                    .writerWithDefaultPrettyPrinter()
-                    .writeValueAsString(cur);
-            return ResponseEntity.ok().body(str);
+            log.info("Trainer is making new curriculum.");
+            return ResponseEntity.ok().body(
+                    new ObjectMapper().writerWithDefaultPrettyPrinter()
+                            .writeValueAsString(curriculumService.saveCurriculum(
+                                    curriculumdto.convertToEntity(revUser))));
         }
         else{
+            log.warn("Associate attempted to create curriculum.");
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         }
     }
@@ -65,9 +66,10 @@ public class CurriculumController {
      * @return List of Curricula belonging to current user
      */
     @GetMapping
-    public List<Curriculum> getAllCurriculaByCurrentUserId()
+    public List<Curriculum> getAllCurriculaByTrainerId()
     {
         RevUser revUser = JwtUtil.extractUser(revUserService);
+        log.info("Trainer is getting all curriculum they are an owner of.");
         return curriculumService.getAllCurriculaByTrainer(revUser);
     }
 
@@ -83,7 +85,8 @@ public class CurriculumController {
     public List<Curriculum> getAssignedCurriculaByCurrentUserId()
     {
         RevUser revUser = JwtUtil.extractUser(revUserService);
-            return curriculumService.getAllCurriculaByUser(revUser);
+        log.info("User is getting all curriculum they are a participant in");
+        return curriculumService.getAllCurriculaByUser(revUser);
     }
 
     // Update
@@ -97,13 +100,14 @@ public class CurriculumController {
     public ResponseEntity<String> updateCurriculum(@RequestBody CurriculumDTO curriculumdto) throws JsonProcessingException {
         RevUser revUser = JwtUtil.extractUser(revUserService);
         if(revUser.isTrainer()) {
-            Curriculum cur = curriculumService.saveCurriculum(curriculumdto.convertToEntity(revUser));
-            String str = new ObjectMapper()
-                    .writerWithDefaultPrettyPrinter()
-                    .writeValueAsString(cur);
-            return ResponseEntity.ok().body(str);
+            log.info("Trainer is updating their curriculum.");
+            return ResponseEntity.ok().body(
+                    new ObjectMapper().writerWithDefaultPrettyPrinter()
+                            .writeValueAsString(curriculumService.saveCurriculum(
+                                    curriculumdto.convertToEntity(revUser))));
         }
         else{
+            log.warn("Associate attempting to update curriculum.");
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         }
     }
