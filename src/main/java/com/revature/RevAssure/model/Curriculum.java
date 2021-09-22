@@ -25,10 +25,21 @@ public class Curriculum {
     @Column(name = "name")
     private String name;
 
+    @ManyToOne
+    @JoinColumn(name = "trainer_id" , referencedColumnName = "id")
+    @JsonIgnoreProperties("ownedCurricula")
+    private RevUser trainer;
+
     @OneToMany(mappedBy = "curriculum")
     @JsonIgnoreProperties("curriculum")
     private List<Event> events;
 
-    @ManyToMany(mappedBy = "curricula")
+    @ManyToMany
+    @JoinTable(
+            name="revuser_curriculum",
+            joinColumns=@JoinColumn(name="revuser_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "curriculum_id", referencedColumnName = "id")
+    )
+    @JsonIgnoreProperties("curricula")
     private List<RevUser> revUsers;
 }

@@ -6,9 +6,9 @@ import com.revature.RevAssure.model.Topic;
 import com.revature.RevAssure.repository.ModuleRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,7 +16,7 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
-@SpringBootTest
+@ExtendWith(MockitoExtension.class)
 class ModuleServiceTest {
 
     static TechnologyCategory tc;
@@ -27,14 +27,15 @@ class ModuleServiceTest {
     static Module module2 = new Module();
     static List<Module> modules;
 
-    @Autowired
     private ModuleService service;
 
-    @MockBean
+    @Mock
     private ModuleRepository repo;
 
     @BeforeEach
-    public void init(){
+    public void setUp(){
+        service = new ModuleService(repo);
+
         module.setId(1);
         module.setName("test");
         module.setDescription("test");
@@ -75,7 +76,8 @@ class ModuleServiceTest {
     @Test
     void deleteExistingModuleTest(){
         doNothing().when(repo).delete(module);
-        service.deleteModule(module);
+        when(repo.getById(1)).thenReturn(module);
+        service.deleteModule(1);
         verify(repo, times(1)).delete(module);
     }
 }

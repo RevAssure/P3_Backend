@@ -2,6 +2,9 @@ package com.revature.RevAssure.service;
 
 import com.revature.RevAssure.model.RevUser;
 import com.revature.RevAssure.repository.RevUserRepository;
+import org.postgresql.core.ConnectionFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -15,7 +18,7 @@ import java.util.ArrayList;
  */
 @Service
 public class RevUserDetailsService implements org.springframework.security.core.userdetails.UserDetailsService {
-
+    private static final Logger log = LoggerFactory.getLogger(ConnectionFactory.class);
     /**
      * Repository layer for RevUser object
      */
@@ -39,9 +42,11 @@ public class RevUserDetailsService implements org.springframework.security.core.
      */
     @Override
     public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
+        log.info("Load user information");
         RevUser revUser = revUserRepository.findByUsername(s).orElseThrow(RuntimeException::new);
         String username = revUser.getUsername();
         String password = revUser.getPassword();
+        log.warn("Might throw UsernameNotFoundException");
         return new User(username, password, new ArrayList<>()); // ArrayList because we aren't dealing with Authorities
     }
 

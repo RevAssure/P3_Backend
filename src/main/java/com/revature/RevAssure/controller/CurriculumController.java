@@ -1,12 +1,19 @@
 package com.revature.RevAssure.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.revature.RevAssure.dto.CurriculumDTO;
 import com.revature.RevAssure.model.Curriculum;
 import com.revature.RevAssure.model.RevUser;
 import com.revature.RevAssure.service.CurriculumService;
 import com.revature.RevAssure.service.RevUserService;
 import com.revature.RevAssure.util.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.ArrayList;
 import java.util.List;
 
 @CrossOrigin
@@ -29,14 +36,22 @@ public class CurriculumController {
 
     /**
      * stores a new curriculum in the database
-     * @param curriculum the curriculum to be stored
-     * @return the stored
+     * @param curriculumdto the curriculum to be stored
+     * @return the stored curriculum or sets bad status if the user is not a trainer
      */
     @PostMapping
-    public Curriculum createCurriculum(@RequestBody Curriculum curriculum)
-    {
-        RevUser revUser = extractUser();
-        return curriculumService.saveCurriculum(curriculum);
+    public ResponseEntity<String> createCurriculum(@RequestBody CurriculumDTO curriculumdto) throws JsonProcessingException {
+        RevUser revUser = JwtUtil.extractUser(revUserService);
+        if(revUser.isTrainer()) {
+            Curriculum cur = curriculumService.saveCurriculum(curriculumdto.convertToEntity(revUser));
+            String str = new ObjectMapper()
+                    .writerWithDefaultPrettyPrinter()
+                    .writeValueAsString(cur);
+            return ResponseEntity.ok().body(str);
+        }
+        else{
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        }
     }
 
     // Read
@@ -48,36 +63,46 @@ public class CurriculumController {
     @GetMapping
     public List<Curriculum> getAllCurriculaByCurrentUserId()
     {
-        RevUser revUser = extractUser();
-        return curriculumService.getAllCurriculaByTrainerId(revUser);
+        RevUser revUser = JwtUtil.extractUser(revUserService);
+        return curriculumService.getAllCurriculaByTrainer(revUser);
     }
 
     /**
      * TODO: ask frontend if they want to narrow the view on getAllCurriculumByCurrentUserId()
      */
 
+    /**
+     * returns list of Curricula from database by current user id
+     * @return List of Curricula current user is assigned to
+     */
+    @GetMapping("/assigned")
+    public List<Curriculum> getAssignedCurriculaByCurrentUserId()
+    {
+        RevUser revUser = JwtUtil.extractUser(revUserService);
+            return curriculumService.getAllCurriculaByUser(revUser);
+    }
+
     // Update
 
     /**
      * update a current curriculum on the database
-     * @param curriculum the curriculum to be updated
-     * @return the updated curriculum
+     * @param curriculumdto the curriculum to be updated
+     * @return the updated curriculum or sets bad status if user is not a trainer
      */
     @PutMapping
-    public Curriculum updateCurriculum(@RequestBody Curriculum curriculum)
-    {
-        RevUser revUser = extractUser();
-        // TODO: make sure it is trainer updating and not associate/general user
-        return curriculumService.saveCurriculum(curriculum);
+    public ResponseEntity<String> updateCurriculum(@RequestBody CurriculumDTO curriculumdto) throws JsonProcessingException {
+        RevUser revUser = JwtUtil.extractUser(revUserService);
+        if(revUser.isTrainer()) {
+            Curriculum cur = curriculumService.saveCurriculum(curriculumdto.convertToEntity(revUser));
+            String str = new ObjectMapper()
+                    .writerWithDefaultPrettyPrinter()
+                    .writeValueAsString(cur);
+            return ResponseEntity.ok().body(str);
+        }
+        else{
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        }
     }
 
     // Delete -- not in MVP
-
-
-    private RevUser extractUser(){
-        String username = JwtUtil.extractUsername();
-        // return revUserService.getRevUserByUsername(username);
-        return null;
-    }
-
 }

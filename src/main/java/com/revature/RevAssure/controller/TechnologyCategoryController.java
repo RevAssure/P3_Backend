@@ -1,15 +1,17 @@
 package com.revature.RevAssure.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.revature.RevAssure.model.RevUser;
 import com.revature.RevAssure.model.TechnologyCategory;
 import com.revature.RevAssure.service.RevUserService;
 import com.revature.RevAssure.service.TechnologyCategoryService;
 import com.revature.RevAssure.util.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
 import java.util.List;
 
 @CrossOrigin
@@ -23,7 +25,6 @@ public class TechnologyCategoryController {
      * Constructor for TechnologyCategoryController
      *
      * @param technologyCategoryService is a technologyCategoryService object
-     * @param revUserService is a RevUserService object
      */
     @Autowired
     public TechnologyCategoryController(TechnologyCategoryService technologyCategoryService, RevUserService revUserService){
@@ -37,19 +38,26 @@ public class TechnologyCategoryController {
      * @return A list of all the technology categories
      */
     @GetMapping
-    public List<TechnologyCategory> getTechnologyCategories(){
-        RevUser revUser = extractUser();
+    public List<TechnologyCategory> getTechnologyCategories() {
         return technologyCategoryService.getAll();
     }
 
     /**
-     * Retrieves the username from the current JWT
-     * @return Returns null
+     * Create operation to persist a technology category into the database
+     * @param technologyCategory
+     * @return TechnologyCategory which was persisted
      */
-    private RevUser extractUser(){
-        String username = JwtUtil.extractUsername();
-        // return revUserService.getRevUserByUsername(username);
-        return null;
+    @PostMapping
+    public ResponseEntity<String> createTechnologyCategory(@RequestBody TechnologyCategory technologyCategory) throws JsonProcessingException {
+        RevUser revUser = JwtUtil.extractUser(revUserService);
+        if (revUser.isTrainer()) {
+            TechnologyCategory technologyCategory1 = technologyCategoryService.create(technologyCategory);
+            String str = new ObjectMapper()
+                    .writerWithDefaultPrettyPrinter()
+                    .writeValueAsString(technologyCategory1);
+            return ResponseEntity.ok().body(str);
+        } else {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        }
     }
-
 }

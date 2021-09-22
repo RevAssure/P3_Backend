@@ -3,14 +3,18 @@ package com.revature.RevAssure.service;
 import com.revature.RevAssure.model.Curriculum;
 import com.revature.RevAssure.model.RevUser;
 import com.revature.RevAssure.repository.CurriculumRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import org.postgresql.core.ConnectionFactory;
 
 @Service
 public class CurriculumService
 {
+    private static final Logger log = LoggerFactory.getLogger(ConnectionFactory.class);
     private CurriculumRepository curriculumRepository;
 
     @Autowired
@@ -26,6 +30,7 @@ public class CurriculumService
      */
     public Curriculum saveCurriculum(Curriculum curriculum)
     {
+        log.info("Saving Curriculum");
         return curriculumRepository.save(curriculum);
     }
 
@@ -34,8 +39,14 @@ public class CurriculumService
      * @param trainer the owner of the curricula
      * @return all curricula that belong to the trainer
      */
-    public List<Curriculum> getAllCurriculaByTrainerId(RevUser trainer)
+    public List<Curriculum> getAllCurriculaByTrainer(RevUser trainer)
     {
-        return curriculumRepository.findAllByRevUsers(trainer);
+        log.info("Get list of Curriculum by trainer id");
+        return curriculumRepository.findByTrainer(trainer);
+    }
+
+    public List<Curriculum> getAllCurriculaByUser(RevUser revUser) {
+        log.info("get all curriculum by associate user");
+        return curriculumRepository.findByRevUsers(revUser);
     }
 }

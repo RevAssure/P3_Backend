@@ -1,11 +1,16 @@
 package com.revature.RevAssure.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.revature.RevAssure.dto.TopicDTO;
 import com.revature.RevAssure.model.RevUser;
 import com.revature.RevAssure.model.Topic;
 import com.revature.RevAssure.service.RevUserService;
 import com.revature.RevAssure.service.TopicService;
 import com.revature.RevAssure.util.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
@@ -35,23 +40,43 @@ public class TopicController{
     /**
      * Create operation for Topic objects
      * revUser retrieves the username from the current JWT
-     * @return the topic that is saved
+     * @return the topic that is saved or sets bad status if user is not a trainer
      */
     @PostMapping
-    public Topic createTopic(@RequestBody Topic topic){
-        RevUser revUser = extractUser();
-        return topicService.saveTopic(topic);
+    public ResponseEntity<String> createTopic(@RequestBody TopicDTO topicdto) throws JsonProcessingException {
+        RevUser revUser = JwtUtil.extractUser(revUserService);
+        if(revUser.isTrainer()){
+            Topic topic = topicService.saveTopic(topicdto.convertToEntity(revUser));
+            String str = new ObjectMapper()
+                    .writerWithDefaultPrettyPrinter()
+                    .writeValueAsString(topic);
+            return ResponseEntity.ok().body(str);
+        }
+        else{return ResponseEntity.status(HttpStatus.FORBIDDEN).build();}
     }
 
     // Read
+
     /**
-     * Read operation for all Topic objects
-     * revUser retrieves the username from the current JWT
-     * @return A list of all the topics
+     * Read operation for Topic objects created by requesting trainer
+     * revUser retrieves the user from the current JWT
+     * @return A list of topics with the same Trainer ID or null if user is not a trainer
      */
     @GetMapping
+    public List<Topic> getTopicsByTrainerId(){
+        RevUser revUser = JwtUtil.extractUser(revUserService);
+        if(revUser.isTrainer()){
+            return topicService.getByTrainer(revUser);
+        }
+        else{return null;}
+    }
+
+    /**
+     * Read operation for all Topic objects
+     * @return A list of all the topics
+     */
+    @GetMapping("/all")
     public List<Topic> getAllTopics(){
-        RevUser revUser = extractUser();
         return topicService.getAll();
 
     }
@@ -61,9 +86,9 @@ public class TopicController{
      * revUser retrieves the username from the current JWT
      * @return The topic with the corresponding ID
      */
-    @GetMapping("/topic/{topicId}")
+    @GetMapping("/{topicId}")
     public Topic getTopicById(@PathVariable int topicId){
-        RevUser revUser = extractUser();
+        RevUser revUser = JwtUtil.extractUser(revUserService); //not sure if necessary
         return topicService.getById(topicId);
 
     }
@@ -74,36 +99,28 @@ public class TopicController{
      */
     @GetMapping("/module/{moduleId}")
     public List<Topic> getTopicsByModuleId(@PathVariable int moduleId){
-        RevUser revUser = extractUser();
         return topicService.getAllTopicsByModuleId(moduleId);
-
-    }
-    /**
-     * Read operation for Topic objects by the trainer that created them
-     * revUser retrieves the username from the current JWT
-     * @return A list of topics with the same Trainer ID
-     */
-    @Deprecated // we might not use it or we might
-    @GetMapping("/trainer/{trainerId}")
-    public List<Topic> getTopicsByTrainerId(@PathVariable int trainerId){
-        RevUser revUser = extractUser();
-        return topicService.getAllTopicsByModuleId(trainerId);
-
     }
 
     // Update
     /**
      * Update operation for Topic objects
      * revUser retrieves the username from the current JWT
-     * @return The updated topic
+     * @return The updated topic or sets bad status if user is not a trainer
      */
     // TODO: Make sure when a trainer is updating a topic that is not owned by them
     //  they are creating a new topic instead of modifying a previous one
     @PutMapping
-    public Topic updateTopic(@RequestBody Topic topic){
-        RevUser revUser = extractUser();
-        return topicService.saveTopic(topic);
-
+    public ResponseEntity<String> updateTopic(@RequestBody TopicDTO topicdto) throws JsonProcessingException {
+        RevUser revUser = JwtUtil.extractUser(revUserService);
+        if(revUser.isTrainer()){
+            Topic topic = topicService.saveTopic(topicdto.convertToEntity(revUser));
+            String str = new ObjectMapper()
+                    .writerWithDefaultPrettyPrinter()
+                    .writeValueAsString(topic);
+            return ResponseEntity.ok().body(str);
+        }
+        else{return ResponseEntity.status(HttpStatus.FORBIDDEN).build();}
     }
 
     // Delete
@@ -114,19 +131,8 @@ public class TopicController{
 
     @DeleteMapping("/{topicId}")
     public void deleteTopic(@PathVariable int topicId){
-        RevUser revUser = extractUser();
-        topicService.deleteTopic(topicId);
-
-
-    }
-    /**
-     * Retrieves the username from the current JWT
-     * @return Returns null
-     */
-    private RevUser extractUser(){
-        String username = JwtUtil.extractUsername();
-       // return revUserService.getRevUserByUsername(username);
-        return null;
+        RevUser revUser = JwtUtil.extractUser(revUserService);
+        if(revUser.isTrainer()){topicService.deleteTopic(topicId);}
     }
 
 }

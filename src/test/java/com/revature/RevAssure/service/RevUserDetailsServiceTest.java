@@ -4,27 +4,33 @@ import com.revature.RevAssure.model.Curriculum;
 import com.revature.RevAssure.model.RevUser;
 import com.revature.RevAssure.model.Topic;
 import com.revature.RevAssure.repository.RevUserRepository;
-import org.junit.Before;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
 
-@SpringBootTest
+@ExtendWith(MockitoExtension.class)
 class RevUserDetailsServiceTest {
 
     static RevUser revTest = new RevUser();
     static List<Topic> topics;
     static List<Curriculum> curricula;
 
+    private RevUserDetailsService service;
+
+    @Mock
+    private RevUserRepository repository;
+
     @BeforeEach
-    public void init(){
+    public void setUp(){
+        service = new RevUserDetailsService(repository);
+
         revTest.setId(1);
         revTest.setUsername("bambam1");
         revTest.setPassword("clubber");
@@ -34,12 +40,6 @@ class RevUserDetailsServiceTest {
         revTest.setTopics(topics);
         revTest.setCurricula(curricula);
     }
-
-    @Autowired
-    private RevUserDetailsService service;
-
-    @MockBean
-    private RevUserRepository repository;
 
     @Test
     void loadUserByUsername() {

@@ -7,22 +7,21 @@ import com.revature.RevAssure.repository.TechnologyCategoryRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.ArrayList;
 import java.util.List;
 
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
-@SpringBootTest
-public class TechnologyCategoryServiceTest {
-    @MockBean
-    private TechnologyCategoryRepository TechnologyCategoryRepository;
 
-    @Autowired
+@ExtendWith(MockitoExtension.class)
+public class TechnologyCategoryServiceTest {
+    @Mock
+    private TechnologyCategoryRepository technologyCategoryRepository;
+
     private TechnologyCategoryService technologyCategoryService;
 
     private TechnologyCategory techCat;
@@ -31,6 +30,7 @@ public class TechnologyCategoryServiceTest {
 
     @BeforeEach
     void setUp() {
+        technologyCategoryService = new TechnologyCategoryService(technologyCategoryRepository);
 
         techCat = new TechnologyCategory();
         techCat.setId(1);
@@ -45,9 +45,18 @@ public class TechnologyCategoryServiceTest {
      * Test if findAll works properly
      */
     @Test
-    void getAllTopics(){
-        when(TechnologyCategoryRepository.findAll()).thenReturn(technologyCategoryList);
+    void getAllTechnologyCategories(){
+        when(technologyCategoryRepository.findAll()).thenReturn(technologyCategoryList);
         assertEquals(technologyCategoryList, technologyCategoryService.getAll());
+    }
+
+    /**
+     * Test if create works
+     */
+    @Test
+    void createTest() {
+        when(technologyCategoryRepository.save(techCat)).thenReturn(techCat);
+        assertEquals(techCat, technologyCategoryService.create(techCat));
     }
 
 }
