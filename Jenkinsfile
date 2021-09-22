@@ -13,8 +13,8 @@ pipeline{
     }
     stage('Testing'){
       steps{
-        sh 'chmod a+x mvnw'
-        sh 'mvnw test'
+        sh 'chmod a+x mvn'
+        sh 'mvn test'
       }
     }
     stage('Remove Image if exists'){
