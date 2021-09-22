@@ -13,7 +13,7 @@ pipeline{
     }
     stage('Testing'){
       steps{
-        sh 'mvn test'
+        sh 'mvn -f pom.xml test'
       }
     }
     stage('Remove Image if exists'){
