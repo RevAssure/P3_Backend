@@ -79,7 +79,7 @@ public class CurriculumController {
     public List<Curriculum> getAssignedCurriculaByCurrentUserId()
     {
         RevUser revUser = JwtUtil.extractUser(revUserService);
-            return curriculumService.getAllCurriculaByUser(revUser);
+        return curriculumService.getAllCurriculaByUser(revUser);
     }
 
     // Update
