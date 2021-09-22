@@ -13,7 +13,10 @@ pipeline{
     }
     stage('Testing'){
       steps{
-        sh 'mvn -f pom.xml test'
+        sh 'chmod a+x ./mvnw'
+                //We can change this to false when we want to actually have the tests run during build
+                //Tests increase build time
+        sh './mvnw test'
       }
     }
     stage('Remove Image if exists'){
