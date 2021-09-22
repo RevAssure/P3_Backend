@@ -8,7 +8,6 @@ pipeline{
   stages {
     stage('Testing'){
       steps{
-        //sh 'chmod a+x ./mvnw'
         sh 'mvn -f pom.xml test'
       }
     }
