@@ -34,7 +34,7 @@ pipeline{
     }
     stage('Create Conatiner'){
       steps{
-        sh 'docker run -e DB_URL -e DB_USERNAME -e DB_PASSWORD -e DB_CREATE_OR_UPDATE -d --rm -p ${PORT}:${PORT} --name ${CONTAINER_NAME} ${IMAGE_TAG}'
+        sh 'docker run -e DB_URL -e DB_USERNAME -e DB_PASSWORD -e DB_CREATE_OR_UPDATE -d --rm -p ${PORT}:${PORT} --name ${CONTAINER_NAME} ${IMAGE_TAG} --help'
         }      
       }
     }
