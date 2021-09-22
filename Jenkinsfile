@@ -8,7 +8,7 @@ pipeline{
   stages {
     stage('checkout'){
       steps{
-        git branch:'devops' url:'https://github.com/RevAssure/P3_Backend.git'
+        git branch:'devops', url:'https://github.com/RevAssure/P3_Backend.git'
       }
     }
     stage('Testing'){
