@@ -11,12 +11,13 @@ pipeline{
         git branch:'devops', url:'https://github.com/RevAssure/P3_Backend.git'
       }
     }
-//     stage('Testing'){
-//       steps{
+    stage('Testing'){
+      steps{
 //         sh 'chmod a+x ./mvnw'
 //         sh './mvnw test'
-//       }
-//     }
+        sh 'mvn --batch-mode resources:testResources compiler:testCompile surefire:test'
+      }
+    }
     stage('Remove Image if exists'){
         steps {
             sh 'docker rmi -f ${IMAGE_TAG} || true'
