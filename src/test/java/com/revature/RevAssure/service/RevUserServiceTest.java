@@ -6,7 +6,6 @@ import com.revature.RevAssure.model.RevUser;
 import com.revature.RevAssure.repository.RevUserRepository;
 import com.revature.RevAssure.util.JwtUtil;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;

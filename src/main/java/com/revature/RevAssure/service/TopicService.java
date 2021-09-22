@@ -4,7 +4,6 @@ import com.revature.RevAssure.model.RevUser;
 import com.revature.RevAssure.model.Topic;
 import com.revature.RevAssure.repository.TopicRepository;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.postgresql.core.ConnectionFactory;
