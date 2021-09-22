@@ -6,11 +6,11 @@ pipeline{
     CONTAINER_NAME="rev-assure-backend-app"
   }
   stages {
-//     stage('checkout'){
-//       steps{
-//         git branch:'devops', url:'https://github.com/RevAssure/P3_Backend.git'
-//       }
-//     }
+    stage('checkout'){
+      steps{
+        git branch:'devops', url:'https://github.com/RevAssure/P3_Backend.git'
+      }
+    }
     stage('Testing'){
       steps{
         sh 'mvn test'
