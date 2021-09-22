@@ -11,14 +11,12 @@ pipeline{
         git branch:'devops', url:'https://github.com/RevAssure/P3_Backend.git'
       }
     }
-    stage('Testing'){
-      steps{
-        sh 'chmod a+x ./mvnw'
-                //We can change this to false when we want to actually have the tests run during build
-                //Tests increase build time
-        sh './mvnw test'
-      }
-    }
+//     stage('Testing'){
+//       steps{
+//         sh 'chmod a+x ./mvnw'
+//         sh './mvnw test'
+//       }
+//     }
     stage('Remove Image if exists'){
         steps {
             sh 'docker rmi -f ${IMAGE_TAG} || true'
