@@ -49,8 +49,8 @@ public class CurriculumController {
         if(revUser.isTrainer()) {
             log.info("Trainer is making new curriculum.");
             return ResponseEntity.ok().body(
-                    new ObjectMapper().writerWithDefaultPrettyPrinter()
-                            .writeValueAsString(curriculumService.saveCurriculum(
+                    new ObjectMapper().writerWithDefaultPrettyPrinter().writeValueAsString(
+                            curriculumService.saveCurriculum(
                                     curriculumdto.convertToEntity(revUser))));
         }
         else{
@@ -102,8 +102,8 @@ public class CurriculumController {
         if(revUser.isTrainer()) {
             log.info("Trainer is updating their curriculum.");
             return ResponseEntity.ok().body(
-                    new ObjectMapper().writerWithDefaultPrettyPrinter()
-                            .writeValueAsString(curriculumService.saveCurriculum(
+                    new ObjectMapper().writerWithDefaultPrettyPrinter().writeValueAsString(
+                            curriculumService.saveCurriculum(
                                     curriculumdto.convertToEntity(revUser))));
         }
         else{

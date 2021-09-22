@@ -48,8 +48,8 @@ public class EventController {
         if(revUser.isTrainer()){
             log.info("Trainer is creating a new event");
             return ResponseEntity.ok().body(
-                    new ObjectMapper().writerWithDefaultPrettyPrinter()
-                            .writeValueAsString(eventService.createEvent(
+                    new ObjectMapper().writerWithDefaultPrettyPrinter().writeValueAsString(
+                            eventService.createEvent(
                                     eventdto.convertToEntity())));
         }
         else{
@@ -86,8 +86,8 @@ public class EventController {
         if(revUser.isTrainer()){
             log.info("Trainer is updating one of their events");
             return ResponseEntity.ok().body(
-                    new ObjectMapper().writerWithDefaultPrettyPrinter()
-                            .writeValueAsString(eventService.updateEvent(
+                    new ObjectMapper().writerWithDefaultPrettyPrinter().writeValueAsString(
+                            eventService.updateEvent(
                                     eventdto.convertToEntity())));
         }
         else{

@@ -8,6 +8,9 @@ import com.revature.RevAssure.model.RevUser;
 import com.revature.RevAssure.service.ModuleService;
 import com.revature.RevAssure.service.RevUserService;
 import com.revature.RevAssure.util.JwtUtil;
+import org.postgresql.core.ConnectionFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,6 +21,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/module")
 public class ModuleController {
+    private static final Logger log = LoggerFactory.getLogger(ConnectionFactory.class);
 
     @Autowired
     private ModuleService moduleService;
@@ -44,25 +48,29 @@ public class ModuleController {
     public ResponseEntity<String> createModule(@RequestBody ModuleDTO moduledto) throws JsonProcessingException {
         RevUser revUser = JwtUtil.extractUser(revUserService);
         if(revUser.isTrainer()){
-            Module module = moduleService.saveNewModule(moduledto.convertToEntity(revUser));
-            String str = new ObjectMapper()
-                    .writerWithDefaultPrettyPrinter()
-                    .writeValueAsString(module);
-            return ResponseEntity.ok().body(str);
+            log.info("Trainer is creating a new module");
+            return ResponseEntity.ok().body(
+                    new ObjectMapper().writerWithDefaultPrettyPrinter().writeValueAsString(
+                            moduleService.saveNewModule(
+                                    moduledto.convertToEntity(revUser))));
         }
         else{
+            log.warn("Associate is attempting to create new module");
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         }
     }
+
+
+    // Read
+    // TODO: consider associates might want to get modules only associated with themselves
 
     /**
      * Read functionality for retrieving all modules
      * @return a list of all modules in the database
      */
-    // Read
-    // TODO: consider associates might want to get modules only associated with themselves
     @GetMapping
     public List<Module> getAllModules(){
+        log.info("Getting all modules");
         return moduleService.findAllModules();
     }
 
@@ -76,26 +84,36 @@ public class ModuleController {
     public ResponseEntity<String> updateModules(@RequestBody ModuleDTO moduledto) throws JsonProcessingException {
         RevUser revUser = JwtUtil.extractUser(revUserService);
         if(revUser.isTrainer()){
-            Module module = moduleService.saveExistingModule(moduledto.convertToEntity(revUser));
-            String str = new ObjectMapper()
-                    .writerWithDefaultPrettyPrinter()
-                    .writeValueAsString(module);
-            return ResponseEntity.ok().body(str);
+            log.info("Trainer is updating their module");
+            return ResponseEntity.ok().body(
+                    new ObjectMapper().writerWithDefaultPrettyPrinter().writeValueAsString(
+                            moduleService.saveExistingModule(
+                                    moduledto.convertToEntity(revUser))));
         }
         else{
+            log.warn("Associate is attempting to update a module");
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         }
     }
 
-    /**
-     * Delete functionality for modules
-     * (if the current user is a trainer)
-     * @param moduleId the ID of the module to be deleted
-     */
     // Delete
+
+    /**
+     * Endpoint available for deleting an existing module
+     * @param moduleId : Module id of module that is to be deleted
+     * @return ResponseEntity that will return status code
+     */
     @DeleteMapping("/{moduleId}")
-    public void deleteModules(@PathVariable int moduleId){
+    public ResponseEntity<String> deleteModules(@PathVariable int moduleId){
         RevUser revUser = JwtUtil.extractUser(revUserService);
-        if(revUser.isTrainer()){moduleService.deleteModule(moduleId);}
+        if(revUser.isTrainer()) {
+            log.info("Trainer is deleting one of their modules");
+            moduleService.deleteModule(moduleId);
+            return ResponseEntity.ok().build();
+        }
+        else {
+            log.warn("Associate is attempting to delete a module");
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        }
     }
 }

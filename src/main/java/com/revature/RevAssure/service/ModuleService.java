@@ -57,7 +57,7 @@ public class ModuleService {
      * @return the updated version of the module after persisting
      */
     public Module saveExistingModule(Module newModule) {
-        log.info("save new module");
+        log.info("save existing module");
         return repository.save(newModule);
     }
 
