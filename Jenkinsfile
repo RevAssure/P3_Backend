@@ -13,9 +13,8 @@ pipeline{
     }
     stage('Testing'){
       steps{
-//         sh 'chmod a+x ./mvnw'
-//         sh './mvnw test'
-        sh 'mvn --batch-mode resources:testResources compiler:testCompile surefire:test'
+        sh 'chmod a+x ./app/mvnw'
+        sh './app/mvnw test'
       }
     }
     stage('Remove Image if exists'){
