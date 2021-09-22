@@ -17,6 +17,7 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -53,14 +54,17 @@ class RevUserServiceTest {
     @Mock
     private Authentication authentication;
 
-    static BadCredentialsException e;
-    static UsernamePasswordAuthenticationToken UPToken;
-    static RevUser revUser = new RevUser();
+    @Mock
+    private PasswordEncoder passwordEncoder;
+
+    private BadCredentialsException e;
+    private UsernamePasswordAuthenticationToken UPToken;
+    private RevUser revUser = new RevUser();
 
 
     @BeforeEach
     public void setUp() {
-        revUserService = new RevUserService(revUserRepository);
+        revUserService = new RevUserService(revUserRepository, passwordEncoder, authenticationManager, revUserDetailsService, jwtUtil);
 
         revUser.setId(1);
         revUser.setUsername("test");
@@ -77,13 +81,14 @@ class RevUserServiceTest {
     @Test
     void getRevUserByUsernameTest() {
         when(revUserRepository.findByUsername(revUser.getUsername())).thenReturn(java.util.Optional.of(revUser));
-        Assertions.assertEquals(1, revUserService.getRevUserByUsername(revUser.getUsername()).getId());
+        assertEquals(1, revUserService.getRevUserByUsername(revUser.getUsername()).getId());
     }
 
     @Test
     void saveNewRevUserTest() {
+        when(passwordEncoder.encode(revUser.getPassword())).thenReturn(revUser.getPassword());
         when(revUserRepository.save(revUser)).thenReturn(revUser);
-        Assertions.assertEquals(1, revUserService.saveNewRevUser(revUser).getId());
+        assertEquals(1, revUserService.saveNewRevUser(revUser).getId());
     }
 
     @Test
