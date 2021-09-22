@@ -13,7 +13,6 @@ pipeline{
     }
     stage('Testing'){
       steps{
-        sh 'chmod a+x mvn'
         sh 'mvn test'
       }
     }
