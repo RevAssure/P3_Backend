@@ -7,6 +7,9 @@ import com.revature.RevAssure.model.TechnologyCategory;
 import com.revature.RevAssure.service.RevUserService;
 import com.revature.RevAssure.service.TechnologyCategoryService;
 import com.revature.RevAssure.util.JwtUtil;
+import org.postgresql.core.ConnectionFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,6 +21,8 @@ import java.util.List;
 @RestController
 @RequestMapping("/technology_category")
 public class TechnologyCategoryController {
+    private static final Logger log = LoggerFactory.getLogger(ConnectionFactory.class);
+
     private TechnologyCategoryService technologyCategoryService;
     private RevUserService revUserService;
 
@@ -39,6 +44,7 @@ public class TechnologyCategoryController {
      */
     @GetMapping
     public List<TechnologyCategory> getTechnologyCategories() {
+        log.info("Getting all technology categories");
         return technologyCategoryService.getAll();
     }
 
@@ -51,9 +57,13 @@ public class TechnologyCategoryController {
     public ResponseEntity<String> createTechnologyCategory(@RequestBody TechnologyCategory technologyCategory) throws JsonProcessingException {
         RevUser revUser = JwtUtil.extractUser(revUserService);
         if(revUser.isTrainer()) {
-            return ResponseEntity.ok().body(new ObjectMapper().writerWithDefaultPrettyPrinter().writeValueAsString(technologyCategoryService.create(technologyCategory)));
+            log.info("Trainer is creating a new technology category");
+            return ResponseEntity.ok().body(
+                    new ObjectMapper().writerWithDefaultPrettyPrinter().writeValueAsString(
+                            technologyCategoryService.create(technologyCategory)));
         }
         else{
+            log.warn("Associate is attempting to add a new technology category");
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         }
     }
