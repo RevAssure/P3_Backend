@@ -19,6 +19,8 @@ public class Event {
     @Column(name = "id", nullable = false)
     private int id;
 
+    //hibernateLazyInitializer created when hibernate loads list from database. I can't find which attribute this comes from, though
+    // - Victor Liu
     @ManyToOne
     @JsonIgnoreProperties({"revUsers", "events", "hibernateLazyInitializer"})
     @JoinColumn(name="curriculum_id", nullable = false, referencedColumnName = "id")
