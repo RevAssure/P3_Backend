@@ -6,17 +6,12 @@ pipeline{
     CONTAINER_NAME="rev-assure-backend-app"
   }
   stages {
-//     stage('checkout'){
-//       steps{
-//         git branch:'devops', url:'https://github.com/RevAssure/P3_Backend.git'
-//       }
-//     }
-//     stage('Testing'){
-//       steps{
-//         sh 'chmod a+x ./mvnw'
-//         sh './mvnw test'
-//       }
-//     }
+    stage('Testing'){
+      steps{
+        sh 'chmod a+x ./mvnw'
+        sh './mvnw test'
+      }
+    }
     stage('Remove Image if exists'){
         steps {
             sh 'docker rmi -f ${IMAGE_TAG} || true'
@@ -37,11 +32,6 @@ pipeline{
         sh 'docker run -e DB_URL -e DB_USERNAME -e DB_PASSWORD -e DB_CREATE_OR_UPDATE -d --rm -p ${PORT}:${PORT} --name ${CONTAINER_NAME} ${IMAGE_TAG}'
         }      
       }
-    stage('Testing'){
-      steps{
-        sh 'mvn test'
-      }
-    }
     }
 }
     
