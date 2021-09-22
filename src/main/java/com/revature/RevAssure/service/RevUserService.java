@@ -9,6 +9,7 @@ import org.postgresql.core.ConnectionFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -61,22 +62,20 @@ public class RevUserService {
      * @return ResponseEntity with 200 status and a JWT in the body, or a 403 with no body
      * @throws Exception
      */
-    public ResponseEntity<?> authenticate(AuthenticationRequest authReq) throws Exception {
+    public ResponseEntity<?> authenticate(AuthenticationRequest authReq) {
         log.info("verify user");
         try {
             authenticationManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(authReq.getUsername(), authReq.getPassword())
-            );
+                    new UsernamePasswordAuthenticationToken(authReq.getUsername(), authReq.getPassword()));
+            final UserDetails userDetails = revUserDetailsService.loadUserByUsername(authReq.getUsername());
+            final String jwt = jwtTokenUtil.generateToken(userDetails);
+            AuthenticationResponse authResp = new AuthenticationResponse(jwt);
+            return ResponseEntity.ok(authResp);
         }
-        catch (BadCredentialsException e) {
-            e.printStackTrace();
-            log.debug("BadCredentials Exception");
-            throw new BadCredentialsException("Invalid Credentials", e);
+        catch (Exception e) {
+            log.warn("Credentials not recognized during authentication",e);
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
-        final UserDetails userDetails = revUserDetailsService.loadUserByUsername(authReq.getUsername());
-        final String jwt = jwtTokenUtil.generateToken(userDetails);
-        AuthenticationResponse authResp = new AuthenticationResponse(jwt);
-        return ResponseEntity.ok(authResp);
     }
 
     /**
