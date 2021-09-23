@@ -4,6 +4,9 @@ import com.revature.RevAssure.dto.AuthenticationRequest;
 import com.revature.RevAssure.model.RevUser;
 import com.revature.RevAssure.service.RevUserService;
 import com.revature.RevAssure.util.JwtUtil;
+import org.postgresql.core.ConnectionFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -12,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/revuser")
 public class RevUserController {
+    private static final Logger log = LoggerFactory.getLogger(ConnectionFactory.class);
 
     @Autowired
     private final RevUserService revUserService;
@@ -28,6 +32,7 @@ public class RevUserController {
      */
     @PostMapping("/register")
     public RevUser createUser(@RequestBody RevUser revUser) {
+        log.info("Creating a new user");
         return revUserService.saveNewRevUser(revUser);
     }
 
@@ -38,9 +43,9 @@ public class RevUserController {
      * @throws Exception
      */
     @PostMapping("/authenticate")
-    public ResponseEntity<?> createAuthenticationToken(@RequestBody AuthenticationRequest authReq) throws Exception {
-        ResponseEntity<?> responseEntity = revUserService.authenticate(authReq);
-        return responseEntity;
+    public ResponseEntity<?> createAuthenticationToken(@RequestBody AuthenticationRequest authReq) {
+        log.info("Attempting to authenticate user");
+        return revUserService.authenticate(authReq);
     }
 
     /**
@@ -49,6 +54,7 @@ public class RevUserController {
      */
     @GetMapping
     public RevUser getUser() {
+        log.info("Getting current user's information");
         return JwtUtil.extractUser(revUserService);
     }
 
