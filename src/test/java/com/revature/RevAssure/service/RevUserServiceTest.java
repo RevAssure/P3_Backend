@@ -89,6 +89,6 @@ class RevUserServiceTest {
     @Test
     void authenticateBadCredentialsTest() throws Exception {
         when(authenticationManager.authenticate(UPToken)).thenThrow(BadCredentialsException.class);
-        assertThrows(BadCredentialsException.class, () -> {revUserService.authenticate(authenticationRequest);});
+        assertEquals(401, revUserService.authenticate(authenticationRequest).getStatusCodeValue());
     }
 }
