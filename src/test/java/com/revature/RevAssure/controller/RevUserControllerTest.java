@@ -10,6 +10,7 @@ import com.revature.RevAssure.service.RevUserService;
 import com.revature.RevAssure.util.JwtUtil;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -21,7 +22,6 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
 import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -78,7 +78,8 @@ class RevUserControllerTest {
 
     @Test
     @Disabled
-    void createUser() throws Exception {
+    @DisplayName("Should return a RevUser JSON in Response Body when making POST request to /revuser/register")
+    void createUserPass() throws Exception {
         when(mockRevUserService.saveNewRevUser(revUser)).thenReturn(revUser);
         mockMvc.perform(post("/revuser/register")
                 .contentType(MediaType.APPLICATION_JSON)
@@ -90,7 +91,8 @@ class RevUserControllerTest {
 
     @Test
     @Disabled
-    void createAuthenticationToken() throws Exception {
+    @DisplayName("Should return JWT token in a Response Body when making POST request to /revuser/authenticate")
+    void createAuthenticationTokenPass() throws Exception {
         when(mockRevUserService.authenticate(authenticationRequest)).thenReturn(responseEntity);
         mockMvc.perform(post("/revuser/authenticate")
                 .contentType(MediaType.APPLICATION_JSON)
@@ -102,7 +104,8 @@ class RevUserControllerTest {
 
     @WithMockUser
     @Test
-    void getUser() throws Exception {
+    @DisplayName("Should return RevUser object when making GET request to endpoint /revuser")
+    void getUserPass() throws Exception {
         when(mockJwtUtil.extractUser(mockRevUserService)).thenReturn(revUser);
         mockMvc.perform(get("/revuser")
                 .contentType(MediaType.APPLICATION_JSON)
@@ -110,5 +113,14 @@ class RevUserControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$").isNotEmpty())
                 .andReturn();
+    }
+
+    @Test
+    @DisplayName("Should return Forbidden Http Status when making GET request to endpoint /revuser")
+    void getUserFail() throws Exception {
+        mockMvc.perform(get("/revuser")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(new ObjectMapper().writeValueAsString(revUser)))
+                .andExpect(status().isForbidden());
     }
 }
