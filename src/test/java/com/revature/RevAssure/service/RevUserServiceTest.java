@@ -76,13 +76,13 @@ class RevUserServiceTest {
     @Test
     void getRevUserByUsernameTest() {
         when(revUserRepository.findByUsername(revUser.getUsername())).thenReturn(java.util.Optional.of(revUser));
-        Assertions.assertEquals(1, revUserService.getRevUserByUsername(revUser.getUsername()).getId());
+        assertEquals(1, revUserService.getRevUserByUsername(revUser.getUsername()).getId());
     }
 
     @Test
     void saveNewRevUserTest() {
         when(revUserRepository.save(revUser)).thenReturn(revUser);
-        Assertions.assertEquals(1, revUserService.saveNewRevUser(revUser).getId());
+        assertEquals(1, revUserService.saveNewRevUser(revUser).getId());
     }
 
     @Test
