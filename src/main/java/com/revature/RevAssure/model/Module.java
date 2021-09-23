@@ -23,7 +23,7 @@ public class Module {
     @Column(name = "name")
     private String name;
 
-    @Column(name="description")
+    @Column(name="description", length = 7000)
     private String description;
 
     @ManyToOne

@@ -27,7 +27,6 @@ public class EventService {
      * @return The event object that was persisted into the database.
      */
     public Event createEvent(Event event) {
-
         log.info("creating event");
         return eventRepository.save(event);
     }

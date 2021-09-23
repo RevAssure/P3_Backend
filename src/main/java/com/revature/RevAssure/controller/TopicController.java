@@ -8,10 +8,15 @@ import com.revature.RevAssure.model.Topic;
 import com.revature.RevAssure.service.RevUserService;
 import com.revature.RevAssure.service.TopicService;
 import com.revature.RevAssure.util.JwtUtil;
+import org.postgresql.core.ConnectionFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -21,6 +26,8 @@ import java.util.List;
 @RestController
 @RequestMapping("/topic")
 public class TopicController{
+    private static final Logger log = LoggerFactory.getLogger(ConnectionFactory.class);
+
     private final TopicService topicService;
     private final RevUserService revUserService;
 
@@ -43,16 +50,23 @@ public class TopicController{
      * @return the topic that is saved or sets bad status if user is not a trainer
      */
     @PostMapping
-    public ResponseEntity<String> createTopic(@RequestBody TopicDTO topicdto) throws JsonProcessingException {
+    public ResponseEntity<String> createTopic(@RequestBody TopicDTO topicdto) {
         RevUser revUser = JwtUtil.extractUser(revUserService);
-        if(revUser.isTrainer()){
-            Topic topic = topicService.saveTopic(topicdto.convertToEntity(revUser));
-            String str = new ObjectMapper()
-                    .writerWithDefaultPrettyPrinter()
-                    .writeValueAsString(topic);
-            return ResponseEntity.ok().body(str);
+        try {
+            if (revUser.isTrainer()) {
+                log.info("Trainer is creating a new topic");
+                return ResponseEntity.ok().body(
+                        new ObjectMapper().writerWithDefaultPrettyPrinter().writeValueAsString(
+                                topicService.saveTopic(
+                                        topicdto.convertToEntity(revUser))));
+            } else {
+                log.warn("Associate is attempting to create a new topic");
+                return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+            }
+        } catch(Exception e){
+            log.error("Topic failed to be mapped as a JSON string",e);
+            return ResponseEntity.internalServerError().build();
         }
-        else{return ResponseEntity.status(HttpStatus.FORBIDDEN).build();}
     }
 
     // Read
@@ -66,9 +80,13 @@ public class TopicController{
     public List<Topic> getTopicsByTrainerId(){
         RevUser revUser = JwtUtil.extractUser(revUserService);
         if(revUser.isTrainer()){
+            log.info("Getting all topics owned by this trainer");
             return topicService.getByTrainer(revUser);
         }
-        else{return null;}
+        else {
+            log.warn("Associate is attempting to get all topics they own, but they don't own any");
+            return new ArrayList<>();
+        }
     }
 
     /**
@@ -77,6 +95,7 @@ public class TopicController{
      */
     @GetMapping("/all")
     public List<Topic> getAllTopics(){
+        log.info("Getting all topics");
         return topicService.getAll();
 
     }
@@ -88,7 +107,7 @@ public class TopicController{
      */
     @GetMapping("/{topicId}")
     public Topic getTopicById(@PathVariable int topicId){
-        RevUser revUser = JwtUtil.extractUser(revUserService); //not sure if necessary
+        log.info("Getting a specific topic by its id");
         return topicService.getById(topicId);
 
     }
@@ -99,10 +118,12 @@ public class TopicController{
      */
     @GetMapping("/module/{moduleId}")
     public List<Topic> getTopicsByModuleId(@PathVariable int moduleId){
+        log.info("Getting all topics in a module");
         return topicService.getAllTopicsByModuleId(moduleId);
     }
 
     // Update
+
     /**
      * Update operation for Topic objects
      * revUser retrieves the username from the current JWT
@@ -111,28 +132,42 @@ public class TopicController{
     // TODO: Make sure when a trainer is updating a topic that is not owned by them
     //  they are creating a new topic instead of modifying a previous one
     @PutMapping
-    public ResponseEntity<String> updateTopic(@RequestBody TopicDTO topicdto) throws JsonProcessingException {
+    public ResponseEntity<String> updateTopic(@RequestBody TopicDTO topicdto) {
         RevUser revUser = JwtUtil.extractUser(revUserService);
-        if(revUser.isTrainer()){
-            Topic topic = topicService.saveTopic(topicdto.convertToEntity(revUser));
-            String str = new ObjectMapper()
-                    .writerWithDefaultPrettyPrinter()
-                    .writeValueAsString(topic);
-            return ResponseEntity.ok().body(str);
+        try {
+            log.info("Trainer is updating a topic they own");
+            if (revUser.isTrainer()) {
+                return ResponseEntity.ok().body(
+                        new ObjectMapper().writerWithDefaultPrettyPrinter().writeValueAsString(
+                                topicService.saveTopic(
+                                        topicdto.convertToEntity(revUser))));
+            } else {
+                log.warn("Associate attempted to update a topic");
+                return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+            }
+        } catch (Exception e) {
+            log.error("Topic failed to be mapped as a JSON string",e);
+            return ResponseEntity.internalServerError().build();
         }
-        else{return ResponseEntity.status(HttpStatus.FORBIDDEN).build();}
     }
 
     // Delete
+
     /**
      * Delete operation for Topic objects
      * revUser retrieves the username from the current JWT
      */
-
     @DeleteMapping("/{topicId}")
-    public void deleteTopic(@PathVariable int topicId){
+    public ResponseEntity<String> deleteTopic(@PathVariable int topicId){
         RevUser revUser = JwtUtil.extractUser(revUserService);
-        if(revUser.isTrainer()){topicService.deleteTopic(topicId);}
+        if(revUser.isTrainer()) {
+            log.info("Trainer is deleting a topic they own");
+            topicService.deleteTopic(topicId);
+            return ResponseEntity.ok().build();
+        } else {
+            log.warn("Associate attempted to delete a topic");
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        }
     }
 
 }
