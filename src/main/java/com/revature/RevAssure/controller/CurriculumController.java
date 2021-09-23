@@ -84,7 +84,7 @@ public class CurriculumController {
      * @return List of Curricula current user is assigned to
      */
     @GetMapping("/assigned")
-    public List<Curriculum> getAssignedCurriculaByCurrentUserId()
+    public List<Curriculum> getAssignedCurriculaByAssociateId()
     {
         RevUser revUser = JwtUtil.extractUser(revUserService);
         log.info("User is getting all curriculum they are a participant in");
