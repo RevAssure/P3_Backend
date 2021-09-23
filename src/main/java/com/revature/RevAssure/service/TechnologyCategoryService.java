@@ -2,6 +2,9 @@ package com.revature.RevAssure.service;
 
 import com.revature.RevAssure.model.TechnologyCategory;
 import com.revature.RevAssure.repository.TechnologyCategoryRepository;
+import org.postgresql.core.ConnectionFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -12,6 +15,8 @@ import java.util.List;
  */
 @Service
 public class TechnologyCategoryService {
+    private static final Logger log = LoggerFactory.getLogger(ConnectionFactory.class);
+
     private final TechnologyCategoryRepository techCatRepo;
 
 
@@ -25,6 +30,7 @@ public class TechnologyCategoryService {
      * @return List of TechnologyCategory Objects
      */
     public List<TechnologyCategory> getAll(){
+        log.info("getting all technology category");
         return techCatRepo.findAll();
     }
 
@@ -34,6 +40,7 @@ public class TechnologyCategoryService {
      * @return TechnologyCategory that was persisted
      */
     public TechnologyCategory create(TechnologyCategory technologyCategory) {
+        log.info("creating new technology category");
         return techCatRepo.save(technologyCategory);
     }
 }

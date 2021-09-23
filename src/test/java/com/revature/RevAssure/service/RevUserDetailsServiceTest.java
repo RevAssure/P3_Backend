@@ -11,6 +11,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.List;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
@@ -43,7 +44,7 @@ class RevUserDetailsServiceTest {
 
     @Test
     void loadUserByUsername() {
-        when(repository.findByUsername(revTest.getUsername())).thenReturn(java.util.Optional.of(revTest));
+        when(repository.findByUsername("bambam1")).thenReturn(Optional.of(revTest));
         assertEquals(revTest.getUsername(), service.loadUserByUsername("bambam1").getUsername());
     }
 }
