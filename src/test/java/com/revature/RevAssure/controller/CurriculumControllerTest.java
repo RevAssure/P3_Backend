@@ -108,11 +108,12 @@ class CurriculumControllerTest
     @AfterEach
     void tearDown() {
     }
-/*
+
     /**
      * checks post request works correctly
      * @throws Exception
      */
+    /*
     @WithMockUser
     @Test
     void createCurriculumReturnsCurriculumJSON() throws Exception
@@ -127,8 +128,8 @@ class CurriculumControllerTest
                 .andExpect(jsonPath("$").isNotEmpty())
                 .andExpect(curriculum("$", mockCurriculum))
                 .andReturn();
-    }
-*/
+    }*/
+
     /**
      * tests 403 returned when user is not trainer
      * @throws Exception
@@ -225,11 +226,12 @@ class CurriculumControllerTest
                 .andExpect(status().isForbidden())
                 .andExpect(jsonPath("$").doesNotExist());
     }
-/*
+
     /**
      * checks put request works correctly
      * @throws Exception
      */
+    /*
     @WithMockUser
     @Test
     void updateCurriculumReturnsCurriculumJSON() throws Exception
