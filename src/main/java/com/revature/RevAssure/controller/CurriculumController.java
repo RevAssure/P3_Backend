@@ -60,7 +60,7 @@ public class CurriculumController {
      * @return List of Curricula belonging to current user
      */
     @GetMapping
-    public List<Curriculum> getAllCurriculaByCurrentUserId()
+    public List<Curriculum> getAllCurriculaByTrainerId()
     {
         RevUser revUser = JwtUtil.extractUser(revUserService);
         return curriculumService.getAllCurriculaByTrainer(revUser);
@@ -75,10 +75,10 @@ public class CurriculumController {
      * @return List of Curricula current user is assigned to
      */
     @GetMapping("/assigned")
-    public List<Curriculum> getAssignedCurriculaByCurrentUserId()
+    public List<Curriculum> getAssignedCurriculaByAssociateId()
     {
         RevUser revUser = JwtUtil.extractUser(revUserService);
-            return curriculumService.getAllCurriculaByUser(revUser);
+        return curriculumService.getAllCurriculaByUser(revUser);
     }
 
     // Update
