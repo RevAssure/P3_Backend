@@ -1,7 +1,6 @@
 package com.revature.RevAssure.service;
 
 import com.revature.RevAssure.dto.AuthenticationRequest;
-import com.revature.RevAssure.dto.AuthenticationResponse;
 import com.revature.RevAssure.model.RevUser;
 import com.revature.RevAssure.repository.RevUserRepository;
 import com.revature.RevAssure.util.JwtUtil;
@@ -10,12 +9,11 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -41,25 +39,19 @@ class RevUserServiceTest {
     private AuthenticationRequest authenticationRequest;
 
     @Mock
-    private AuthenticationResponse authenticationResponse;
-
-    @Mock
     private JwtUtil jwtUtil;
 
     @Mock
-    private ResponseEntity responseEntity;
+    private PasswordEncoder passwordEncoder;
 
-    @Mock
-    private Authentication authentication;
-
-    static BadCredentialsException e;
-    static UsernamePasswordAuthenticationToken UPToken;
-    static RevUser revUser = new RevUser();
+    private BadCredentialsException e;
+    private UsernamePasswordAuthenticationToken UPToken;
+    private RevUser revUser = new RevUser();
 
 
     @BeforeEach
     public void setUp() {
-        revUserService = new RevUserService(revUserRepository);
+        revUserService = new RevUserService(revUserRepository, passwordEncoder, authenticationManager, revUserDetailsService, jwtUtil);
 
         revUser.setId(1);
         revUser.setUsername("test");
@@ -81,6 +73,7 @@ class RevUserServiceTest {
 
     @Test
     void saveNewRevUserTest() {
+        when(passwordEncoder.encode(revUser.getPassword())).thenReturn(revUser.getPassword());
         when(revUserRepository.save(revUser)).thenReturn(revUser);
         assertEquals(1, revUserService.saveNewRevUser(revUser).getId());
     }
