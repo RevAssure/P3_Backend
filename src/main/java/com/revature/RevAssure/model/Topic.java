@@ -24,14 +24,14 @@ public class Topic {
     @Column(name = "title")
     private String title;
 
-    @Column(name = "description")
+    @Column(name = "description", length = 7000)
     private String description;
 
     @Column(name = "estimated_duration")
     // duration in minutes
     private int estimatedDuration;
 
-    @Column(name = "lecture_notes")
+    @Column(name = "lecture_notes", length = 7000)
     private String lectureNotes;
 
     @Column(name = "github_repo")

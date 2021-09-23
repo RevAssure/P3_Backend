@@ -7,6 +7,9 @@ import com.revature.RevAssure.model.TechnologyCategory;
 import com.revature.RevAssure.service.RevUserService;
 import com.revature.RevAssure.service.TechnologyCategoryService;
 import com.revature.RevAssure.util.JwtUtil;
+import org.postgresql.core.ConnectionFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,6 +21,8 @@ import java.util.List;
 @RestController
 @RequestMapping("/technology_category")
 public class TechnologyCategoryController {
+    private static final Logger log = LoggerFactory.getLogger(ConnectionFactory.class);
+
     private TechnologyCategoryService technologyCategoryService;
     private RevUserService revUserService;
 
@@ -39,6 +44,7 @@ public class TechnologyCategoryController {
      */
     @GetMapping
     public List<TechnologyCategory> getTechnologyCategories() {
+        log.info("Getting all technology categories");
         return technologyCategoryService.getAll();
     }
 
@@ -48,16 +54,21 @@ public class TechnologyCategoryController {
      * @return TechnologyCategory which was persisted
      */
     @PostMapping
-    public ResponseEntity<String> createTechnologyCategory(@RequestBody TechnologyCategory technologyCategory) throws JsonProcessingException {
+    public ResponseEntity<String> createTechnologyCategory(@RequestBody TechnologyCategory technologyCategory) {
         RevUser revUser = JwtUtil.extractUser(revUserService);
-        if (revUser.isTrainer()) {
-            TechnologyCategory technologyCategory1 = technologyCategoryService.create(technologyCategory);
-            String str = new ObjectMapper()
-                    .writerWithDefaultPrettyPrinter()
-                    .writeValueAsString(technologyCategory1);
-            return ResponseEntity.ok().body(str);
-        } else {
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        try {
+            if (revUser.isTrainer()) {
+                log.info("Trainer is creating a new technology category");
+                return ResponseEntity.ok().body(
+                        new ObjectMapper().writerWithDefaultPrettyPrinter().writeValueAsString(
+                                technologyCategoryService.create(technologyCategory)));
+            } else {
+                log.warn("Associate is attempting to add a new technology category");
+                return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+            }
+        } catch (Exception e) {
+            log.error("Topic failed to be mapped as a JSON string",e);
+            return ResponseEntity.internalServerError().build();
         }
     }
 }
