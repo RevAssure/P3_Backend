@@ -34,6 +34,17 @@ other users.
 - As a trainer I can create a new topic
 - As a trainer I can edit my topics
 - As a trainer I can view topics created by other trainers
+
+### To-Do List
+- Improvement 1
+
+### Getting Started
+- How to install this project, include git clone and all environment setups
+
+### Usage
+- How to use project after install
+- all code required to get started
+- images of what it should look like
  
 ### Contributors:
 - Jacob Brummett

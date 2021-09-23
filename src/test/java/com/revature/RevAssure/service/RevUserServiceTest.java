@@ -1,21 +1,17 @@
 package com.revature.RevAssure.service;
 
 import com.revature.RevAssure.dto.AuthenticationRequest;
-import com.revature.RevAssure.dto.AuthenticationResponse;
 import com.revature.RevAssure.model.RevUser;
 import com.revature.RevAssure.repository.RevUserRepository;
 import com.revature.RevAssure.util.JwtUtil;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
@@ -43,16 +39,7 @@ class RevUserServiceTest {
     private AuthenticationRequest authenticationRequest;
 
     @Mock
-    private AuthenticationResponse authenticationResponse;
-
-    @Mock
     private JwtUtil jwtUtil;
-
-    @Mock
-    private ResponseEntity responseEntity;
-
-    @Mock
-    private Authentication authentication;
 
     @Mock
     private PasswordEncoder passwordEncoder;
