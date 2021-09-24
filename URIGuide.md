@@ -72,7 +72,7 @@
 >}
 >```
 
-### ```/revuser/register```
+### ```/revuser/authenticate```
 
 - ### ```POST``` - **Send the login credentials here to see if they are registered. Receive a JWT for all subsequent requests. Receive a 403 if the login credentials are not valid.**
 > **Request Body:**
@@ -648,7 +648,6 @@ __(continued)__
 >    "estimatedDuration": 600,
 >    "lectureNotes": "There are probably volumes written about this",
 >    "githubRepo": "http://.com",
->    "trainer": 1,
 >    "technologyCategory": 1,
 >    "modules": []
 >}
@@ -744,7 +743,6 @@ __(continued)__
 >    "estimatedDuration": 600,
 >    "lectureNotes": "There are probably volumes written about this",
 >    "githubRepo": "http://.com",
->    "trainer": 1,
 >    "technologyCategory": 1,
 >    "modules": [2]
 >}
