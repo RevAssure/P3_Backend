@@ -1,13 +1,11 @@
 package com.revature.RevAssure.controller;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.revature.RevAssure.model.RevUser;
 import com.revature.RevAssure.model.TechnologyCategory;
 import com.revature.RevAssure.service.RevUserService;
 import com.revature.RevAssure.service.TechnologyCategoryService;
 import com.revature.RevAssure.util.JwtUtil;
-import org.postgresql.core.ConnectionFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +19,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/technology_category")
 public class TechnologyCategoryController {
-    private static final Logger log = LoggerFactory.getLogger(ConnectionFactory.class);
+    private static final Logger log = LoggerFactory.getLogger(TechnologyCategoryController.class);
 
     private TechnologyCategoryService technologyCategoryService;
     private RevUserService revUserService;

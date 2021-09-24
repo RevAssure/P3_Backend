@@ -2,12 +2,12 @@ package com.revature.RevAssure.service;
 
 import com.revature.RevAssure.model.RevUser;
 import com.revature.RevAssure.repository.RevUserRepository;
-import org.postgresql.core.ConnectionFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
@@ -17,8 +17,8 @@ import java.util.ArrayList;
  * Service layer for RevUserDetails
  */
 @Service
-public class RevUserDetailsService implements org.springframework.security.core.userdetails.UserDetailsService {
-    private static final Logger log = LoggerFactory.getLogger(ConnectionFactory.class);
+public class RevUserDetailsService implements UserDetailsService {
+    private static final Logger log = LoggerFactory.getLogger(RevUserDetailsService.class);
     /**
      * Repository layer for RevUser object
      */
