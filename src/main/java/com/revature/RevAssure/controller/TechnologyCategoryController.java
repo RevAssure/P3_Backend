@@ -61,6 +61,8 @@ public class TechnologyCategoryController {
                 return ResponseEntity.ok().body(
                         new ObjectMapper().writerWithDefaultPrettyPrinter().writeValueAsString(
                                 technologyCategoryService.create(technologyCategory)));
+
+
             } else {
                 log.warn("Associate is attempting to add a new technology category");
                 return ResponseEntity.status(HttpStatus.FORBIDDEN).build();

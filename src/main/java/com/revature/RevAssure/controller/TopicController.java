@@ -73,18 +73,21 @@ public class TopicController{
     /**
      * Read operation for Topic objects created by requesting trainer
      * revUser retrieves the user from the current JWT
-     * @return A list of topics with the same Trainer ID or null if user is not a trainer
+     * @return A list of revUsers as strings and status ok. Forbidden if non-trainer requests
      */
     @GetMapping
-    public List<Topic> getTopicsByTrainerId(){
+    public ResponseEntity<String> getTopicsByTrainerId() throws JsonProcessingException {
         RevUser revUser = JwtUtil.extractUser(revUserService);
         if(revUser.isTrainer()){
             log.info("Getting all topics owned by this trainer");
-            return topicService.getByTrainer(revUser);
+
+
+            return ResponseEntity.ok().body(new ObjectMapper().writerWithDefaultPrettyPrinter().
+                    writeValueAsString(topicService.getByTrainer(revUser)));
         }
         else {
             log.warn("Associate is attempting to get all topics they own, but they don't own any");
-            return new ArrayList<>();
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         }
     }
 
