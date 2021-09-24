@@ -1,5 +1,6 @@
 package com.revature.RevAssure.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.revature.RevAssure.dto.TopicDTO;
 import com.revature.RevAssure.model.RevUser;
@@ -76,15 +77,18 @@ public class TopicController{
      * @return A list of topics with the same Trainer ID or null if user is not a trainer
      */
     @GetMapping
-    public List<Topic> getTopicsByTrainerId(){
+    public ResponseEntity<String> getTopicsByTrainerId() throws JsonProcessingException {
         RevUser revUser = JwtUtil.extractUser(revUserService);
         if(revUser.isTrainer()){
             log.info("Getting all topics owned by this trainer");
-            return topicService.getByTrainer(revUser);
+
+
+            return ResponseEntity.ok().body(new ObjectMapper().writerWithDefaultPrettyPrinter().
+                    writeValueAsString(topicService.getByTrainer(revUser)));
         }
         else {
             log.warn("Associate is attempting to get all topics they own, but they don't own any");
-            return new ArrayList<>();
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         }
     }
 

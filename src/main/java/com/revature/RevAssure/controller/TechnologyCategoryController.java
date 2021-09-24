@@ -60,7 +60,7 @@ public class TechnologyCategoryController {
             if (revUser.isTrainer()) {
                 log.info("Trainer is creating a new technology category");
                 return ResponseEntity.ok().body(
-                        new ObjectMapper().writeValueAsString(
+                        new ObjectMapper().writerWithDefaultPrettyPrinter().writeValueAsString(
                                 technologyCategoryService.create(technologyCategory)));
 
 

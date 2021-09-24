@@ -133,6 +133,7 @@ class TopicControllerTest {
                 .content(new ObjectMapper().writeValueAsString(topicDTO))
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isForbidden())
+                .andExpect(jsonPath("$").doesNotExist())
                 .andReturn();
     }
 
@@ -150,6 +151,7 @@ class TopicControllerTest {
                 .content(new ObjectMapper().writeValueAsString(topicDTO))
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isForbidden())
+                .andExpect(jsonPath("$").doesNotExist())
                 .andReturn();
     }
 
@@ -183,12 +185,13 @@ class TopicControllerTest {
         mockMvc.perform(get("/topic")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isForbidden())
+                .andExpect(jsonPath("$").doesNotExist())
                 .andReturn();
     }
 
     /**
-     * When a RevUser (Non-Trainer) requests topics by trainerId, will return and empty list
-     * HTTP Status ok
+     * Cannot return list because RevUser is not trainer
+     * HTTP Status forbidden
      */
     @WithMockUser
     @Test
@@ -198,8 +201,8 @@ class TopicControllerTest {
 
         mockMvc.perform(get("/topic")
                 .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$").isEmpty())
+                .andExpect(status().isForbidden())
+                .andExpect(jsonPath("$").doesNotExist())
                 .andReturn();
     }
 
@@ -297,6 +300,7 @@ class TopicControllerTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(new ObjectMapper().writeValueAsString(topicDTO)))
                 .andExpect(status().isForbidden())
+                .andExpect(jsonPath("$").doesNotExist())
                 .andReturn();
 
     }
@@ -343,6 +347,7 @@ class TopicControllerTest {
         mockMvc.perform(delete("/topic/1")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isForbidden())
+                .andExpect(jsonPath("$").doesNotExist())
                 .andReturn();
 
     }

@@ -147,6 +147,7 @@ class TechnologyCategoryControllerTest {
                 .content(new ObjectMapper().writeValueAsString(technologyCategory))
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isForbidden())
+                .andExpect(jsonPath("$").doesNotExist())
                 .andReturn();
     }
 
@@ -160,6 +161,7 @@ class TechnologyCategoryControllerTest {
                 .content(new ObjectMapper().writeValueAsString(technologyCategory))
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isForbidden())
+                .andExpect(jsonPath("$").doesNotExist())
                 .andReturn();
     }
 
