@@ -2,6 +2,7 @@ package com.revature.RevAssure;
 
 import com.revature.RevAssure.filters.JwtRequestFilter;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.actuate.autoconfigure.security.servlet.EndpointRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -39,7 +40,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .csrf()
                 .disable()
                 .authorizeRequests()
-                .antMatchers("/revuser/authenticate", "/revuser/register", "/h2-console/**")
+//                .requestMatchers(EndpointRequest.toAnyEndpoint())
+//                .authenticated()
+//                .anyRequest()
+//                .permitAll()
+//                .and().formLogin()
+//                .and()
+                .antMatchers("/actuator/**")
+                .authenticated()
+                .antMatchers("/revuser/authenticate", "/revuser/register", "/h2-console/**", "/actuator/**")
                 .permitAll()
                 .anyRequest()
                 .authenticated()
