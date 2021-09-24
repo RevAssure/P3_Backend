@@ -28,7 +28,7 @@ public class Event {
 
     @Column(name="start_datetime", nullable = false)
     // unix timestamp
-    private int startDatetime;
+    private long startDatetime;
 
     @OneToOne
     @JsonIgnoreProperties("trainer")

@@ -13,7 +13,7 @@ import lombok.Setter;
 public class EventDTO {
 
     private int id;
-    private int startDatetime;
+    private long startDatetime;
 
     private int curriculum;
     private int topic;
