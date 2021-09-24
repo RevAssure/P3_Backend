@@ -260,7 +260,7 @@ class TopicControllerTest {
      */
     @WithMockUser
     @Test
-    public void UpdateTopicTest() throws Exception{
+    public void updateTopicTest() throws Exception{
         when(mockJwtUtil.extractUser(mockRevUserService)).thenReturn(mockTrainer);
         when(topicService.saveTopic(topic)).thenReturn(topic);
 
@@ -284,6 +284,7 @@ class TopicControllerTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(new ObjectMapper().writeValueAsString(topicDTO)))
                 .andExpect(status().isForbidden())
+                .andExpect(jsonPath("$").doesNotExist())
                 .andReturn();
     }
 
