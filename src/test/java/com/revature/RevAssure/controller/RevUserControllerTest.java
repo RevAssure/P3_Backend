@@ -84,7 +84,7 @@ class RevUserControllerTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(new ObjectMapper().writeValueAsString(revUser)))
                 .andExpect(status().isOk())
-//                 .andExpect(jsonPath("$").isNotEmpty())
+//                .andExpect(jsonPath("$").isNotEmpty())
                 .andReturn();
     }
 
@@ -96,7 +96,7 @@ class RevUserControllerTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(new ObjectMapper().writeValueAsString(authenticationRequest)))
                 .andExpect(status().isOk())
-//                 .andExpect(jsonPath("$").isNotEmpty())
+//                .andExpect(jsonPath("$").isNotEmpty())
                 .andReturn();
     }
 
