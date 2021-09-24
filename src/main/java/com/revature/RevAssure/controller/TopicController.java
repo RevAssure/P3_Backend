@@ -74,7 +74,7 @@ public class TopicController{
     /**
      * Read operation for Topic objects created by requesting trainer
      * revUser retrieves the user from the current JWT
-     * @return A list of topics with the same Trainer ID or null if user is not a trainer
+     * @return A list of revUsers as strings and status ok. Forbidden if non-trainer requests
      */
     @GetMapping
     public ResponseEntity<String> getTopicsByTrainerId() throws JsonProcessingException {
