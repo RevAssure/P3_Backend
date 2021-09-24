@@ -247,7 +247,7 @@ class CurriculumControllerTest
                 .andExpect(curriculum("$", mockCurriculum))
                 .andReturn();
     }
-*/
+
     /**
      * tests 403 returned when user is not trainer
      * @throws Exception

@@ -1,6 +1,5 @@
 package com.revature.RevAssure.controller;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.revature.RevAssure.dto.TopicDTO;
 import com.revature.RevAssure.model.RevUser;
