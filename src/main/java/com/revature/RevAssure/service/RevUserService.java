@@ -5,7 +5,6 @@ import com.revature.RevAssure.dto.AuthenticationResponse;
 import com.revature.RevAssure.model.RevUser;
 import com.revature.RevAssure.repository.RevUserRepository;
 import com.revature.RevAssure.util.JwtUtil;
-import org.postgresql.core.ConnectionFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +18,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class RevUserService {
-    private static final Logger log = LoggerFactory.getLogger(ConnectionFactory.class);
+    private static final Logger log = LoggerFactory.getLogger(RevUserService.class);
 
     private final RevUserRepository revUserRepository;
 

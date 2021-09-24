@@ -2,7 +2,6 @@ package com.revature.RevAssure.service;
 
 import com.revature.RevAssure.model.Event;
 import com.revature.RevAssure.repository.EventRepository;
-import org.postgresql.core.ConnectionFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +12,7 @@ import java.util.List;
 @Service
 public class EventService {
 
-    private static final Logger log = LoggerFactory.getLogger(ConnectionFactory.class);
+    private static final Logger log = LoggerFactory.getLogger(EventService.class);
     private EventRepository eventRepository;
 
     @Autowired
