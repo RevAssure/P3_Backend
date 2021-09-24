@@ -2,7 +2,6 @@ package com.revature.RevAssure.service;
 
 import com.revature.RevAssure.model.TechnologyCategory;
 import com.revature.RevAssure.repository.TechnologyCategoryRepository;
-import org.postgresql.core.ConnectionFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +14,7 @@ import java.util.List;
  */
 @Service
 public class TechnologyCategoryService {
-    private static final Logger log = LoggerFactory.getLogger(ConnectionFactory.class);
+    private static final Logger log = LoggerFactory.getLogger(TechnologyCategoryService.class);
 
     private final TechnologyCategoryRepository techCatRepo;
 

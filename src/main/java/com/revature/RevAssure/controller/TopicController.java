@@ -8,7 +8,6 @@ import com.revature.RevAssure.model.Topic;
 import com.revature.RevAssure.service.RevUserService;
 import com.revature.RevAssure.service.TopicService;
 import com.revature.RevAssure.util.JwtUtil;
-import org.postgresql.core.ConnectionFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,7 +25,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/topic")
 public class TopicController{
-    private static final Logger log = LoggerFactory.getLogger(ConnectionFactory.class);
+    private static final Logger log = LoggerFactory.getLogger(TopicController.class);
 
     private final TopicService topicService;
     private final RevUserService revUserService;
