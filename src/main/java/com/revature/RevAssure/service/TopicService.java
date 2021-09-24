@@ -6,7 +6,6 @@ import com.revature.RevAssure.repository.TopicRepository;
 
 import java.util.List;
 
-import org.postgresql.core.ConnectionFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +14,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class TopicService {
     private final TopicRepository topicRepository;
-    private static final Logger log = LoggerFactory.getLogger(ConnectionFactory.class);
+    private static final Logger log = LoggerFactory.getLogger(TopicService.class);
 
     @Autowired
     public TopicService(TopicRepository topicRepository){

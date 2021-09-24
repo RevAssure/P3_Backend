@@ -8,7 +8,6 @@ import com.revature.RevAssure.model.Topic;
 import com.revature.RevAssure.service.RevUserService;
 import com.revature.RevAssure.service.TopicService;
 import com.revature.RevAssure.util.JwtUtil;
-import org.postgresql.core.ConnectionFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,7 +25,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/topic")
 public class TopicController{
-    private static final Logger log = LoggerFactory.getLogger(ConnectionFactory.class);
+    private static final Logger log = LoggerFactory.getLogger(TopicController.class);
 
     private final TopicService topicService;
     private final RevUserService revUserService;
@@ -74,18 +73,21 @@ public class TopicController{
     /**
      * Read operation for Topic objects created by requesting trainer
      * revUser retrieves the user from the current JWT
-     * @return A list of topics with the same Trainer ID or null if user is not a trainer
+     * @return A list of revUsers as strings and status ok. Forbidden if non-trainer requests
      */
     @GetMapping
-    public List<Topic> getTopicsByTrainerId(){
+    public ResponseEntity<String> getTopicsByTrainerId() throws JsonProcessingException {
         RevUser revUser = JwtUtil.extractUser(revUserService);
         if(revUser.isTrainer()){
             log.info("Getting all topics owned by this trainer");
-            return topicService.getByTrainer(revUser);
+
+
+            return ResponseEntity.ok().body(new ObjectMapper().writerWithDefaultPrettyPrinter().
+                    writeValueAsString(topicService.getByTrainer(revUser)));
         }
         else {
             log.warn("Associate is attempting to get all topics they own, but they don't own any");
-            return new ArrayList<>();
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         }
     }
 

@@ -9,12 +9,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import org.postgresql.core.ConnectionFactory;
 
 @Service
 public class CurriculumService
 {
-    private static final Logger log = LoggerFactory.getLogger(ConnectionFactory.class);
+    private static final Logger log = LoggerFactory.getLogger(CurriculumService.class);
     private CurriculumRepository curriculumRepository;
 
     @Autowired
