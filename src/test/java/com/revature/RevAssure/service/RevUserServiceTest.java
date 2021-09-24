@@ -15,6 +15,8 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import java.util.Optional;
+
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
@@ -69,6 +71,12 @@ class RevUserServiceTest {
     void getRevUserByUsernameTest() {
         when(revUserRepository.findByUsername(revUser.getUsername())).thenReturn(java.util.Optional.of(revUser));
         assertEquals(1, revUserService.getRevUserByUsername(revUser.getUsername()).getId());
+    }
+
+    @Test
+    void getRevUserByUsernameTestNoUserFoundException() {
+        when(revUserRepository.findByUsername(revUser.getUsername())).thenReturn(Optional.empty());
+        assertEquals(null, revUserService.getRevUserByUsername("test"));
     }
 
     @Test
