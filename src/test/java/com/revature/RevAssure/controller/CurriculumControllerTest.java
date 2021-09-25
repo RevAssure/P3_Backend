@@ -125,8 +125,8 @@ class CurriculumControllerTest
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(new ObjectMapper().writeValueAsString(mockCurriculumDTO)))
                 .andExpect(status().isOk())
-//                .andExpect(jsonPath("$").isNotEmpty())
-//                .andExpect(curriculum("$", mockCurriculum))
+                //.andExpect(jsonPath("$").isNotEmpty())
+                //.andExpect(curriculum("$", mockCurriculum))
                 .andReturn();
     }
 
@@ -242,8 +242,8 @@ class CurriculumControllerTest
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(new ObjectMapper().writeValueAsString(mockCurriculumDTO)))
                 .andExpect(status().isOk())
-//                .andExpect(jsonPath("$").isNotEmpty())
-//                .andExpect(curriculum("$", mockCurriculum))
+                //.andExpect(jsonPath("$").isNotEmpty())
+                //.andExpect(curriculum("$", mockCurriculum))
                 .andReturn();
     }
 
