@@ -83,7 +83,7 @@ public class EventController {
      * @return : The event that is to be updated and persisted into the database or sets bad status if user is not a trainer
      */
     @PutMapping
-    public ResponseEntity<String> updateEvent(@RequestBody EventDTO eventdto) {;
+    public ResponseEntity<String> updateEvent(@RequestBody EventDTO eventdto) {
         RevUser revUser = JwtUtil.extractUser(revUserService);
         try {
             if (revUser.isTrainer()) {

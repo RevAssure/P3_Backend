@@ -4,7 +4,6 @@ import com.revature.RevAssure.filters.JwtRequestFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.boot.actuate.autoconfigure.security.servlet.EndpointRequest;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -35,33 +34,32 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity httpSecurity) throws Exception {
-        httpSecurity.cors()
-                .and()
-                .csrf()
-                .disable()
+        httpSecurity.cors().and().csrf().disable()
                 .authorizeRequests()
                 .antMatchers(
+                        // endpoint whitelist
+
+                        // the endpoints needed before a user is authenticated
                         "/revuser/authenticate",
                         "/revuser/register",
+
+                        // the endpoint to view the h2 db console
                         "/h2-console/**",
+
+                        // the endpoint to view any exposed actuators
                         "/actuator/**",
+
+                        // the swagger endpoints
                         "/v3/api-docs",
-                        "/configuration/ui",
                         "/swagger-resources/**",
                         "/swagger-ui.html",
-                        "/configuration/security",
                         "/swagger-ui/*",
-                        "/v3/**",
-                        "/webjars/**"
-                )
-                .permitAll()
+                        "/v3/**"
+                ).permitAll()
                 .anyRequest()
                 .authenticated()
-                .and()
-                .headers()
-                .frameOptions().disable()
-                .and().sessionManagement()
-                .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+                .and().headers().frameOptions().disable()
+                .and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
         httpSecurity.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
     }
 

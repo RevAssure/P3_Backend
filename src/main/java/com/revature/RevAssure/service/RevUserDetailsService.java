@@ -37,7 +37,7 @@ public class RevUserDetailsService implements org.springframework.security.core.
      * Overridden UserDetails for Spring Security
      * @param s username of RevUser
      * @return UserDetails object for RevUser
-     * @throws UsernameNotFoundException
+     * @throws UsernameNotFoundException To indicate invalid log in credentials
      */
     @Override
     public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
