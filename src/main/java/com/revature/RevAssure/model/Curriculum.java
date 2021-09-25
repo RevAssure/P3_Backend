@@ -36,8 +36,8 @@ public class Curriculum {
     @ManyToMany
     @JoinTable(
             name="revuser_curriculum",
-            joinColumns=@JoinColumn(name="revuser_id", referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(name = "curriculum_id", referencedColumnName = "id")
+            joinColumns=@JoinColumn(name = "curriculum_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name="revuser_id", referencedColumnName = "id")
     )
     @JsonIgnoreProperties("curricula")
     private List<RevUser> revUsers;
