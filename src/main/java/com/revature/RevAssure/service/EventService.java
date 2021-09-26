@@ -1,6 +1,7 @@
 package com.revature.RevAssure.service;
 
 import com.revature.RevAssure.model.Event;
+import com.revature.RevAssure.model.Topic;
 import com.revature.RevAssure.repository.EventRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -39,6 +40,17 @@ public class EventService {
         log.info("Get all events in specific curriculum");
         return eventRepository.findByCurriculumId(id);
     }
+
+    /**
+     * Gets a list of events from the database that all have the same curriculum
+     * @param id : The curriculum id
+     * @return Either a list of all the events for that curriculum, or an empty ArrayList if there were no events for that curriculum.
+     */
+    public List<Event> getAllEventsByTopicId(int topicId) {
+        log.info("Get all events in specific curriculum");
+        return eventRepository.findByTopicId(topicId);
+    }
+
 
     /**
      * Updates an event into the database.

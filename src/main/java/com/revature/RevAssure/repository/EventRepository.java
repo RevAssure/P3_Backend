@@ -7,4 +7,5 @@ import java.util.List;
 
 public interface EventRepository extends JpaRepository<Event, Integer> {
     List<Event> findByCurriculumId(int curriculum); // This method finds the event by the given curriculum
+    List<Event> findByTopicId(int topicId);
 }

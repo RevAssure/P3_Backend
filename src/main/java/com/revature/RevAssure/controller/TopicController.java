@@ -1,10 +1,15 @@
 package com.revature.RevAssure.controller;
 
+import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ArrayNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.revature.RevAssure.dto.TopicDTO;
+import com.revature.RevAssure.model.Event;
 import com.revature.RevAssure.model.RevUser;
 import com.revature.RevAssure.model.Topic;
+import com.revature.RevAssure.service.EventService;
 import com.revature.RevAssure.service.RevUserService;
 import com.revature.RevAssure.service.TopicService;
 import com.revature.RevAssure.util.JwtUtil;
@@ -16,6 +21,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -29,6 +35,8 @@ public class TopicController{
 
     private final TopicService topicService;
     private final RevUserService revUserService;
+    private final EventService eventService;
+    private final ObjectMapper objectMapper;
 
     /**
      * Constructor for TopicController
@@ -37,9 +45,11 @@ public class TopicController{
      * @param revUserService is a RevUserService object
      */
     @Autowired
-    public TopicController(TopicService topicService, RevUserService revUserService){
+    public TopicController(TopicService topicService, RevUserService revUserService, EventService eventService, ObjectMapper objectMapper){
         this.topicService = topicService;
         this.revUserService = revUserService;
+        this.eventService = eventService;
+        this.objectMapper = objectMapper;
     }
 
     // Create
@@ -160,22 +170,36 @@ public class TopicController{
      * revUser retrieves the username from the current JWT
      */
     @DeleteMapping("/{topicId}")
-    public ResponseEntity<String> deleteTopic(@PathVariable int topicId){
+    public ResponseEntity<String> deleteTopic(@PathVariable int topicId) throws IOException {
         RevUser revUser = JwtUtil.extractUser(revUserService);
         if(revUser.isTrainer()) {
-            log.info("Trainer is deleting a topic they own");
-            try
-            {
-                topicService.deleteTopic(topicId);
-                return ResponseEntity.ok().build();
+            if (revUser.getTopics().contains(topicService.getById(topicId))) {
+                log.info("Trainer is deleting a topic they own");
+                try {
+                    topicService.deleteTopic(topicId);
+                    return ResponseEntity.ok().build();
+                } catch (DataIntegrityViolationException exception) {
+                    List<Event> events = eventService.getAllEventsByTopicId(topicId);
+
+                    ObjectNode errorMessage = objectMapper.createObjectNode();
+                    errorMessage.put("Message", String.format( "Cannot delete Topic (%d) due to Events referencing it", topicId));
+                    ArrayNode eventsNode = errorMessage.putArray("Events");
+                    for (Event event: events) {
+                        eventsNode.add(event.getId());
+                    }
+                    return ResponseEntity.status(470).body(objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(errorMessage));
+                }
+            } else {
+                log.warn(String.format("%s attempted to delete Topic (%d) not owned by them.", revUser.getUsername(), topicId));
+                ObjectNode errorMessage = objectMapper.createObjectNode();
+                errorMessage.put("Message", String.format("%s cannot delete Topic (%d), they are not the owner", revUser.getUsername(), topicId));
+                return ResponseEntity.status(401).body(objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(errorMessage));
             }
-            catch (DataIntegrityViolationException exception)
-            {
-                return ResponseEntity.status(470).body("Cannot delete topic - There are events that reference this topic");
-            }
-        } else {
-            log.warn("Associate attempted to delete a topic");
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        } else { // you could catch this condition by checking ownership also, but having this broken up (isTrainer) is more informative.
+            log.warn(String.format("%s attempted to delete a Topic, Associates cannot delete Topics.", revUser.getUsername()));
+            ObjectNode errorMessage = objectMapper.createObjectNode();
+            errorMessage.put("Message", String.format("%s cannot delete Topics as an Associate", revUser.getUsername(), topicId));
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(errorMessage));
         }
     }
 }
