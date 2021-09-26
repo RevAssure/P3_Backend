@@ -42,12 +42,12 @@ public class EventService {
     }
 
     /**
-     * Gets a list of events from the database that all have the same curriculum
-     * @param id : The curriculum id
+     * Gets a list of events which reference a certain topic
+     * @param topicId : The id of the topic to find referencing events
      * @return Either a list of all the events for that curriculum, or an empty ArrayList if there were no events for that curriculum.
      */
     public List<Event> getAllEventsByTopicId(int topicId) {
-        log.info("Get all events in specific curriculum");
+        log.info("Get all events for a specific topic");
         return eventRepository.findByTopicId(topicId);
     }
 
