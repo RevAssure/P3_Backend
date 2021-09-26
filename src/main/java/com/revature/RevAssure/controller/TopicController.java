@@ -10,6 +10,7 @@ import com.revature.RevAssure.util.JwtUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -163,14 +164,20 @@ public class TopicController{
         RevUser revUser = JwtUtil.extractUser(revUserService);
         if(revUser.isTrainer()) {
             log.info("Trainer is deleting a topic they own");
-            topicService.deleteTopic(topicId);
-            return ResponseEntity.ok().build();
+            try
+            {
+                topicService.deleteTopic(topicId);
+                return ResponseEntity.ok().build();
+            }
+            catch (DataIntegrityViolationException exception)
+            {
+                return ResponseEntity.status(470).body("Cannot delete topic - There are events that reference this topic");
+            }
         } else {
             log.warn("Associate attempted to delete a topic");
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         }
     }
-
 }
 
 

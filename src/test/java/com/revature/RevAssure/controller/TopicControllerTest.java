@@ -15,6 +15,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
@@ -27,8 +28,7 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.doNothing;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -349,6 +349,25 @@ class TopicControllerTest {
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isForbidden())
                 .andExpect(jsonPath("$").doesNotExist())
+                .andReturn();
+
+    }
+
+    /**
+     * test deleteTopic throws DataIntegrityViolation
+     * Should throw when user tries to delete a topic that is being referenced by an event
+     */
+    @WithMockUser
+    @Test
+    public void deleteTopicByIdThrowsDataIntegrityViolation() throws Exception
+    {
+        when(mockJwtUtil.extractUser(mockRevUserService)).thenReturn(mockTrainer);
+        doThrow(new DataIntegrityViolationException("")).when(topicService).deleteTopic(1);
+
+        mockMvc.perform(delete("/topic/1")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().is(470))
+                .andExpect(jsonPath("$").value("Cannot delete topic - There are events that reference this topic"))
                 .andReturn();
 
     }
