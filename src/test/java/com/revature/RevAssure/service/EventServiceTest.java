@@ -90,7 +90,7 @@ class EventServiceTest {
 
         assertEquals(new ArrayList<>(),evs);
     }
-    
+
     @Test
     void updateEventSuccessfullyTest() {
         when(eventRepository.save(event)).thenReturn(event);
@@ -99,10 +99,6 @@ class EventServiceTest {
 
         assertEquals(event,ev);
     }
-
-
-
-
 
     @Test
     void deleteEventSuccessfullyTest() {
