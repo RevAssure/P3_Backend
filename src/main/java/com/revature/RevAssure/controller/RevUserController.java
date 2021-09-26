@@ -1,5 +1,8 @@
 package com.revature.RevAssure.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.revature.RevAssure.dto.AuthenticationRequest;
 import com.revature.RevAssure.model.RevUser;
 import com.revature.RevAssure.service.RevUserService;
@@ -7,6 +10,8 @@ import com.revature.RevAssure.util.JwtUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,9 +23,11 @@ public class RevUserController {
 
     @Autowired
     private final RevUserService revUserService;
+    private final ObjectMapper objectMapper;
 
-    public RevUserController(RevUserService revUserService) {
+    public RevUserController(RevUserService revUserService, ObjectMapper objectMapper) {
         this.revUserService = revUserService;
+        this.objectMapper = objectMapper;
     }
 
     // Create
@@ -30,9 +37,16 @@ public class RevUserController {
      * @return RevUser
      */
     @PostMapping("/register")
-    public RevUser createUser(@RequestBody RevUser revUser) {
-        log.info("Creating a new user");
-        return revUserService.saveNewRevUser(revUser);
+    public ResponseEntity<?> createUser(@RequestBody RevUser revUser) throws JsonProcessingException {
+        log.info("Create new user");
+        try {
+            return new ResponseEntity<RevUser>(revUserService.saveNewRevUser(revUser), HttpStatus.CREATED);
+        } catch (DataIntegrityViolationException e) {
+            ObjectNode errorMessage = objectMapper.createObjectNode();
+            errorMessage.put("Message", String.format("Username %s already exists", revUser.getUsername()));
+            String body = objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(errorMessage);
+            return new ResponseEntity<String>(body, HttpStatus.CONFLICT);
+        }
     }
 
     // Read
@@ -42,7 +56,7 @@ public class RevUserController {
      */
     @PostMapping("/authenticate")
     public ResponseEntity<?> createAuthenticationToken(@RequestBody AuthenticationRequest authReq) {
-        log.info("Attempting to authenticate user");
+        log.info("Authenticate user");
         return revUserService.authenticate(authReq);
     }
 

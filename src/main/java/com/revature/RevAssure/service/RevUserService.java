@@ -21,17 +21,9 @@ public class RevUserService {
     private static final Logger log = LoggerFactory.getLogger(RevUserService.class);
 
     private final RevUserRepository revUserRepository;
-
-
     PasswordEncoder passwordEncoder;
-
-
     private final AuthenticationManager authenticationManager;
-
-
     private final RevUserDetailsService revUserDetailsService;
-
-
     private final JwtUtil jwtTokenUtil;
 
     @Autowired
@@ -70,9 +62,10 @@ public class RevUserService {
             return ResponseEntity.ok(authResp);
         }
         catch (Exception e) {
-            log.error("Credentials not recognized during authentication",e);
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+            log.error("Invalid credentials provided", e);
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("{\n\t\"Message\": \"Invalid Credentials\"\n}");
         }
+
     }
 
     /**
