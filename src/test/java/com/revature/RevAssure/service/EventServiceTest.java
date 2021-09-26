@@ -66,13 +66,6 @@ class EventServiceTest {
     }
 
     @Test
-    void getAllEventsByTopicIdTest() {
-        when(eventRepository.findByTopicId(1)).thenReturn(events);
-        List<Event> evs = eventService.getAllEventsByTopicId(1);
-        assertEquals(events,evs);
-    }
-
-    @Test
     void getAllEventsByCurriculumButNoEventsTest() {
         when(eventRepository.findByCurriculumId(1)).thenReturn(new ArrayList<>());
 
@@ -82,6 +75,23 @@ class EventServiceTest {
     }
 
     @Test
+    void getAllEventsByTopicIdTest() {
+        when(eventRepository.findByTopicId(1)).thenReturn(events);
+        List<Event> evs = eventService.getAllEventsByTopicId(1);
+        assertEquals(events,evs);
+    }
+
+
+    @Test
+    void getAllEventsByTopicIdButNoEventsTest() {
+        when(eventRepository.findByTopicId(1)).thenReturn(new ArrayList<>());
+
+        List<Event> evs = eventService.getAllEventsByTopicId(1);
+
+        assertEquals(new ArrayList<>(),evs);
+    }
+    
+    @Test
     void updateEventSuccessfullyTest() {
         when(eventRepository.save(event)).thenReturn(event);
 
@@ -89,6 +99,10 @@ class EventServiceTest {
 
         assertEquals(event,ev);
     }
+
+
+
+
 
     @Test
     void deleteEventSuccessfullyTest() {
