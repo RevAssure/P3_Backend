@@ -75,11 +75,6 @@ public class RevUserService {
      */
     public RevUser getRevUserByUsername(String username) {
         log.info("get user information by username");
-        try {
-            return revUserRepository.findByUsername(username).orElseThrow(RuntimeException::new);
-        } catch (RuntimeException e){
-            log.error("No user found for given username",e);
-            return null;
-        }
+        return revUserRepository.findByUsername(username).orElseThrow(RuntimeException::new);
     }
 }
