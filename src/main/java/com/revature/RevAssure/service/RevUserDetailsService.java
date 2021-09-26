@@ -46,7 +46,6 @@ public class RevUserDetailsService implements UserDetailsService {
         RevUser revUser = revUserRepository.findByUsername(s).orElseThrow(RuntimeException::new);
         String username = revUser.getUsername();
         String password = revUser.getPassword();
-        log.warn("Might throw UsernameNotFoundException");
         return new User(username, password, new ArrayList<>()); // ArrayList because we aren't dealing with Authorities
     }
 
