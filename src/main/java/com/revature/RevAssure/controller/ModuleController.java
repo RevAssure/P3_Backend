@@ -22,9 +22,9 @@ public class ModuleController {
     private static final Logger log = LoggerFactory.getLogger(ModuleController.class);
 
     @Autowired
-    private ModuleService moduleService;
+    private final ModuleService moduleService;
     @Autowired
-    private RevUserService revUserService;
+    private final RevUserService revUserService;
 
     /**
      * Constructor for ModuleController

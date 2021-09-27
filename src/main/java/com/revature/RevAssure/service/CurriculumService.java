@@ -14,7 +14,7 @@ import java.util.List;
 public class CurriculumService
 {
     private static final Logger log = LoggerFactory.getLogger(CurriculumService.class);
-    private CurriculumRepository curriculumRepository;
+    private final CurriculumRepository curriculumRepository;
 
     @Autowired
     public CurriculumService(CurriculumRepository curriculumRepository)

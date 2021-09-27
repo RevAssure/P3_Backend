@@ -13,7 +13,7 @@ import java.util.List;
 public class EventService {
 
     private static final Logger log = LoggerFactory.getLogger(EventService.class);
-    private EventRepository eventRepository;
+    private final EventRepository eventRepository;
 
     @Autowired
     public EventService(EventRepository eventRepository){
