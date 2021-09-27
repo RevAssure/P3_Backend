@@ -1,6 +1,5 @@
 package com.revature.RevAssure.controller;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.revature.RevAssure.dto.TopicDTO;
 import com.revature.RevAssure.model.RevUser;
@@ -77,18 +76,22 @@ public class TopicController{
      * @return A list of revUsers as strings and status ok. Forbidden if non-trainer requests
      */
     @GetMapping
-    public ResponseEntity<String> getTopicsByTrainerId() throws JsonProcessingException {
+    public ResponseEntity<String> getTopicsByTrainerId(){
         RevUser revUser = JwtUtil.extractUser(revUserService);
-        if(revUser.isTrainer()){
-            log.info("Getting all topics owned by this trainer");
+        try {
+            if (revUser.isTrainer()) {
+                log.info("Getting all topics owned by this trainer");
 
 
-            return ResponseEntity.ok().body(new ObjectMapper().writerWithDefaultPrettyPrinter().
-                    writeValueAsString(topicService.getByTrainer(revUser)));
-        }
-        else {
-            log.warn("Associate is attempting to get all topics they own, but they don't own any");
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+                return ResponseEntity.ok().body(new ObjectMapper().writerWithDefaultPrettyPrinter().
+                        writeValueAsString(topicService.getByTrainer(revUser)));
+            } else {
+                log.warn("Associate is attempting to get all topics they own, but they don't own any");
+                return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+            }
+        } catch (Exception e) {
+            log.error("Topic failed to be mapped as a JSON string",e);
+            return ResponseEntity.internalServerError().build();
         }
     }
 
