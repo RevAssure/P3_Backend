@@ -88,10 +88,19 @@ public class EventController {
         try {
             if (revUser.isTrainer()) {
                 log.info("Trainer is updating one of their events");
-                return ResponseEntity.ok().body(
-                        new ObjectMapper().writerWithDefaultPrettyPrinter().writeValueAsString(
-                                eventService.updateEvent(
-                                        eventdto.convertToEntity())));
+                Event event = eventdto.convertToEntity();
+                if(event.getId() == 0)
+                {
+                    return ResponseEntity.ok().body(
+                            new ObjectMapper().writerWithDefaultPrettyPrinter().writeValueAsString(
+                                    eventService.updateEvent(
+                                            event)));
+                }
+                else
+                {
+                    log.warn("Request Body does not have ID");
+                    return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+                }
             } else {
                 log.warn("Associate is attempting to update an event");
                 return ResponseEntity.status(HttpStatus.FORBIDDEN).build();

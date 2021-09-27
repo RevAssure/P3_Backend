@@ -88,10 +88,19 @@ public class ModuleController {
         try {
             if (revUser.isTrainer()) {
                 log.info("Trainer is updating their module");
-                return ResponseEntity.ok().body(
-                        new ObjectMapper().writerWithDefaultPrettyPrinter().writeValueAsString(
-                                moduleService.saveExistingModule(
-                                        moduledto.convertToEntity(revUser))));
+                Module module = moduledto.convertToEntity(revUser);
+                if(module.getId() == 0)
+                {
+                    return ResponseEntity.ok().body(
+                            new ObjectMapper().writerWithDefaultPrettyPrinter().writeValueAsString(
+                                    moduleService.saveExistingModule(
+                                            module)));
+                }
+                else
+                {
+                    log.warn("Request Body does not have ID");
+                    return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+                }
             } else {
                 log.warn("Associate is attempting to update a module");
                 return ResponseEntity.status(HttpStatus.FORBIDDEN).build();

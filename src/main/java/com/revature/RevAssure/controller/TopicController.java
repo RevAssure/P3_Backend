@@ -143,10 +143,19 @@ public class TopicController{
         try {
             log.info("Trainer is updating a topic they own");
             if (revUser.isTrainer()) {
-                return ResponseEntity.ok().body(
-                        new ObjectMapper().writerWithDefaultPrettyPrinter().writeValueAsString(
-                                topicService.saveTopic(
-                                        topicdto.convertToEntity(revUser))));
+                Topic topic = topicdto.convertToEntity(revUser);
+                // TODO: 9/27/2021 make this a custom exception
+                if(topic.getId() == 0)
+                {
+                    return ResponseEntity.ok().body(
+                            new ObjectMapper().writerWithDefaultPrettyPrinter().writeValueAsString(
+                                    topicService.saveTopic(topic)));
+                }
+                else
+                {
+                    log.warn("Request Body does not have ID");
+                    return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+                }
             } else {
                 log.warn("Associate attempted to update a topic");
                 return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
