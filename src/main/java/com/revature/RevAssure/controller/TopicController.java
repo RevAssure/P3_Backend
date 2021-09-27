@@ -51,6 +51,7 @@ public class TopicController{
     @PostMapping
     public ResponseEntity<String> createTopic(@RequestBody TopicDTO topicdto) {
         RevUser revUser = JwtUtil.extractUser(revUserService);
+        topicdto.setId(0);
         try {
             if (revUser.isTrainer()) {
                 log.info("Trainer is creating a new topic");
