@@ -1,6 +1,5 @@
 package com.revature.RevAssure.controller;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.revature.RevAssure.dto.TopicDTO;
 import com.revature.RevAssure.model.RevUser;
@@ -11,6 +10,7 @@ import com.revature.RevAssure.util.JwtUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -76,18 +76,22 @@ public class TopicController{
      * @return A list of revUsers as strings and status ok. Forbidden if non-trainer requests
      */
     @GetMapping
-    public ResponseEntity<String> getTopicsByTrainerId() throws JsonProcessingException {
+    public ResponseEntity<String> getTopicsByTrainerId(){
         RevUser revUser = JwtUtil.extractUser(revUserService);
-        if(revUser.isTrainer()){
-            log.info("Getting all topics owned by this trainer");
+        try {
+            if (revUser.isTrainer()) {
+                log.info("Getting all topics owned by this trainer");
 
 
-            return ResponseEntity.ok().body(new ObjectMapper().writerWithDefaultPrettyPrinter().
-                    writeValueAsString(topicService.getByTrainer(revUser)));
-        }
-        else {
-            log.warn("Associate is attempting to get all topics they own, but they don't own any");
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+                return ResponseEntity.ok().body(new ObjectMapper().writerWithDefaultPrettyPrinter().
+                        writeValueAsString(topicService.getByTrainer(revUser)));
+            } else {
+                log.warn("Associate is attempting to get all topics they own, but they don't own any");
+                return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+            }
+        } catch (Exception e) {
+            log.error("Topic failed to be mapped as a JSON string",e);
+            return ResponseEntity.internalServerError().build();
         }
     }
 
@@ -164,14 +168,20 @@ public class TopicController{
         RevUser revUser = JwtUtil.extractUser(revUserService);
         if(revUser.isTrainer()) {
             log.info("Trainer is deleting a topic they own");
-            topicService.deleteTopic(topicId);
-            return ResponseEntity.ok().build();
+            try
+            {
+                topicService.deleteTopic(topicId);
+                return ResponseEntity.ok().build();
+            }
+            catch (DataIntegrityViolationException exception)
+            {
+                return ResponseEntity.status(470).body("Cannot delete topic - There are events that reference this topic");
+            }
         } else {
             log.warn("Associate attempted to delete a topic");
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         }
     }
-
 }
 
 
