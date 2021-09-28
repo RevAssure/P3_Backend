@@ -37,6 +37,12 @@ other users.
  
 ### Features:
 Current available features
+- Users can register an account with the app
+- Users can choose whether to create a trainer or assocaite account 
+- Associates are able to view their curriculums
+- Trainers can create curriculums 
+- Trainers can add and then edit their topics 
+- Trainers can view topics created by themselves or others
 
 To-do List
 - Introduce dark mode
