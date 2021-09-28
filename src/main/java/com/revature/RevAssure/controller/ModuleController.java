@@ -22,9 +22,9 @@ public class ModuleController {
     private static final Logger log = LoggerFactory.getLogger(ModuleController.class);
 
     @Autowired
-    private ModuleService moduleService;
+    private final ModuleService moduleService;
     @Autowired
-    private RevUserService revUserService;
+    private final RevUserService revUserService;
 
     /**
      * Constructor for ModuleController
@@ -48,10 +48,19 @@ public class ModuleController {
         try {
             if (revUser.isTrainer()) {
                 log.info("Trainer is creating a new module");
-                return ResponseEntity.ok().body(
-                        new ObjectMapper().writerWithDefaultPrettyPrinter().writeValueAsString(
-                                moduleService.saveNewModule(
-                                        moduledto.convertToEntity(revUser))));
+                Module module = moduledto.convertToEntity(revUser);
+                if(module.getId() == 0)
+                {
+                    return ResponseEntity.ok().body(
+                            new ObjectMapper().writerWithDefaultPrettyPrinter().writeValueAsString(
+                                    moduleService.saveNewModule(
+                                            moduledto.convertToEntity(revUser))));
+                }
+                else
+                {
+                    log.warn("Request Body has an ID");
+                    return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+                }
             } else {
                 log.warn("Associate is attempting to create new module");
                 return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
@@ -88,10 +97,19 @@ public class ModuleController {
         try {
             if (revUser.isTrainer()) {
                 log.info("Trainer is updating their module");
-                return ResponseEntity.ok().body(
-                        new ObjectMapper().writerWithDefaultPrettyPrinter().writeValueAsString(
-                                moduleService.saveExistingModule(
-                                        moduledto.convertToEntity(revUser))));
+                Module module = moduledto.convertToEntity(revUser);
+                if(module.getId() != 0)
+                {
+                    return ResponseEntity.ok().body(
+                            new ObjectMapper().writerWithDefaultPrettyPrinter().writeValueAsString(
+                                    moduleService.saveExistingModule(
+                                            module)));
+                }
+                else
+                {
+                    log.warn("Request Body does not have ID");
+                    return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+                }
             } else {
                 log.warn("Associate is attempting to update a module");
                 return ResponseEntity.status(HttpStatus.FORBIDDEN).build();

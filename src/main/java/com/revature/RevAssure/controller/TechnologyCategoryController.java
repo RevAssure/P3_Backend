@@ -21,8 +21,8 @@ import java.util.List;
 public class TechnologyCategoryController {
     private static final Logger log = LoggerFactory.getLogger(TechnologyCategoryController.class);
 
-    private TechnologyCategoryService technologyCategoryService;
-    private RevUserService revUserService;
+    private final TechnologyCategoryService technologyCategoryService;
+    private final RevUserService revUserService;
 
     /**
      * Constructor for TechnologyCategoryController
@@ -48,7 +48,7 @@ public class TechnologyCategoryController {
 
     /**
      * Create operation to persist a technology category into the database
-     * @param technologyCategory
+     * @param technologyCategory Request body containing the technology category name
      * @return TechnologyCategory which was persisted
      */
     @PostMapping

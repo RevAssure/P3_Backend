@@ -37,9 +37,8 @@ public class RevUserController {
 
     // Read
     /**
-     * @param authReq
+     * @param authReq The username and password
      * @return ResponseEntity<ok> or ResponseEntity<forbidden>
-     * @throws Exception
      */
     @PostMapping("/authenticate")
     public ResponseEntity<?> createAuthenticationToken(@RequestBody AuthenticationRequest authReq) {
