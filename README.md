@@ -46,6 +46,31 @@ other users.
 - all code required to get started
 - images of what it should look like
  
+### Features:
+Current available features
+- Users can register an account with the app
+- Users can choose whether to create a trainer or assocaite account 
+- Associates are able to view their curriculums
+- Trainers can create curriculums 
+- Trainers can add and then edit their topics 
+- Trainers can view topics created by themselves or others
+
+To-do List
+- Introduce dark mode
+- Allow topics to be dragged and then dropped onto the curriculum
+- Include additional roles besides trainer and associate
+- Trainers will be able to add associates to a curriculum
+- Add discussion board to topics so associates can communicate with trainers
+
+### Getting Started:
+Currently, the only thing needed to begin using the app is the URL.
+
+### Usage: 
+Users use this app to organize the curriculum they are going through while at Revature. 
+Trainers can use this app to organize what their assosciates will be going over day to 
+day. Associates can view their curriculumn so that they can know what they need to review
+each day. 
+
 ### Contributors:
 - Jacob Brummett
 - Ryan Busby
