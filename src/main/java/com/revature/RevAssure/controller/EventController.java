@@ -46,10 +46,19 @@ public class EventController {
         try {
             if (revUser.isTrainer()) {
                 log.info("Trainer is creating a new event");
-                return ResponseEntity.ok().body(
-                        new ObjectMapper().writerWithDefaultPrettyPrinter().writeValueAsString(
-                                eventService.createEvent(
-                                        eventdto.convertToEntity())));
+                Event event = eventdto.convertToEntity();
+                if(event.getId() == 0)
+                {
+                    return ResponseEntity.ok().body(
+                            new ObjectMapper().writerWithDefaultPrettyPrinter().writeValueAsString(
+                                    eventService.createEvent(
+                                            eventdto.convertToEntity())));
+                }
+                else
+                {
+                    log.warn("Request Body has an ID");
+                    return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+                }
             } else {
                 log.warn("Associate is attempting to create an event");
                 return ResponseEntity.status(HttpStatus.FORBIDDEN).build();

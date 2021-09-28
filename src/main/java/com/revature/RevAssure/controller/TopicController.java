@@ -54,10 +54,19 @@ public class TopicController{
         try {
             if (revUser.isTrainer()) {
                 log.info("Trainer is creating a new topic");
-                return ResponseEntity.ok().body(
-                        new ObjectMapper().writerWithDefaultPrettyPrinter().writeValueAsString(
-                                topicService.saveTopic(
-                                        topicdto.convertToEntity(revUser))));
+                Topic topic = topicdto.convertToEntity(revUser);
+                if(topic.getId() == 0)
+                {
+                    return ResponseEntity.ok().body(
+                            new ObjectMapper().writerWithDefaultPrettyPrinter().writeValueAsString(
+                                    topicService.saveTopic(
+                                            topic)));
+                }
+                else
+                {
+                    log.warn("Request Body has an ID");
+                    return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+                }
             } else {
                 log.warn("Associate is attempting to create a new topic");
                 return ResponseEntity.status(HttpStatus.FORBIDDEN).build();

@@ -48,10 +48,19 @@ public class ModuleController {
         try {
             if (revUser.isTrainer()) {
                 log.info("Trainer is creating a new module");
-                return ResponseEntity.ok().body(
-                        new ObjectMapper().writerWithDefaultPrettyPrinter().writeValueAsString(
-                                moduleService.saveNewModule(
-                                        moduledto.convertToEntity(revUser))));
+                Module module = moduledto.convertToEntity(revUser);
+                if(module.getId() == 0)
+                {
+                    return ResponseEntity.ok().body(
+                            new ObjectMapper().writerWithDefaultPrettyPrinter().writeValueAsString(
+                                    moduleService.saveNewModule(
+                                            moduledto.convertToEntity(revUser))));
+                }
+                else
+                {
+                    log.warn("Request Body has an ID");
+                    return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+                }
             } else {
                 log.warn("Associate is attempting to create new module");
                 return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
