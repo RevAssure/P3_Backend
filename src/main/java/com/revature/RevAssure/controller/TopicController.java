@@ -145,7 +145,7 @@ public class TopicController{
             if (revUser.isTrainer()) {
                 Topic topic = topicdto.convertToEntity(revUser);
                 // TODO: 9/27/2021 make this a custom exception
-                if(topic.getId() == 0)
+                if(topic.getId() != 0)
                 {
                     return ResponseEntity.ok().body(
                             new ObjectMapper().writerWithDefaultPrettyPrinter().writeValueAsString(

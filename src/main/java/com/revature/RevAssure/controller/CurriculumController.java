@@ -46,10 +46,19 @@ public class CurriculumController {
         try {
             if (revUser.isTrainer()) {
                 log.info("Trainer is making new curriculum.");
-                return ResponseEntity.ok().body(
-                        new ObjectMapper().writerWithDefaultPrettyPrinter().writeValueAsString(
-                                curriculumService.saveCurriculum(
-                                        curriculumdto.convertToEntity(revUser))));
+                Curriculum curriculum = curriculumdto.convertToEntity(revUser);
+                if(curriculum.getId() == 0)
+                {
+                    return ResponseEntity.ok().body(
+                            new ObjectMapper().writerWithDefaultPrettyPrinter().writeValueAsString(
+                                    curriculumService.saveCurriculum(
+                                            curriculum)));
+                }
+                else
+                {
+                    log.warn("Request Body has an ID");
+                    return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+                }
             } else {
                 log.warn("Associate attempted to create curriculum.");
                 return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
@@ -104,7 +113,7 @@ public class CurriculumController {
             if (revUser.isTrainer()) {
                 log.info("Trainer is updating their curriculum.");
                 Curriculum curriculum = curriculumdto.convertToEntity(revUser);
-                if(curriculum.getId() == 0) {
+                if(curriculum.getId() != 0) {
                     return ResponseEntity.ok().body(
                             new ObjectMapper().writerWithDefaultPrettyPrinter().writeValueAsString(
                                     curriculumService.saveCurriculum(

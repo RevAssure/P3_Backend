@@ -89,7 +89,7 @@ public class ModuleController {
             if (revUser.isTrainer()) {
                 log.info("Trainer is updating their module");
                 Module module = moduledto.convertToEntity(revUser);
-                if(module.getId() == 0)
+                if(module.getId() != 0)
                 {
                     return ResponseEntity.ok().body(
                             new ObjectMapper().writerWithDefaultPrettyPrinter().writeValueAsString(

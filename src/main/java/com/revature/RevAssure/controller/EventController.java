@@ -89,7 +89,7 @@ public class EventController {
             if (revUser.isTrainer()) {
                 log.info("Trainer is updating one of their events");
                 Event event = eventdto.convertToEntity();
-                if(event.getId() == 0)
+                if(event.getId() != 0)
                 {
                     return ResponseEntity.ok().body(
                             new ObjectMapper().writerWithDefaultPrettyPrinter().writeValueAsString(
