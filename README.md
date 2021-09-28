@@ -39,6 +39,11 @@ other users.
 Current available features
 
 To-do List
+- Introduce dark mode
+- Allow topics to be dragged and then dropped onto the curriculum
+- Include additional roles besides trainer and associate
+- Trainers will be able to add associates to a curriculum
+- Add discussion board to topics so associates can communicate with trainers
 
 ### Getting Started:
 
