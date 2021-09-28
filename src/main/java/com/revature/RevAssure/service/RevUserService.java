@@ -26,13 +26,13 @@ public class RevUserService {
     PasswordEncoder passwordEncoder;
 
 
-    private AuthenticationManager authenticationManager;
+    private final AuthenticationManager authenticationManager;
 
 
-    private RevUserDetailsService revUserDetailsService;
+    private final RevUserDetailsService revUserDetailsService;
 
 
-    private JwtUtil jwtTokenUtil;
+    private final JwtUtil jwtTokenUtil;
 
     @Autowired
     public RevUserService(RevUserRepository revUserRepository, PasswordEncoder passwordEncoder, AuthenticationManager authenticationManager, RevUserDetailsService revUserDetailsService, JwtUtil jwtUtil) {
@@ -57,7 +57,7 @@ public class RevUserService {
     /**
      * Method to authenticate if a user has entered valid log in credentials
      * @param authReq The request body which contains user's credentials to authenticate
-     * @return ResponseEntity with 200 status and a JWT in the body, or a 403 with no body
+     * @return ResponseEntity with 200 status and a JWT in the body, or a 403 without body
      */
     public ResponseEntity<?> authenticate(AuthenticationRequest authReq) {
         log.info("verify user");

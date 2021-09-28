@@ -46,10 +46,19 @@ public class EventController {
         try {
             if (revUser.isTrainer()) {
                 log.info("Trainer is creating a new event");
-                return ResponseEntity.ok().body(
-                        new ObjectMapper().writerWithDefaultPrettyPrinter().writeValueAsString(
-                                eventService.createEvent(
-                                        eventdto.convertToEntity())));
+                Event event = eventdto.convertToEntity();
+                if(event.getId() == 0)
+                {
+                    return ResponseEntity.ok().body(
+                            new ObjectMapper().writerWithDefaultPrettyPrinter().writeValueAsString(
+                                    eventService.createEvent(
+                                            eventdto.convertToEntity())));
+                }
+                else
+                {
+                    log.warn("Request Body has an ID");
+                    return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+                }
             } else {
                 log.warn("Associate is attempting to create an event");
                 return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
@@ -83,15 +92,24 @@ public class EventController {
      * @return : The event that is to be updated and persisted into the database or sets bad status if user is not a trainer
      */
     @PutMapping
-    public ResponseEntity<String> updateEvent(@RequestBody EventDTO eventdto) {;
+    public ResponseEntity<String> updateEvent(@RequestBody EventDTO eventdto) {
         RevUser revUser = JwtUtil.extractUser(revUserService);
         try {
             if (revUser.isTrainer()) {
                 log.info("Trainer is updating one of their events");
-                return ResponseEntity.ok().body(
-                        new ObjectMapper().writerWithDefaultPrettyPrinter().writeValueAsString(
-                                eventService.updateEvent(
-                                        eventdto.convertToEntity())));
+                Event event = eventdto.convertToEntity();
+                if(event.getId() != 0)
+                {
+                    return ResponseEntity.ok().body(
+                            new ObjectMapper().writerWithDefaultPrettyPrinter().writeValueAsString(
+                                    eventService.updateEvent(
+                                            event)));
+                }
+                else
+                {
+                    log.warn("Request Body does not have ID");
+                    return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+                }
             } else {
                 log.warn("Associate is attempting to update an event");
                 return ResponseEntity.status(HttpStatus.FORBIDDEN).build();

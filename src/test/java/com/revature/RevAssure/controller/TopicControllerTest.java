@@ -111,6 +111,7 @@ class TopicControllerTest {
     @WithMockUser
     @Test
     public void  createTopicTest() throws Exception{
+        topicDTO.setId(0);
         when(mockJwtUtil.extractUser(mockRevUserService)).thenReturn(mockTrainer);
         when(topicService.saveTopic(topic)).thenReturn(topic);
 

@@ -43,7 +43,7 @@ public class TopicService {
 
     /**
      *
-     * @param trainer
+     * @param trainer The RevUser object representing the person making the request
      * @return List of Topic Objects
      */
     public List<Topic> getByTrainer(RevUser trainer) {

@@ -15,7 +15,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -51,14 +50,22 @@ public class TopicController{
     @PostMapping
     public ResponseEntity<String> createTopic(@RequestBody TopicDTO topicdto) {
         RevUser revUser = JwtUtil.extractUser(revUserService);
-        topicdto.setId(0);
         try {
             if (revUser.isTrainer()) {
                 log.info("Trainer is creating a new topic");
-                return ResponseEntity.ok().body(
-                        new ObjectMapper().writerWithDefaultPrettyPrinter().writeValueAsString(
-                                topicService.saveTopic(
-                                        topicdto.convertToEntity(revUser))));
+                Topic topic = topicdto.convertToEntity(revUser);
+                if(topic.getId() == 0)
+                {
+                    return ResponseEntity.ok().body(
+                            new ObjectMapper().writerWithDefaultPrettyPrinter().writeValueAsString(
+                                    topicService.saveTopic(
+                                            topic)));
+                }
+                else
+                {
+                    log.warn("Request Body has an ID");
+                    return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+                }
             } else {
                 log.warn("Associate is attempting to create a new topic");
                 return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
@@ -144,10 +151,19 @@ public class TopicController{
         try {
             log.info("Trainer is updating a topic they own");
             if (revUser.isTrainer()) {
-                return ResponseEntity.ok().body(
-                        new ObjectMapper().writerWithDefaultPrettyPrinter().writeValueAsString(
-                                topicService.saveTopic(
-                                        topicdto.convertToEntity(revUser))));
+                Topic topic = topicdto.convertToEntity(revUser);
+                // TODO: 9/27/2021 make this a custom exception
+                if(topic.getId() != 0)
+                {
+                    return ResponseEntity.ok().body(
+                            new ObjectMapper().writerWithDefaultPrettyPrinter().writeValueAsString(
+                                    topicService.saveTopic(topic)));
+                }
+                else
+                {
+                    log.warn("Request Body does not have ID");
+                    return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+                }
             } else {
                 log.warn("Associate attempted to update a topic");
                 return ResponseEntity.status(HttpStatus.FORBIDDEN).build();

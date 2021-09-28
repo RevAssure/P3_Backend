@@ -118,6 +118,7 @@ class CurriculumControllerTest
     @Test
     void createCurriculumReturnsCurriculumJSON() throws Exception
     {
+        mockCurriculumDTO.setId(0);
         when(mockJwtUtil.extractUser(mockRevUserService)).thenReturn(mockTrainer);
         when(mockCurriculumService.saveCurriculum(mockCurriculum)).thenReturn(mockCurriculum);
 

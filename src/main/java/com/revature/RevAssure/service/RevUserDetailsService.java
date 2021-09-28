@@ -38,7 +38,7 @@ public class RevUserDetailsService implements UserDetailsService {
      * Overridden UserDetails for Spring Security
      * @param s username of RevUser
      * @return UserDetails object for RevUser
-     * @throws UsernameNotFoundException
+     * @throws UsernameNotFoundException To indicate invalid log in credentials
      */
     @Override
     public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
