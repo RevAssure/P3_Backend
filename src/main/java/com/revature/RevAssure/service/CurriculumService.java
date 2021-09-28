@@ -8,6 +8,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.EntityExistsException;
+import javax.persistence.EntityNotFoundException;
 import java.util.List;
 
 @Service
@@ -27,11 +29,34 @@ public class CurriculumService
      * @param curriculum the curriculum to be saved
      * @return the saved curriculum
      */
-    public Curriculum saveCurriculum(Curriculum curriculum)
+    public Curriculum createCurriculum(Curriculum curriculum) throws EntityExistsException
     {
-        log.info("Saving Curriculum");
-        return curriculumRepository.save(curriculum);
+        log.info("Creating Curriculum");
+        Curriculum existingCurriculum = curriculumRepository.findById(curriculum.getId()).orElse(null);
+        if(existingCurriculum == null)
+        {
+            return curriculumRepository.save(curriculum);
+        }
+        else
+        {
+            throw new EntityExistsException();
+        }
     }
+
+    public Curriculum updateCurriculum(Curriculum curriculum) throws EntityNotFoundException
+    {
+        log.info("Updating Curriculum");
+        Curriculum existingCurriculum = curriculumRepository.findById(curriculum.getId()).orElse(null);
+        if(existingCurriculum != null)
+        {
+            return curriculumRepository.save(curriculum);
+        }
+        else
+        {
+            throw new EntityNotFoundException();
+        }
+    }
+
 
     /**
      * passes the trainer to the repository to find its corresponding curricula

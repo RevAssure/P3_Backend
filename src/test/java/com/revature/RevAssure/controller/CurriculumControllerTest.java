@@ -11,7 +11,6 @@ import com.revature.RevAssure.service.RevUserService;
 import com.revature.RevAssure.util.JwtUtil;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -23,9 +22,13 @@ import org.springframework.test.web.servlet.ResultMatcher;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
+import javax.persistence.EntityExistsException;
+import javax.persistence.EntityNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.when;
 import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -120,7 +123,7 @@ class CurriculumControllerTest
     {
         mockCurriculumDTO.setId(0);
         when(mockJwtUtil.extractUser(mockRevUserService)).thenReturn(mockTrainer);
-        when(mockCurriculumService.saveCurriculum(mockCurriculum)).thenReturn(mockCurriculum);
+        when(mockCurriculumService.createCurriculum(mockCurriculum)).thenReturn(mockCurriculum);
 
         mockMvc.perform(post("/curriculum")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -129,6 +132,20 @@ class CurriculumControllerTest
                 //.andExpect(jsonPath("$").isNotEmpty())
                 //.andExpect(curriculum("$", mockCurriculum))
                 .andReturn();
+    }
+
+    @WithMockUser
+    @Test
+    void createCurriculumReturns461WhenEntityExistsException() throws Exception
+    {
+        when(mockJwtUtil.extractUser(mockRevUserService)).thenReturn(mockTrainer);
+        when(mockCurriculumService.createCurriculum(any())).thenThrow(new EntityExistsException());
+
+        mockMvc.perform(post("/curriculum")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(new ObjectMapper().writeValueAsString(mockCurriculumDTO)))
+                .andExpect(status().is(461))
+                .andExpect(jsonPath("$").doesNotExist());
     }
 
     /**
@@ -237,7 +254,7 @@ class CurriculumControllerTest
     void updateCurriculumReturnsCurriculumJSON() throws Exception
     {
         when(mockJwtUtil.extractUser(mockRevUserService)).thenReturn(mockTrainer);
-        when(mockCurriculumService.saveCurriculum(mockCurriculum)).thenReturn(mockCurriculum);
+        when(mockCurriculumService.updateCurriculum(mockCurriculum)).thenReturn(mockCurriculum);
 
         mockMvc.perform(put("/curriculum")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -246,6 +263,20 @@ class CurriculumControllerTest
                 //.andExpect(jsonPath("$").isNotEmpty())
                 //.andExpect(curriculum("$", mockCurriculum))
                 .andReturn();
+    }
+
+    @WithMockUser
+    @Test
+    void updateCurriculumReturns462WhenEntityNotFoundException() throws Exception
+    {
+        when(mockJwtUtil.extractUser(mockRevUserService)).thenReturn(mockTrainer);
+        when(mockCurriculumService.updateCurriculum(any())).thenThrow(new EntityNotFoundException());
+
+        mockMvc.perform(put("/curriculum")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(new ObjectMapper().writeValueAsString(mockCurriculumDTO)))
+                .andExpect(status().is(462))
+                .andExpect(jsonPath("$").doesNotExist());
     }
 
     /**

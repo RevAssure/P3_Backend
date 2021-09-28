@@ -14,6 +14,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.persistence.EntityExistsException;
+import javax.persistence.EntityNotFoundException;
 import java.util.List;
 
 @CrossOrigin
@@ -47,22 +49,19 @@ public class CurriculumController {
             if (revUser.isTrainer()) {
                 log.info("Trainer is making new curriculum.");
                 Curriculum curriculum = curriculumdto.convertToEntity(revUser);
-                if(curriculum.getId() == 0)
-                {
-                    return ResponseEntity.ok().body(
-                            new ObjectMapper().writerWithDefaultPrettyPrinter().writeValueAsString(
-                                    curriculumService.saveCurriculum(
-                                            curriculum)));
-                }
-                else
-                {
-                    log.warn("Request Body has an ID");
-                    return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
-                }
+                return ResponseEntity.ok().body(
+                        new ObjectMapper().writerWithDefaultPrettyPrinter().writeValueAsString(
+                                curriculumService.createCurriculum(
+                                        curriculum)));
             } else {
                 log.warn("Associate attempted to create curriculum.");
                 return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
             }
+        }
+        catch (EntityExistsException e)
+        {
+            log.warn("Attempted to create curriculum that already exists");
+            return ResponseEntity.status(461).build();
         } catch (Exception e) {
             log.error("Curriculum failed to be mapped as a JSON string",e);
             return ResponseEntity.internalServerError().build();
@@ -116,7 +115,7 @@ public class CurriculumController {
                 if(curriculum.getId() != 0) {
                     return ResponseEntity.ok().body(
                             new ObjectMapper().writerWithDefaultPrettyPrinter().writeValueAsString(
-                                    curriculumService.saveCurriculum(
+                                    curriculumService.updateCurriculum(
                                             curriculum)));
                 }
                 else
@@ -128,6 +127,11 @@ public class CurriculumController {
                 log.warn("Associate attempting to update curriculum.");
                 return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
             }
+        }
+        catch (EntityNotFoundException e)
+        {
+            log.warn("Attempted to update a curriculum that doesn't exist");
+            return ResponseEntity.status(462).build();
         } catch (Exception e) {
             log.error("Curriculum failed to be mapped as a JSON string",e);
             return ResponseEntity.internalServerError().build();

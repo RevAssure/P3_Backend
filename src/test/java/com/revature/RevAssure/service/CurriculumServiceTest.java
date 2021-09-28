@@ -10,10 +10,14 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import javax.persistence.EntityExistsException;
+import javax.persistence.EntityNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -66,10 +70,33 @@ class CurriculumServiceTest
      * test saveCurriculum works as intended
      */
     @Test
-    void saveCurriculumReturnsNewOrUpdatedCurriculum()
+    void createCurriculumReturnsNewCurriculum()
     {
+        when(mockCurriculumRepository.findById(1)).thenReturn(Optional.empty());
         when(mockCurriculumRepository.save(mockCurriculum)).thenReturn(mockCurriculum);
-        assertEquals(curriculumServiceTest.saveCurriculum(mockCurriculum), mockCurriculum);
+        assertEquals(curriculumServiceTest.createCurriculum(mockCurriculum), mockCurriculum);
+    }
+
+    @Test
+    void createCurriculumThrowsEntityExistsException()
+    {
+        when(mockCurriculumRepository.findById(1)).thenReturn(Optional.of(mockCurriculum));
+        assertThrows(EntityExistsException.class, () -> curriculumServiceTest.createCurriculum(mockCurriculum));
+    }
+
+    @Test
+    void updateCurriculumReturnsUpdatedCurriculum()
+    {
+        when(mockCurriculumRepository.findById(1)).thenReturn(Optional.of(mockCurriculum));
+        when(mockCurriculumRepository.save(mockCurriculum)).thenReturn(mockCurriculum);
+        assertEquals(curriculumServiceTest.updateCurriculum(mockCurriculum), mockCurriculum);
+    }
+
+    @Test
+    void updateCurriculumThrowsEntityNotFoundException()
+    {
+        when(mockCurriculumRepository.findById(1)).thenReturn(Optional.empty());
+        assertThrows(EntityNotFoundException.class, () -> curriculumServiceTest.updateCurriculum(mockCurriculum));
     }
 
     /**
