@@ -114,6 +114,7 @@ class ModuleControllerTest
     @Test
     void createModuleReturnsModuleJSON() throws Exception
     {
+        mockModuleDTO.setId(0);
         when(mockJwtUtil.extractUser(mockRevUserService)).thenReturn(mockTrainer);
         when(mockModuleService.saveNewModule(mockModule)).thenReturn(mockModule);
 
