@@ -52,8 +52,13 @@ To-do List
 - Add discussion board to topics so associates can communicate with trainers
 
 ### Getting Started:
+Currently, the only thing needed to begin using the app is the URL.
 
 ### Usage: 
+Users use this app to organize the curriculum they are going through while at Revature. 
+Trainers can use this app to organize what their assosciates will be going over day to 
+day. Associates can view their curriculumn so that they can know what they need to review
+each day. 
 
 ### Contributors:
 - Jacob Brummett
