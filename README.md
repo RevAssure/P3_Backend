@@ -35,11 +35,11 @@ other users.
 - As a trainer I can edit my topics
 - As a trainer I can view topics created by other trainers
  
-### To-Do List
+### To-Do List:
 
-### Getting Started
+### Getting Started:
 
-### Usage 
+### Usage: 
 
 ### Contributors:
 - Jacob Brummett
