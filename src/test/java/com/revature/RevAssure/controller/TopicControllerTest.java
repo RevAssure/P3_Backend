@@ -2,7 +2,6 @@ package com.revature.RevAssure.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.revature.RevAssure.dto.TopicDTO;
-import com.revature.RevAssure.model.Module;
 import com.revature.RevAssure.model.RevUser;
 import com.revature.RevAssure.model.TechnologyCategory;
 import com.revature.RevAssure.model.Topic;
@@ -23,10 +22,11 @@ import org.springframework.test.web.servlet.ResultMatcher;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
+import javax.persistence.EntityExistsException;
+import javax.persistence.EntityNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
@@ -113,7 +113,7 @@ class TopicControllerTest {
     public void  createTopicTest() throws Exception{
         topicDTO.setId(0);
         when(mockJwtUtil.extractUser(mockRevUserService)).thenReturn(mockTrainer);
-        when(topicService.saveTopic(topic)).thenReturn(topic);
+        when(topicService.createTopic(topic)).thenReturn(topic);
 
         mockMvc.perform(post("/topic")
         .content(new ObjectMapper().writeValueAsString(topicDTO))
@@ -122,6 +122,20 @@ class TopicControllerTest {
         //.andExpect(jsonPath("$").exists())
         //.andExpect(topic("$",topic))
         .andReturn();
+    }
+
+    @WithMockUser
+    @Test
+    void createTopicReturns461WhenEntityExistsException() throws Exception
+    {
+        when(mockJwtUtil.extractUser(mockRevUserService)).thenReturn(mockTrainer);
+        when(topicService.createTopic(any())).thenThrow(new EntityExistsException());
+
+        mockMvc.perform(post("/topic")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(new ObjectMapper().writeValueAsString(topicDTO)))
+                .andExpect(status().is(461))
+                .andExpect(jsonPath("$").doesNotExist());
     }
 
     /**
@@ -137,7 +151,6 @@ class TopicControllerTest {
                 .andExpect(jsonPath("$").doesNotExist())
                 .andReturn();
     }
-
 
     /**
      * Cannot Create topic because non-trainers is trying to create topic
@@ -263,7 +276,7 @@ class TopicControllerTest {
     @Test
     public void updateTopicTest() throws Exception{
         when(mockJwtUtil.extractUser(mockRevUserService)).thenReturn(mockTrainer);
-        when(topicService.saveTopic(topic)).thenReturn(topic);
+        when(topicService.updateTopic(topic)).thenReturn(topic);
 
         mockMvc.perform(put("/topic")
         .contentType(MediaType.APPLICATION_JSON)
@@ -275,12 +288,26 @@ class TopicControllerTest {
 
     }
 
+    @WithMockUser
+    @Test
+    void updateTopicReturns462WhenEntityExistsException() throws Exception
+    {
+        when(mockJwtUtil.extractUser(mockRevUserService)).thenReturn(mockTrainer);
+        when(topicService.updateTopic(any())).thenThrow(new EntityNotFoundException());
+
+        mockMvc.perform(put("/topic")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(new ObjectMapper().writeValueAsString(topicDTO)))
+                .andExpect(status().is(462))
+                .andExpect(jsonPath("$").doesNotExist());
+    }
+
     /**
      * Cannot update topic. User is not logged in
      * Http Status forbidden
      */
     @Test
-    public void UpdateTopicButNotLoggedIn403ForbiddenTest() throws Exception{
+    public void updateTopicButNotLoggedIn403ForbiddenTest() throws Exception{
         mockMvc.perform(put("/topic")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(new ObjectMapper().writeValueAsString(topicDTO)))
@@ -295,7 +322,7 @@ class TopicControllerTest {
      */
     @WithMockUser
     @Test
-    public void UpdateTopicTestButUserIsNotATrainer() throws Exception{
+    public void updateTopicTestButUserIsNotATrainer() throws Exception{
         when(mockJwtUtil.extractUser(mockRevUserService)).thenReturn(mockUser);
 
         mockMvc.perform(put("/topic")
@@ -360,7 +387,7 @@ class TopicControllerTest {
      */
     @WithMockUser
     @Test
-    public void deleteTopicByIdThrowsDataIntegrityViolation() throws Exception
+    public void deleteTopicByIdReturns470WhenDataIntegrityViolation() throws Exception
     {
         when(mockJwtUtil.extractUser(mockRevUserService)).thenReturn(mockTrainer);
         doThrow(new DataIntegrityViolationException("")).when(topicService).deleteTopic(1);

@@ -64,7 +64,7 @@ class TopicServiceTest {
     @Test
     void creatingRevUserWithSaveTopic(){
         when(topicRepository.save(topic)).thenReturn(topic);
-        assertEquals(topic, topicService.saveTopic(topic));
+        assertEquals(topic, topicService.createTopic(topic));
     }
 
     /**
@@ -113,11 +113,20 @@ class TopicServiceTest {
 //        assertEquals(null, topicService.getById(1));
 //    }
 
+    @Test
+    void createTopicTest()
+    {
+        when(topicRepository.findById(1)).thenReturn(Optional.empty());
+        when(topicRepository.save(topic)).thenReturn(topic);
+        assertEquals(topic, topicService.createTopic(topic));
+    }
+
     /**
      * Unit test for the update operation of Topic objects
      */
     @Test
     void updateTopicTest(){
+        when(topicRepository.findById(1)).thenReturn(Optional.of(topic));
         when(topicRepository.save(topic)).thenReturn(topic);
         assertEquals(topic, topicService.updateTopic(topic));
     }

@@ -15,6 +15,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.persistence.EntityExistsException;
+import javax.persistence.EntityNotFoundException;
 import java.util.List;
 
 /**
@@ -54,22 +56,20 @@ public class TopicController{
             if (revUser.isTrainer()) {
                 log.info("Trainer is creating a new topic");
                 Topic topic = topicdto.convertToEntity(revUser);
-                if(topic.getId() == 0)
-                {
-                    return ResponseEntity.ok().body(
-                            new ObjectMapper().writerWithDefaultPrettyPrinter().writeValueAsString(
-                                    topicService.saveTopic(
-                                            topic)));
-                }
-                else
-                {
-                    log.warn("Request Body has an ID");
-                    return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
-                }
+
+                return ResponseEntity.ok().body(
+                        new ObjectMapper().writerWithDefaultPrettyPrinter().writeValueAsString(
+                                topicService.createTopic(
+                                        topic)));
             } else {
                 log.warn("Associate is attempting to create a new topic");
                 return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
             }
+        }
+        catch (EntityExistsException e)
+        {
+            log.warn("Attempted to create topic that already exists");
+            return ResponseEntity.status(461).build();
         } catch(Exception e){
             log.error("Topic failed to be mapped as a JSON string",e);
             return ResponseEntity.internalServerError().build();
@@ -152,22 +152,18 @@ public class TopicController{
             log.info("Trainer is updating a topic they own");
             if (revUser.isTrainer()) {
                 Topic topic = topicdto.convertToEntity(revUser);
-                // TODO: 9/27/2021 make this a custom exception
-                if(topic.getId() != 0)
-                {
-                    return ResponseEntity.ok().body(
-                            new ObjectMapper().writerWithDefaultPrettyPrinter().writeValueAsString(
-                                    topicService.saveTopic(topic)));
-                }
-                else
-                {
-                    log.warn("Request Body does not have ID");
-                    return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
-                }
+                return ResponseEntity.ok().body(
+                        new ObjectMapper().writerWithDefaultPrettyPrinter().writeValueAsString(
+                                topicService.updateTopic(topic)));
             } else {
                 log.warn("Associate attempted to update a topic");
                 return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
             }
+        }
+        catch (EntityNotFoundException e)
+        {
+            log.warn("Attempted to update a topic that doesn't exist");
+            return ResponseEntity.status(462).build();
         } catch (Exception e) {
             log.error("Topic failed to be mapped as a JSON string",e);
             return ResponseEntity.internalServerError().build();

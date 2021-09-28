@@ -11,6 +11,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.EntityExistsException;
+import javax.persistence.EntityNotFoundException;
+
 @Service
 public class TopicService {
     private final TopicRepository topicRepository;
@@ -27,9 +30,14 @@ public class TopicService {
      * @param topic topic object
      * @return Topic object
      */
-    public Topic saveTopic(Topic topic){
+    public Topic createTopic(Topic topic) throws EntityExistsException{
         log.info("saving new topic");
-        return topicRepository.save(topic);
+        Topic existingTopic = topicRepository.findById(topic.getId()).orElse(null);
+        if (existingTopic == null) {
+            return topicRepository.save(topic);
+        } else {
+            throw new EntityExistsException();
+        }
     }
 
     /**
@@ -75,9 +83,15 @@ public class TopicService {
      * Service to update an existing topic
      * @param topic the topic to be updated
      */
-    public Topic updateTopic(Topic topic){
+    public Topic updateTopic(Topic topic) throws EntityNotFoundException {
         log.info("updating topic");
-        return topicRepository.save(topic);}
+        Topic existingTopic = topicRepository.findById(topic.getId()).orElse(null);
+        if (existingTopic != null) {
+            return topicRepository.save(topic);
+        } else {
+            throw new EntityNotFoundException();
+        }
+    }
 
     /**
      * Service to delete an existing topic
