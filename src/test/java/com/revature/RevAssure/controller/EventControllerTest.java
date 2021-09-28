@@ -108,6 +108,7 @@ class EventControllerTest {
     @WithMockUser
     @Test
     void createEventSuccessfully() throws Exception {
+        event.setId(0);
         when(jwtUtilMock.extractUser(revUserServiceMock)).thenReturn(trainer);
         when(eventServiceMock.createEvent(event)).thenReturn(event);
 
