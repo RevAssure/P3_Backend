@@ -1,5 +1,5 @@
-# **RevAssure**
-### Description:
+# RevAssure
+## Description:
 RevAssure is a web applications for designed for easy organization, 
 and access, to training topics of Revature employees. Users of this 
 application can be spit into one of two categories: trainer or associates. 
@@ -9,7 +9,7 @@ and curriculum, as well as update the calendar for their associates. Trainers
 will also be able to view the topics and curriculum created by themselves or 
 other users.
 
-### Tech Stack:
+## Tech Stack:
 - Angular 12
 - Apache Maven
 - AWS Elastic Beanstalk / S3 / RDS / CodePipeline / CodeBuild
@@ -22,7 +22,7 @@ other users.
 - PostGreSQL deployed on AWS RDS
 - Spring Boot / Spring MVC / Spring Security / Spring Data
 
-### User Stories:
+## Features:
 - As a user I can create an account to have a Revature account
 - As a user I can register as an associate or a trainer
 - As a user I can sign in to my account to access my curriculum
@@ -35,18 +35,20 @@ other users.
 - As a trainer I can edit my topics
 - As a trainer I can view topics created by other trainers
 
-### To-Do List
-- Improvement 1
+To-Do List
+- Secure Spring Actuator endpoints.
+- Include additional roles
+- Discussion board for topics
 
-### Getting Started
+## Getting Started
 - How to install this project, include git clone and all environment setups
 
-### Usage
+## Usage
 - How to use project after install
 - all code required to get started
 - images of what it should look like
  
-### Contributors:
+## Contributors:
 - Jacob Brummett
 - Ryan Busby
 - Amit Charran
@@ -62,7 +64,7 @@ other users.
 - Matt Vasil
 - Alwyn Zhang
 - Christopher Zhang
-### Front-end repository:
+## Front-end repository:
 https://github.com/RevAssure/Front_End
-### License 
+## License 
 https://mit-license.org/
